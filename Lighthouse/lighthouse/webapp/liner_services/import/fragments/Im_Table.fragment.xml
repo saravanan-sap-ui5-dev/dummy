@@ -1,0 +1,75 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Table id="table_Imports" items="{items}" mode="None" sticky="HeaderToolbar,ColumnHeaders" inset="false" class="sapUiSmallMarginTop">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" text="{i18n>cnBtnCreate}" press="onPressNavCreate"/>
+                    <ToolbarSeparator />
+                    <Button icon="sap-icon://upload" iconFirst="true" type="Transparent" tooltip="Bulk Upload" press="onPressBulkUpload"/>
+                    <OverflowToolbarButton type="Transparent"  icon="sap-icon://download" tooltip="{i18n>cnTemplate}" press="onPressTemplate" enabled="true"/>
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="onPressAFSettings" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="5em" hAlign="Center">
+                <Text text="{i18n>imId}" />
+            </Column>
+            <Column width="7em" hAlign="Center">
+                <Text text="{i18n>imBLNumber}" />
+            </Column>
+            <Column width="7em" hAlign="Center">
+                <Text text="{i18n>imShipmentNo}" />
+            </Column>
+            <Column width="8em" hAlign="Center" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>imShippingLine}" />
+            </Column>
+            <Column width="8em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Center">
+                <Text text="{i18n>imVoyage}" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Begin">
+                <Text text="{i18n>imVesselName}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Center">
+                <Text text="{i18n>imVesselEta}" />
+            </Column>
+            <Column width="7em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Center">
+                <Text text="{i18n>imPoD}" />
+            </Column>
+            <Column width="8em" hAlign="Center">
+                <Text text="{i18n>imStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{id}"/>
+                    <Text text="{blNo}"/>
+                    <Text text="{shipmentNo}"/>
+                    <Text text="{shippingLine}" />
+                    <Text text="{voyageIndex}" />
+                    <Text text="{vesselName}" />
+                    <Text text="{vesselETA}" />
+                    <Text text="{pod}" />
+                    <Text text="{= ${status}===0?'Active':'Draft'}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

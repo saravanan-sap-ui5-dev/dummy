@@ -1,0 +1,142 @@
+<mvc:View controllerName="com.lighthouse.master_data.ManageCustomerShipper"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <f:DynamicPage id="page_CustomerShipper" headerExpanded="true" preserveHeaderStateOnScroll="true">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Customer/Shipper"/>
+                </f:heading>
+                <!-- <f:actions>
+                    <Button text="Save and Close" press="backToMaster"/>
+                    <Button text="Save"/>
+                    <Button text="Close" press="backToMaster"/>
+                </f:actions> -->
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                <f:content>
+                    <fb:FilterBar id="CustomerShipperFilter" filterBarExpanded="true" search="AdvancedFilter" useToolbar="false" showGoOnFB="true" showClearOnFB="false">
+                        <fb:filterItems>
+                            <fb:FilterItem name="A" label="Customer Name">
+                                <fb:control>
+                                    <Input value = "{advancedFilterMdl>/customerName}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="D" label='C&amp;F Agent license ID'>
+                                <fb:control>
+                                    <Input value = "{advancedFilterMdl>/CFLicenseID}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="F" label="Bayan Code">
+                                <fb:control>
+                                    <Input value = "{advancedFilterMdl>/bayanCode}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="G" label="Customer Company Details">
+                                <fb:control>
+                                    <Input value = "{advancedFilterMdl>/customerCompanyDetails}"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+            <!--  <ScrollContainer width="100%" horizontal="false" vertical="true" focusable="true" class="sapUiSmallMarginTop"> -->
+            <Table id = "customerShipperTable" icon="sap-icon://edit" inset="false" items="{customerShipper>/CustomerShipper}" mode="None" sticky="ColumnHeaders,HeaderToolbar">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Label design="Bold" text="Shipping Line(0)" />
+                            <ToolbarSpacer />
+                            <Button text="Create" type="Transparent" press="onPressNavCreate"/>
+                            <ToolbarSeparator />
+                            <OverflowToolbarButton type="Transparent" tooltip="Bulk Upload" icon="sap-icon://upload" press="handleBulkUpload"/>
+                            <OverflowToolbarButton type="Transparent" icon="sap-icon://excel-attachment" tooltip="Export To Excel" press="onPressExport" />
+                            <ToolbarSeparator />
+                            <OverflowToolbarButton type="Transparent" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                            <OverflowToolbarButton type="Transparent" tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                            <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="Settings" press="onPressAFSettings" />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="12em">
+                        <Text text="Name"/>
+                    </Column >
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Short Name"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Address"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Banking Details"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="C&amp;F Agent License ID"/>
+                    </Column>
+                    <Column hAlign="Center">
+                        <Text text="Bayan Code"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Company Details"/>
+                    </Column >
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Import Cargo Contact Details"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                        <Text text="Export Cargo Contact Details"/>
+                    </Column>
+                    <!-- <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                <Text text="Port Customs Code" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+                                <Text text="Account Code" />
+                            </Column>
+                            <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Begin">
+                                <Text text="Debit Note Prefix" />
+                            </Column>  -->
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" type="Navigation" navigated="{
+						parts: [
+							'settings>/navigatedItem',
+							'customerShipper>customerName'
+						],
+						formatter: '.formatter.isNavigated'
+					}" press=".onListItemPress" visible="true">
+                        <cells>
+                            <ObjectIdentifier title="{customerShipper>customerName}"/>
+                            <Text text="{customerShipper>shortName}" />
+                            <Text text="{customerShipper>fullAddress}" />
+                            <Text text="{customerShipper>bankingDetails}" />
+                            <Text text="{customerShipper>CFLicenseID}" />
+                            <Text text="{customerShipper>bayanCode}" />
+                            <Text text="{customerShipper>customerCompanyDetails}" />
+                            <Text text="{customerShipper>importCargoDetails}" />
+                            <Text text="{customerShipper>exportCargoDetails}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            <!--  </ScrollContainer> -->
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

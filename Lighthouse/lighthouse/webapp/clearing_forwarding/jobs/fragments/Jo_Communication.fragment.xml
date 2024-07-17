@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Table items="{items}" mode="None" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="10em">
+                <Text text="{i18n>imDocumentId}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>imDocumentName}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>imCreatedBy}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Date" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{documentId}" />
+                    <Text text="{documentName}" />
+                    <Text text="{createdBy}" />
+                    <Text text="{date}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

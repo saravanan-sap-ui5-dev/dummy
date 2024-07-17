@@ -1,0 +1,160 @@
+PROCEDURE "ADD_EDIT_CUSTOMERS" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE ID BIGINT := 0;
+    DECLARE cardCode NVARCHAR(256);
+    DECLARE creditorAccount NVARCHAR(256);
+    DECLARE poBox BIGINT;
+    DECLARE bayanCode NVARCHAR(256);
+    DECLARE shortName NVARCHAR(256);
+    DECLARE addressLine1 NVARCHAR(256);
+    DECLARE addressLine2 NVARCHAR(256);
+    DECLARE addressLine3 NVARCHAR(256);
+    DECLARE createdBy NVARCHAR(256);
+    DECLARE updatedBy NVARCHAR(256);
+    DECLARE remarks NVARCHAR(500);
+    DECLARE status INTEGER;
+
+    DECLARE i INTEGER;
+    DECLARE exCustomer INT :=0;
+    DECLARE exInternalCode INT :=0;
+
+    DECLARE cId BIGINT := 0;
+    DECLARE cCardCode NVARCHAR(256);
+    DECLARE internalCode BIGINT;
+    DECLARE cPoBox BIGINT;
+    DECLARE pinCode BIGINT;
+    DECLARE contactType BIGINT;
+    DECLARE cAddressLine1 NVARCHAR(256);
+    DECLARE cAddressLine2 NVARCHAR(256);
+    DECLARE cAddressLine3 NVARCHAR(256);
+    DECLARE cRemarks NVARCHAR(500);
+    DECLARE cStatus INTEGER;
+
+     -- Set up an exception handler for the custom exception
+    DECLARE success_msg CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR success_msg
+    BEGIN
+        EX_MESSAGE := 'Record Updated Successfully' || ::SQL_ERROR_MESSAGE;
+    END;
+    
+    temp_customers = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "cardCode" NVARCHAR(256) PATH '$.cardCode',
+                "creditorAccount" NVARCHAR(256) PATH '$.creditorAccount',
+                "poBox" BIGINT PATH '$.poBox',
+                "bayanCode" NVARCHAR(256) PATH '$.bayanCode',
+                "shortName" NVARCHAR(256) PATH '$.shortName',
+                "addressLine1" NVARCHAR(256) PATH '$.addressLine1',
+                "addressLine2" NVARCHAR(256) PATH '$.addressLine2',
+                "addressLine3" NVARCHAR(256) PATH '$.addressLine3',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "remarks" NVARCHAR(500) PATH '$.remarks',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+
+          FOR i in 1..RECORD_COUNT(:temp_customers) do
+            id = :temp_customers."id"[:i];
+            cardCode = :temp_customers."cardCode"[:i];
+            creditorAccount = :temp_customers."creditorAccount"[:i];
+            poBox = :temp_customers."poBox"[:i];
+            bayanCode = :temp_customers."bayanCode"[:i];
+            shortName = :temp_customers."shortName"[:i];
+            addressLine1 = :temp_customers."addressLine1"[:i];
+            addressLine2 = :temp_customers."addressLine2"[:i];
+            addressLine3 = :temp_customers."addressLine3"[:i];
+            createdBy = :temp_customers."createdBy"[:i];
+            updatedBy = :temp_customers."updatedBy"[:i];
+            remarks = :temp_customers."remarks"[:i];
+            status = :temp_customers."status"[:i];
+
+            SELECT COUNT(*) INTO exCustomer FROM "customers" WHERE "cardCode" = :cardCode;
+
+            IF id > 0 AND cardCode IS NOT NULL OR exCustomer>0  THEN
+                UPDATE "customers"
+                SET
+                "cardCode" = cardCode,
+                "creditorAccount" = creditorAccount,
+                "poBox" = poBox,
+                "bayanCode" = bayanCode,
+                "shortName" = shortName,
+                "addressLine1" = addressLine1,
+                "addressLine2" = addressLine2,
+                "addressLine3" = addressLine3,
+                "createdBy" = createdBy,
+                "updatedBy" = updatedBy,
+                "remarks" = remarks,
+                "status" = status
+                WHERE
+                "cardCode" = cardCode;
+            ELSE
+                INSERT INTO "customers" ("cardCode","creditorAccount","poBox","addressLine1","addressLine2","addressLine3","bayanCode","createdBy","updatedBy","shortName","remarks","status")VALUES (cardCode,creditorAccount,poBox,addressLine1, addressLine2, addressLine3, bayanCode,createdBy,updatedBy,shortName, remarks,status);
+
+                SELECT current_identity_value() into ID from dummy;
+            END IF;
+        END FOR;
+
+    temp_contacts = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$.contactEmployees' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "cardCode" NVARCHAR(256) PATH '$.cardCode',
+                "internalCode" BIGINT PATH '$.internalCode',
+                "poBox" BIGINT PATH '$.poBox',  
+                "pinCode" BIGINT PATH '$.pinCode',
+                "contactType" BIGINT PATH '$.contactType',
+                "addressLine1" NVARCHAR(256) PATH '$.addressLine1',
+                "addressLine2" NVARCHAR(256) PATH '$.addressLine2',
+                "addressLine3" NVARCHAR(256) PATH '$.addressLine3',
+                "remarks" NVARCHAR(256) PATH '$.remarks',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+
+          FOR i in 1..RECORD_COUNT(:temp_contacts) do
+            cId = :temp_contacts."id"[:i];
+            cCardCode = :temp_contacts."cardCode"[:i];
+            internalCode = :temp_contacts."internalCode"[:i];
+            cPoBox = :temp_contacts."poBox"[:i];
+            pinCode = :temp_contacts."pinCode"[:i];
+            contactType = :temp_contacts."contactType"[:i];
+            cAddressLine1 = :temp_contacts."addressLine1"[:i];
+            cAddressLine2 = :temp_contacts."addressLine2"[:i];
+            cAddressLine3 = :temp_contacts."addressLine3"[:i];
+            cRemarks = :temp_contacts."remarks"[:i];
+            cStatus = :temp_contacts."status"[:i];
+
+            SELECT COUNT(*) INTO exInternalCode FROM "contacts" WHERE "internalCode" = :internalCode;
+
+            IF exInternalCode > 0 THEN
+                UPDATE "contacts"
+                SET
+                    "cardCode" = cCardCode,
+                    "internalCode" = internalCode,
+                    "poBox" = cPoBox,
+                    "pinCode" = pinCode,
+                    "contactType" = contactType,
+                    "addressLine1" = cAddressLine1,
+                    "addressLine2" = cAddressLine2,
+                    "addressLine3" = cAddressLine3,
+                    "remarks" = cRemarks,
+                    "status" = cStatus
+                WHERE
+                    "internalCode" = internalCode;
+            ELSE
+                INSERT INTO "contacts" ("cardCode","internalCode","poBox","pinCode","contactType","addressLine1","addressLine2","addressLine3","remarks","status")
+                    VALUES (cCardCode,internalCode,cPoBox,pinCode,contactType,cAddressLine1,cAddressLine2,cAddressLine3,cRemarks,cStatus);
+
+                --SELECT current_identity_value() into ID from dummy;
+            END IF;
+        END FOR;
+
+        SELECT * FROM "customers" WHERE "cardCode"= :cardCode;
+END

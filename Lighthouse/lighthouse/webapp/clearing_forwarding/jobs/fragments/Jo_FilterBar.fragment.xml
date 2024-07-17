@@ -1,0 +1,102 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <fb:FilterBar showFilterConfiguration="true" filterBarExpanded="true" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+        <fb:filterItems>
+            <fb:FilterItem name="A" label="{i18n>joId}">
+                <fb:control>
+                    <Input />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="B" label="{i18n>joBLNo}">
+                <fb:control>
+                    <Input />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="C" label="{i18n>joBLType}">
+                <fb:control>
+                    <MultiComboBox>
+                        <core:Item key="1" text="Import" />
+                        <core:Item key="2" text="Export" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="D" label="{i18n>joQuotationNo}">
+                <fb:control>
+                    <Input />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="E" label="{i18n>joAgent}">
+                <fb:control>
+                    <Input />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="F" label="{i18n>joBayanNo}">
+                <fb:control>
+                    <Input />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="G" label="{i18n>joShippingLine}">
+                <fb:control>
+                    <MultiComboBox>
+                        <core:Item key="1" text="Hapag Lloyd" />
+                        <core:Item key="2" text="UASC" />
+                        <core:Item key="3" text="PIL" />
+                        <core:Item key="4" text="K-Line" />
+                        <core:Item key="5" text="SCI" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="H" label="{i18n>joPortOfLoading}">
+                <fb:control>
+                    <MultiComboBox>
+                        <core:Item key="1" text="Buraimi" />
+                        <core:Item key="2" text="Suwaiq" />
+                        <core:Item key="3" text="Sur" />
+                        <core:Item key="4" text="Port Sultan Qaboos" />
+                        <core:Item key="5" text="Port Sohar" />
+                        <core:Item key="6" text="Port Salalah" />
+                        <core:Item key="7" text="Port Duqm" />
+                        <core:Item key="8" text="Muscat" />
+
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="I" label="{i18n>joPortOfDestination}">
+                <fb:control>
+                    <MultiComboBox>
+                        <core:Item key="1" text="Buraimi" />
+                        <core:Item key="2" text="Suwaiq" />
+                        <core:Item key="3" text="Sur" />
+                        <core:Item key="4" text="Port Sultan Qaboos" />
+                        <core:Item key="5" text="Port Sohar" />
+                        <core:Item key="6" text="Port Salalah" />
+                        <core:Item key="7" text="Port Duqm" />
+                        <core:Item key="8" text="Muscat" />
+
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="J" label="{i18n>joStatus}">
+                <fb:control>
+                    <MultiComboBox>
+                        <core:Item key="1" text="Draft" />
+                        <core:Item key="2" text="Active" />
+                        <core:Item key="3" text="Inactive" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+        </fb:filterItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

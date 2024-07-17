@@ -1,0 +1,93 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <fb:FilterBar id="cpcFilterBar" filterBarExpanded="true" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="true">
+        <fb:filterItems>
+            <fb:FilterItem name="A" visibleInFilterBar="true" label="{i18n>cpcId}">
+                <fb:control>
+                    <Input value="{id}" type="Number" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="B" visibleInFilterBar="true" label="{i18n>cpcName}">
+                <fb:control>
+                    <Input value="{name}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="C" visibleInFilterBar="true" label="{i18n>cpcPackageCode}">
+                <fb:control>
+                    <Input value="{code}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="D" visibleInFilterBar="false" label="{i18n>cpcCreatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{createdBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="E" visibleInFilterBar="false" label="{i18n>cpcCreatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_end'
+                            }
+                        ]
+                    }" field:date="createdOnStart,createdOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="F" visibleInFilterBar="false" label="{i18n>cpcUpdatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{updatedBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="G" visibleInFilterBar="false" label="{i18n>cpcUpdatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_end'
+                            }
+                        ]
+                    }" field:date="updatedOnStart,updatedOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="H" visibleInFilterBar="false" label="{i18n>cpcStatus}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/status}" selectedKeys="{statusColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+        </fb:filterItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

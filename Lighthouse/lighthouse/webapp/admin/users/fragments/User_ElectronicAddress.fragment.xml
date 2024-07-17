@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Office Phone" />
+                <Input value="{officePhone}" editable="{visible>/edit}" />
+                <Label text="Mobile Phone" />
+                <Input value="{mobilePhone}" editable="{visible>/edit}" />
+                <Label text="Home Phone" />
+                <Input value="{homePhone}" editable="{visible>/edit}" />
+                <Label text="EMail" />
+                <Input value="{email}" editable="{visible>/edit}" />
+                <Label text="Ext" />
+                <Input value="{officeExtension}" editable="{visible>/edit}" type="Number"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="{i18n>exdnDialogTitle}" contentWidth="70%" verticalScrolling="true">
+        <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiSmallMarginTop">
+            <form:content>
+                <Label text="{i18n>exdnDNNo}" />
+                <Input value="{ImportMdl>/chargeCode}" />
+                <Label text="{i18n>exdnReferenceNo}" />
+                <Input value="{ImportMdl>/amount}" />
+                <Label text="{i18n>exdnDNAmount}" />
+                <Input value="{ImportMdl>/creditNo}" />
+                <Label text="{i18n>exdnDNDate}" />
+                <DatePicker value="{ImportMdl>/receivedOn}" placeholder=" " />
+                <Label text="{i18n>exdnCreditDate}" />
+                <DatePicker value="{ImportMdl>/creditDate}" placeholder=" " />
+            </form:content>
+        </form:SimpleForm>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnAdd}" press="onSaveCharge" width="70px" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

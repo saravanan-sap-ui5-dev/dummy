@@ -1,0 +1,6 @@
+COLUMN TABLE "enumerators" (
+  "enum_id" BIGINT,
+  "enum_name" VARCHAR(100),
+  "description" VARCHAR(100),
+  "value" BIGINT
+) UNLOAD PRIORITY 5 AUTO MERGE

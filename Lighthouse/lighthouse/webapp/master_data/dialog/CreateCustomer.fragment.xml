@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="New Customer" contentWidth="90%" contentHeight="90%" verticalScrolling="true">
+        <core:Fragment fragmentName="com.lighthouse.master_data.customer.C_General" binding="{/masterScreenGeneral}" type="XML"/>
+        <ScrollContainer vertical="true" height="90%">
+            <core:Fragment fragmentName="com.lighthouse.master_data.customer.C_Contact" binding="{/contactDetails}" type="XML"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Save" press="onSaveCustomerDetail"/>
+                <Button type="Ghost" text="Cancel" press="onCloseCustomerDetail"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

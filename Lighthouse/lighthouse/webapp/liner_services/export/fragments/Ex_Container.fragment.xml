@@ -1,0 +1,325 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:core="sap.ui.core">
+    <!--  <table:Table ariaLabelledBy="title" selectionMode="MultiToggle" selectionBehavior="Row" enableSelectAll="false" rowActionCount="1" rows="{items}">
+        <table:extension>
+            <OverflowToolbar style="Clear">
+                <Label design="Bold" text="Items({=${items}.length})" />
+                <ToolbarSpacer />
+                <Button text="Add" enabled="{visible>/edit}" type="Transparent" press="onPressAddContainerItem" />
+                <Button text="Remove" enabled="{visible>/edit}" type="Transparent" press="" />
+            </OverflowToolbar>
+        </table:extension>
+        <table:rowActionTemplate>
+            <table:RowAction>
+                <table:RowActionItem type="Navigation" press="onPressContainerItem"/>
+            </table:RowAction>
+        </table:rowActionTemplate>
+        <table:columns>
+            <table:Column hAlign="Center" width="6rem">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="Cont No" textAlign="Center" width="100%" design="Bold" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{containerNo}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="Sz/Ty" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{sizeAndType}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center" width="6rem">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="Cargo Wt" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{cargoWeight}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="Tare Wt" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{tareWeight}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="CBM" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{cbm}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="Pkgs" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{packages}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="VGM" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{vgm}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="tempFrom" headerSpan="2" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="Temp" textAlign="Center" width="100%" />
+                    <Label text="From" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{fromTemp}" wrapping="false" />
+                </table:template>
+            </table:Column>
+            <table:Column id="tempTo" headerSpan="2" hAlign="Center">
+                <table:multiLabels>
+                    <Label text="Temp" textAlign="Center" width="100%" />
+                    <Label text="To" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{toTemp}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="imcoClass" hAlign="Center" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="Imco Details" textAlign="Center" width="100%" />
+                    <Label text="Cl" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{imcoClass}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="imcoNo" hAlign="Center" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="Imco Details" textAlign="Center" width="100%" />
+                    <Label text="No" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{imcoUnno}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="imcoPage" hAlign="Center" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="Imco Details" textAlign="Center" width="100%" />
+                    <Label text="Page" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{page}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="imcoPt" hAlign="Center" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="Imco Details" textAlign="Center" width="100%" />
+                    <Label text="Pt" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{pt}" />
+                </table:template>
+            </table:Column>
+            <table:Column id="imcoDesc" hAlign="Center" headerSpan="5">
+                <table:multiLabels>
+                    <Label text="Imco Details" textAlign="Center" width="100%" />
+                    <Label text="Desc" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{description}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="OH" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{oh}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="OLF" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{olf}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="OLA" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{ola}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="OWL" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{owl}" />
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <table:multiLabels>
+                    <Label visible="false" />
+                    <Label text="OWR" textAlign="Center" width="100%" />
+                </table:multiLabels>
+                <table:template>
+                    <Text text="{owr}" />
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:Table> -->
+    <ScrollContainer horizontal="true">
+        <Table id="tableExContainer" inset="false" items="{items}" mode="{mode}">
+            <headerToolbar>
+                <OverflowToolbar style="Clear">
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnAdd}" enabled="{visible>/edit}" visible="{visible>/dialogVisible}" type="Transparent" press="onPressAddContainerItem" />
+                    <Button text="{i18n>cnBtnRemove}" enabled="{visible>/edit}" visible="{visible>/dialogVisible}" type="Transparent" press="" />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column width="8rem">
+                    <Label text="{i18n>exContainerNo}" design="Bold" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exSizeAndType}" />
+                </Column>
+                <Column width="5rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exCargoWt}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exTareWt}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exCBM}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exPkgs}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exVGM}" />
+                </Column>
+                <Column id="temp" width="10rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <VBox width="100%" alignItems="Center">
+                        <Label text="{i18n>exTemp}" />
+                        <HBox width="100%" class="sapUiTinyMarginTop">
+                            <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exFrom}" />
+                            </FlexBox>
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exTo}" />
+                            </FlexBox>
+                        </HBox>
+                    </VBox>
+                </Column>
+                <Column id="imco" width="18rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <VBox width="100%" alignItems="Center">
+                        <Label text="{i18n>exImcoDetails}" />
+                        <HBox width="100%" class="sapUiTinyMarginTop">
+                            <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exClass}" />
+                            </FlexBox>
+                            <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exUnno}" />
+                            </FlexBox>
+                            <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exPage}" />
+                            </FlexBox>
+                            <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exPt}" />
+                            </FlexBox>
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Label text="{i18n>exDesc}" />
+                            </FlexBox>
+                        </HBox>
+                    </VBox>
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exOH}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exOLF}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exOLA}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exOWL}" />
+                </Column>
+                <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                    <Label text="{i18n>exOWR}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <Text text="{containerNo}" />
+                        <Text text="{sizeAndType}" />
+                        <Text text="{cargoWeight}" />
+                        <Text text="{tareWeight}" />
+                        <Text text="{cbm}" />
+                        <Text text="{packages}" />
+                        <Text text="{vgm}" />
+                        <VBox width="100%" alignItems="Center">
+                            <HBox width="100%" class="sapUiTinyMarginTop">
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{fromTemp}" wrapping="false" />
+                                </FlexBox>
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{toTemp}" />
+                                </FlexBox>
+                            </HBox>
+                        </VBox>
+                        <VBox width="100%" alignItems="Center">
+                            <HBox width="100%" class="sapUiTinyMarginTop">
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{imcoClass}" />
+                                </FlexBox>
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{imcoUnno}" />
+                                </FlexBox>
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{page}" />
+                                </FlexBox>
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{pt}" />
+                                </FlexBox>
+                                <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                    <Text text="{description}" />
+                                </FlexBox>
+                            </HBox>
+                        </VBox>
+                        <Text text="{oh}" />
+                        <Text text="{olf}" />
+                        <Text text="{ola}" />
+                        <Text text="{owl}" />
+                        <Text text="{owr}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </ScrollContainer>
+</core:FragmentDefinition>

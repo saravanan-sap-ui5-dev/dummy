@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core">
+    <Dialog title="New Vessel" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <uxap:ObjectPageLayout showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+            <uxap:sections>
+                <uxap:ObjectPageSection titleUppercase="false" title="General">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <core:Fragment fragmentName="com.lighthouse.master_data.vessel.V_Form" type="XML" binding="{/vesselGeneral}"/>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="Shipping Line">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection >
+                            <core:Fragment fragmentName="com.lighthouse.master_data.vessel.V_ShippingLineCodes" binding="{/vesselDetails}" type="XML"/>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Save" press="onSaveVesselDetail"/>
+                <Button type="Ghost" text="Cancel" press="onCloseVesselDetail"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

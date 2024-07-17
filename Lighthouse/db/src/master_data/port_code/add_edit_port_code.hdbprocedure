@@ -1,0 +1,126 @@
+PROCEDURE "ADD_EDIT_PORT_CODE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200))
+AS
+BEGIN
+ 
+    DECLARE ID BIGINT := 0;
+    DECLARE pc_code NVARCHAR(255);
+    DECLARE pc_name NVARCHAR(255);
+    DECLARE pc_countryCode NVARCHAR(255);
+    DECLARE pc_customsCode NVARCHAR(255);
+    DECLARE pc_zoneCode NVARCHAR(255);
+    DECLARE pc_zoneName NVARCHAR(255);
+    DECLARE pc_postalCode NVARCHAR(255);
+    DECLARE pc_etaDays NVARCHAR(255);
+    DECLARE pc_cardCode NVARCHAR(255);
+    DECLARE pc_createdBy NVARCHAR(255);
+    DECLARE pc_updatedBy NVARCHAR(255);
+    DECLARE pc_status INTEGER;
+
+    DECLARE slp_id BIGINT;
+    DECLARE slp_shippingLineId NVARCHAR(256);
+    DECLARE slp_portCodeId BIGINT;
+    DECLARE slp_portCode VARCHAR(255);
+    DECLARE slp_zoneCode VARCHAR(255);
+    DECLARE slp_zoneName VARCHAR(255);
+    DECLARE slp_status INTEGER;
+ 
+    DECLARE i BIGINT;
+    DECLARE exPortCode BIGINT := 0;
+
+        tempPortCode = SELECT JT.*
+            FROM JSON_TABLE(to_clob(:IN_PARAM),                
+            '$'COLUMNS(
+                    "id" BIGINT PATH '$.id',
+                    "code" NVARCHAR(256) PATH '$.code',
+                    "name" NVARCHAR(256) PATH '$.name',
+                    "countryCode" NVARCHAR(256) PATH '$.countryCode',
+                    "customsCode" NVARCHAR(256) PATH '$.customsCode',
+                    "zoneCode" NVARCHAR(256)  PATH '$.zoneCode',
+                    "zoneName" NVARCHAR(256)  PATH '$.zoneName',
+                    "postalCode" NVARCHAR(256)  PATH '$.postalCode',
+                    "etaDays" NVARCHAR(256)  PATH '$.etaDays',
+                    "cardCode" NVARCHAR(256)  PATH '$.cardCode',
+                    "createdBy" NVARCHAR(256)  PATH '$.createdBy',
+                    "updatedBy" NVARCHAR(256)  PATH '$.updatedBy',
+                    "status" BIGINT PATH '$.status'
+                )
+            ) AS JT;
+
+            FOR i in 1..RECORD_COUNT(:tempPortCode) do
+                id = :tempPortCode."id"[:i];
+                pc_code = :tempPortCode."code"[:i];
+                pc_name = :tempPortCode."name"[:i];
+                pc_countryCode = :tempPortCode."countryCode"[:i];
+                pc_customsCode = :tempPortCode."customsCode"[:i];
+                pc_zoneCode = :tempPortCode."zoneCode"[:i];
+                pc_zoneName = :tempPortCode."zoneName"[:i];
+                pc_postalCode = :tempPortCode."postalCode"[:i];
+                pc_etaDays = :tempPortCode."etaDays"[:i];
+                pc_cardCode = :tempPortCode."cardCode"[:i];
+                pc_createdBy = :tempPortCode."createdBy"[:i];
+                pc_updatedBy = :tempPortCode."updatedBy"[:i];
+                pc_status = :tempPortCode."status"[:i];
+               
+                SELECT count(*) INTO exPortCode FROM "port_code" WHERE "cardCode" = :pc_cardCode;
+
+                IF exPortCode > 0 THEN
+                    UPDATE "port_code" SET
+                        "code" = pc_code,
+                        "name" = pc_name,
+                        "countryCode" = pc_countryCode,
+                        "customsCode" = pc_customsCode,
+                        "zoneCode" = pc_zoneCode,
+                        "zoneName" = pc_zoneName,
+                        "postalCode" = pc_postalCode,
+                        "etaDays" = pc_etaDays,
+                        "createdBy" = pc_createdBy,
+                        "updatedBy" = pc_updatedBy,
+                        "status" = pc_status
+                    WHERE "cardCode" = pc_cardCode;
+                ELSE
+                    INSERT INTO "port_code" ("code","name","countryCode","customsCode","zoneCode","zoneName","postalCode","etaDays","cardCode","createdBy","updatedBy","status")
+                    VALUES (pc_code, pc_name, pc_countryCode, pc_customsCode, pc_zoneCode, pc_zoneName, pc_postalCode, pc_etaDays, pc_cardCode,pc_createdBy,pc_updatedBy, pc_status);
+
+                    SELECT current_identity_value() into ID from dummy;
+                END IF;
+            END FOR; 
+
+        --Shipping Line ports
+        tempShippingLinePorts = SELECT JT.*
+            FROM JSON_TABLE(
+                to_clob(:IN_PARAM),
+                '$.shippingLinePorts' COLUMNS(
+                    "id" BIGINT PATH '$.id',
+                    "shippingLineId" NVARCHAR(256) PATH '$.shippingLineId',
+                    "portCodeId" NVARCHAR(256) PATH '$.portCodeId',
+                    "portCode" NVARCHAR(256) PATH '$.portCode',
+                    "zoneCode" NVARCHAR(256) PATH '$.zoneCode',
+                    "zoneName" NVARCHAR(256)  PATH '$.zoneName',
+                    "status" BIGINT PATH '$.status'
+                )
+            ) AS JT;
+ 
+            FOR i in 1..RECORD_COUNT(:tempShippingLinePorts) do
+                slp_id = :tempShippingLinePorts."id"[:i];
+                slp_shippingLineId = :tempShippingLinePorts."shippingLineId"[:i];
+                slp_portCodeId = :tempShippingLinePorts."portCodeId"[:i] ;
+                slp_portCode = :tempShippingLinePorts."portCode"[:i];
+                slp_zoneCode = :tempShippingLinePorts."zoneCode"[:i];
+                slp_zoneName = :tempShippingLinePorts."zoneName"[:i];
+                slp_status = :tempShippingLinePorts."status"[:i];
+               
+                IF :slp_id > 0 THEN
+                    UPDATE "shipping_line_port" SET
+                        "shippingLineId" = slp_shippingLineId,
+                        "portCodeId" = slp_portCodeId,
+                        "portCode" = slp_portCode,
+                        "zoneCode" = slp_zoneCode,
+                        "zoneName" = slp_zoneName,
+                        "status" = slp_status
+                    WHERE "id" = slp_id;
+                ELSE
+                    INSERT INTO "shipping_line_port" ("shippingLineId","portCodeId","portCode","zoneCode","zoneName","status") VALUES (slp_shippingLineId, :ID, slp_portCode, slp_zoneCode, slp_zoneName, slp_status);
+                END IF;
+            END FOR; 
+        SELECT *,0 "recordCount" FROM "port_code" WHERE "cardCode" = :pc_cardCode;
+END

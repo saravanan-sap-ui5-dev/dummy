@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox backgroundDesign="Transparent">
+            <form:SimpleForm editable="true" class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="3" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>cuContactName}" />
+                    <Input value="{affiliatedCompany/contactName}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuCompanyName}" />
+                    <Input value="{affiliatedCompany/companyName}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine1}" />
+                    <Input value="{affiliatedCompany/addressLine1}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine2}" />
+                    <Input value="{affiliatedCompany/addressLine2}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine3}" />
+                    <Input value="{affiliatedCompany/addressLine3}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine4}" />
+                    <Input value="{affiliatedCompany/addressLine4}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuPoBox}" />
+                    <Input value="{affiliatedCompany/poBox}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuCity}" />
+                    <ComboBox selectedKey="{affiliatedCompany/city}" editable="{visible>/edit}">
+                        <core:Item key="1" text="CPO" />
+                        <core:Item key="2" text="Abhu Dhabi" />
+                        <core:Item key="3" text="Dhubai" />
+                    </ComboBox>
+                    <Label text="{i18n>cuPinCode}" />
+                    <Input value="{affiliatedCompany/pinCode}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

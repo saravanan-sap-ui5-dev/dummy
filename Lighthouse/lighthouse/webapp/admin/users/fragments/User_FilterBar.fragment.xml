@@ -1,0 +1,114 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <fb:FilterBar id="filterBarUser" showFilterConfiguration="true" filterBarExpanded="true" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+        <fb:filterItems>
+            <fb:FilterItem name="A" visibleInFilterBar="true" groupName="optional" label="{i18n>usrId}">
+                <fb:control>
+                    <Input type="Number" value="{employeeID}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="B" visibleInFilterBar="true" groupName="optional" label="{i18n>usrFirstName}">
+                <fb:control>
+                    <Input value="{firstName}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="C" visibleInFilterBar="true" groupName="optional" label="{i18n>usrLastName}">
+                <fb:control>
+                    <Input value="{lastName}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="D" visibleInFilterBar="true" groupName="optional" label="{i18n>usrJobTitle}">
+                <fb:control>
+                    <MultiComboBox selectedKeys="{jobTitleCollection}">
+                        <core:Item key="Sales Executive" text="Sales Executive" />
+                        <core:Item key="Manager" text="Manager" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="E" visibleInFilterBar="true" groupName="optional" label="{i18n>usrDepartment}">
+                <fb:control>
+                    <Input value="{department}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="F" visibleInFilterBar="true" groupName="optional" label="{i18n>usrCostCenter}">
+                <fb:control>
+                    <MultiComboBox selectedKeys="{costCenterCodeCollection}">
+                        <core:Item key="HR" text="HR"/>
+                        <core:Item key="IT" text="IT"/>
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+             <fb:FilterItem name="G" visibleInFilterBar="false" label="{i18n>usrCreatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{createdBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="H" visibleInFilterBar="false" label="{i18n>usrCreatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange"  value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_end'
+                            }
+                        ]
+                    }" field:date="createdOnStart,createdOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="I" visibleInFilterBar="false" label="{i18n>usrUpdatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{updatedBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="J" visibleInFilterBar="false" label="{i18n>usrUpdatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange"  value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_end'
+                            }
+                        ]
+                    }" field:date="updatedOnStart,updatedOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="K" visibleInFilterBar="true" groupName="optional" label="{i18n>usrStatus}">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/status}" selectedKeys="{active}" selectionChange = "onPressStatus">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+        </fb:filterItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

@@ -1,0 +1,4 @@
+PROCEDURE "MIN_CONTAINER_TYPE" AS
+BEGIN
+	SELECT "id","name" FROM "container_type" WHERE "status" = 2;
+END

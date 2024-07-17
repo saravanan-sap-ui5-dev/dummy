@@ -1,0 +1,30 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Job Title" />
+                <Input value="{jobTitle}" editable="{visible>/edit}" />
+                <Label text="Department" />
+                <Input value="{department}" editable="{visible>/edit}" />
+                <Label text="Start Date" />
+                <DatePicker value="{startDate}" placeholder=" " editable="{visible>/edit}" />
+                <Label text="Termination Date" />
+                <DatePicker value="{terminationDate}" placeholder=" " editable="{visible>/edit}" />
+                <Label text="Manager" />
+                <Input value="{manager}" editable="{visible>/edit}" />
+                <Label text="Cost Center" />
+                <Input value="{costCenterCode}" editable="{visible>/edit}" />
+                <Label text="Employment Status" />
+                <ComboBox selectedKey="{professionStatus}" editable="{visible>/edit}">
+                    <core:Item key="1" text="Full Time"/>
+                    <core:Item key="2" text="Part Time"/>
+                </ComboBox>
+                <Label text="Termination Reason" />
+                <TextArea value="{treminationReason}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

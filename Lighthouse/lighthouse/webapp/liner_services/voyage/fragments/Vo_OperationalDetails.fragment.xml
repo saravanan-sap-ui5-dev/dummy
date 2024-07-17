@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voLastPort}" />
+                <Input value="{lastPortName}" showValueHelp="true" valueHelpRequest="onPressPortCode" editable="{visible>/edit}"/>
+                <Label text="{i18n>voNextPort}" />
+                <Input value="{nextPort}" type = "Number" showValueHelp="true" valueHelpRequest="onPressPortCode" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voVesselRotationNo}" />
+                <Input value="{vesselRotationNumber}" type = "Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>voMRNNo}" />
+                <Input value="{mrnNumber}" type = "Number" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voService}" />
+                <ComboBox selectedKey="{service}" editable="{visible>/edit}">
+                    <core:Item text="G1" key="1" />
+                </ComboBox>
+                <Label text="{i18n>voOperator}" />
+                <Input value="{operatorName}" showValueHelp="true" valueHelpRequest="onPressShippingLine" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voDPIN}" />
+                <Input value="{dpIn}" type = "Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>voDPOUT}" />
+                <Input value="{dpOut}" type = "Number" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

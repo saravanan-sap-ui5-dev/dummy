@@ -1,0 +1,84 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:u="sap.ui.unified"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Table id="customerTable" inset="false" items="{path:'items', length:9999999999}" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({items/0/count})" visible="{= ${items}.length>0}" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" type="Transparent" press="onPressCustomerCreate" />
+                    <ToolbarSeparator />
+                    <u:FileUploader  id="fileUploader" sameFilenameAllowed="true" tooltip="Bulk Upload" icon="sap-icon://upload" iconOnly="true" buttonOnly="true" visible="false" change="onPressBulkUpload" uploadComplete="handleUploadComplete"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://download" tooltip="{i18n>cnTemplate}" press="onPressTemplate" visible="false" enabled="true"/>
+                    <!-- <ToolbarSeparator /> -->
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton visible = "{visible/excelUploadDownload}" type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="handlePersoButtonPressed" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <noData>
+            <Text id="txt_noData" text="To start, set the relevant filters and choose &quot;Go&quot;."/>
+        </noData>
+        <columns>
+            <Column width="6rem">
+                <Text text="{i18n>cuId}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>cuName}" />
+            </Column>
+            <Column width="10rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>cuShortName}" />
+            </Column>
+            <Column width="6rem">
+                <Text text="{i18n>cuCountry}" />
+            </Column>
+            <Column width="6rem">
+                <Text text="{i18n>cuCity}" />
+            </Column>
+             <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedOn}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedOn}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>cuStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="{type}" press=".onListItemPress" visible="true">
+                <cells>
+                    <ObjectIdentifier title="{cardCode}" />
+                    <Text text="{cardName}" />
+                    <Text text="{shortName}" />
+                    <Text text="{country}" />
+                    <Text text="{city}" />
+                    <Text text="{createdBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'createDate'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{updatedBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'updateDate'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{valid}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

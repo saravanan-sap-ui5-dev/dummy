@@ -1,0 +1,56 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnAdd}" width="70px" press="onAddTrip" />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnRemove}" />
+                    <Button type="Transparent" text="Create Delivery Note" />
+                    <Button type="Transparent" text="Print Delivery Note" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="5em">
+                <Text text="ID" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Delivery Note" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Transporter" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Vehicle No" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="From Location" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="To Location" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Date" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press="onPressTrip">
+                <cells>
+                    <ObjectIdentifier title="{id}" />
+                    <Text text="{deliveryNote}" />
+                    <Text text="{transporter}" />
+                    <Text text="{vehicleNo}" />
+                    <Text text="{fromLoc}" />
+                    <Text text="{toLoc}" />
+                    <Text text="{date}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

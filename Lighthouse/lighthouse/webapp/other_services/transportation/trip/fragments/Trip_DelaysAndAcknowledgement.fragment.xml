@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Received By" />
+                <Input editable="{visible>/edit}" value="{receivedBy}" />
+                <Label text="Received Time" />
+                <DateTimePicker editable="{visible>/edit}" value="{receivedTime}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Emptied By" />
+                <Input editable="{visible>/edit}" value="{emtiedBy}" />
+                <Label text="Emptied Time" />
+                <DateTimePicker editable="{visible>/edit}" value="{emtiedTime}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Delay in Hours" />
+                <Input editable="{visible>/edit}" value="{delayInHours}"/>
+                <Label text="Charge (OMR) / Hr" />
+                <Input value="{chargeHour}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Acknowledged By" />
+                <Input editable="{visible>/edit}" value="{acknowledgedBy}"/>
+                <Label text="Signed At" />
+                <DateTimePicker editable="{visible>/edit}" value="{signedAt}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Remarks" />
+                <TextArea value="{remarks}" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+        <HBox width="auto">
+            <MessageStrip text="Free time: 20ft - 3 hours | 2 X 20ft OR 1 X 40ft - 4.5 hours" type="Information" showIcon="true" class="sapUiMediumMarginTop"/>
+        </HBox>
+    </VBox>
+</core:FragmentDefinition>

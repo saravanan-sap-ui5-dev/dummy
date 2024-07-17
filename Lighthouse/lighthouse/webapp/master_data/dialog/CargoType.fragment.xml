@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="Cargo Type" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.master_data.cargo_type.Ca_FilterBar" type="XML"  binding="{/advancedFilter}"/>
+        <ScrollContainer vertical="true" height="80%">
+            <core:Fragment fragmentName="com.lighthouse.master_data.cargo_type.Ca_Table" type="XML" binding="{/masterScreenTable}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Select" press="onPressCargoTypeEdit"/>
+                <Button type="Ghost" text="Cancel" press="onCloseCargoTypeDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

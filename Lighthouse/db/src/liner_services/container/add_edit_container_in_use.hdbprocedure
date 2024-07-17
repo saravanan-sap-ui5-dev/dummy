@@ -1,0 +1,301 @@
+PROCEDURE "ADD_EDIT_CONTAINER_IN_USE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) AS 
+BEGIN
+	DECLARE ID BIGINT := 0;
+	DECLARE containerNumber NVARCHAR(256);
+    DECLARE soc INTEGER;
+    DECLARE size INTEGER;
+    DECLARE type BIGINT;
+    DECLARE sealNumber BIGINT;
+    DECLARE operator BIGINT;
+    DECLARE tempratureFrom NVARCHAR(256);
+    DECLARE tempratureTo NVARCHAR(256);
+    DECLARE onHold INTEGER;
+    DECLARE damages INTEGER;
+    
+    DECLARE remarks NVARCHAR(256);
+    DECLARE dischargeDate DATETIME;
+    DECLARE loadDate DATETIME;
+    DECLARE fullOutDate DATETIME;
+    DECLARE emptyInDate DATETIME;
+    DECLARE emptyOutDate DATETIME;
+    DECLARE fullInDate DATETIME;
+    DECLARE lclStatus BIGINT;
+    DECLARE dueDate DATETIME;
+    DECLARE overHeight BIGINT;
+
+    DECLARE overWidthLeft BIGINT;
+    DECLARE overWidthRight BIGINT;
+    DECLARE overLengthFront BIGINT;
+    DECLARE overLengthAfter BIGINT;
+
+    DECLARE createdBy NVARCHAR(256);
+    DECLARE createdOn DATE;
+    DECLARE updatedBy NVARCHAR(256);
+    DECLARE updatedOn DATE;
+    DECLARE status INTEGER;
+    
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+    DECLARE i INTEGER;
+
+    DECLARE cargoId BIGINT;
+    DECLARE containerID BIGINT;
+    DECLARE blNumber BIGINT;
+    DECLARE vgm INTEGER;
+    DECLARE cargoTypeCode NVARCHAR(256);
+    DECLARE cargoType NVARCHAR(256);
+    DECLARE projectionTypeCode BIGINT;
+    DECLARE projectionType BIGINT;
+    DECLARE cargoWeight BIGINT;
+    DECLARE tareWeight BIGINT;
+    DECLARE cbm BIGINT;
+    DECLARE packages BIGINT;
+
+    DECLARE packageCode BIGINT;
+    DECLARE packageType NVARCHAR(256);
+    DECLARE customsCode NVARCHAR(256);
+    DECLARE customsType NVARCHAR(256);
+    DECLARE hsCode DOUBLE;
+    DECLARE hsType NVARCHAR(256);
+    DECLARE imco NVARCHAR(256);
+    DECLARE oog INTEGER;
+    DECLARE fclOrLcl INTEGER;
+    DECLARE part INTEGER;
+    DECLARE marksAndNumbers NVARCHAR(256);
+    DECLARE cargoStatus INTEGER;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE empty_name CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR empty_name
+    BEGIN
+        EX_MESSAGE := ' ' || ::SQL_ERROR_MESSAGE;
+        DROP TABLE #dummy_container_in_use;
+    END;
+
+    CREATE LOCAL TEMPORARY TABLE #dummy_container_in_use (id INT);
+
+    temp_container = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "containerNumber" NVARCHAR(256) PATH '$.containerNumber',
+                "soc" INTEGER PATH '$.soc',
+                "size" INTEGER PATH '$.size',
+                "type" BIGINT PATH '$.type',
+                "sealNumber" BIGINT PATH '$.sealNumber',
+                "operator" BIGINT PATH '$.operator',
+                "tempratureFrom" NVARCHAR(256) PATH '$.tempratureFrom',
+                "tempratureTo" NVARCHAR(256)  PATH '$.tempratureTo',
+                "onHold" INTEGER  PATH '$.onHold',
+                "damages" INTEGER PATH '$.damages',
+                "remarks" NVARCHAR(256) PATH '$.remarks',
+                "dischargeDate" DATETIME PATH '$.dischargeDate',
+                "loadDate" DATETIME PATH '$.loadDate',
+                "fullOutDate" DATETIME PATH '$.fullOutDate',
+                "emptyInDate" DATETIME PATH '$.emptyInDate',
+                "emptyOutDate" DATETIME PATH '$.emptyOutDate',
+                "fullInDate" DATETIME PATH '$.fullInDate',
+                "lclStatus" BIGINT PATH '$.lclStatus',
+                "dueDate" DATETIME PATH '$.dueDate',
+                "overHeight" BIGINT PATH '$.overHeight',
+
+                "overWidthLeft" BIGINT PATH '$.overWidthLeft',
+                "overWidthRight" BIGINT PATH '$.overWidthRight',
+                "overLengthFront" BIGINT PATH '$.overLengthFront',
+                "overLengthAfter" BIGINT PATH '$.overLengthAfter',
+
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_container) do
+            id = :temp_container."id"[:i];
+            containerNumber = :temp_container."containerNumber"[:i];
+            soc = :temp_container."soc"[:i];
+            size = :temp_container."size"[:i];
+            type = :temp_container."type"[:i];
+            sealNumber = :temp_container."sealNumber"[:i];
+            operator = :temp_container."operator"[:i];
+            tempratureFrom = :temp_container."tempratureFrom"[:i];
+            tempratureTo = :temp_container."tempratureTo"[:i];
+            onHold = :temp_container."onHold"[:i];
+            damages = :temp_container."damages"[:i];
+
+            remarks = :temp_container."remarks"[:i];
+            dischargeDate = :temp_container."dischargeDate"[:i];
+            loadDate = :temp_container."loadDate"[:i];
+            fullOutDate = :temp_container."fullOutDate"[:i];
+            emptyInDate = :temp_container."emptyInDate"[:i];
+            emptyOutDate = :temp_container."emptyOutDate"[:i];
+            fullInDate = :temp_container."fullInDate"[:i];
+            lclStatus = :temp_container."lclStatus"[:i];
+            dueDate = :temp_container."dueDate"[:i];
+            overHeight = :temp_container."overHeight"[:i];
+
+            overWidthLeft = :temp_container."overWidthLeft"[:i];
+            overWidthRight = :temp_container."overWidthRight"[:i];
+            overLengthFront = :temp_container."overLengthFront"[:i];
+            overLengthAfter = :temp_container."overLengthAfter"[:i];
+
+            createdBy = :temp_container."createdBy"[:i];
+            createdOn = :temp_container."createdOn"[:i];
+            updatedBy = :temp_container."updatedBy"[:i];
+            updatedOn = :temp_container."updatedOn"[:i];
+            status = :temp_container."status"[:i];
+            
+            IF id > 0 THEN
+                -- Record exists in "container_in_use", perform an update
+                UPDATE "container_in_use"
+                SET
+                    "containerNumber" = :containerNumber,
+                    "soc" = :soc,
+                    "size" = :size,
+                    "type" = :type,
+                    "sealNumber" = :sealNumber,
+                    "operator" = :operator,
+                    "tempratureFrom" = :tempratureFrom,
+                    "tempratureTo" = :tempratureTo,
+                    "onHold" = :onHold,
+                    "damages" = :damages,
+                
+                    "remarks" = :remarks,
+                    "dischargeDate" = :dischargeDate,
+                    "loadDate" = :loadDate,
+                    "fullOutDate" = :fullOutDate,
+                    "emptyInDate" = :emptyInDate,
+                    "emptyOutDate" = :emptyOutDate,
+                    "fullInDate" = :fullInDate,
+                    "lclStatus" = :lclStatus,
+                    "dueDate" = :dueDate,
+                    "overHeight" = :overHeight,
+                
+                    "overWidthLeft" = :overWidthLeft,
+                    "overWidthRight" = :overWidthRight,
+                    "overLengthFront" = :overLengthFront,
+                    "overLengthAfter" = :overLengthAfter,
+                
+                    "updatedBy" = :updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = :status
+                WHERE
+                    "id" = :ID;
+                    updatedCount = updatedCount + 1;
+                    --INSERT INTO #dummy_container_in_use (id) VALUES (:ID);
+            ELSE
+                -- Record doesn't exist in "container_in_use", perform an insert
+                    INSERT INTO "container_in_use" ("containerNumber","soc","size","type","sealNumber","operator","tempratureFrom","tempratureTo","onHold","damages","remarks","dischargeDate","loadDate","fullOutDate","emptyInDate","emptyOutDate","fullInDate","lclStatus","dueDate","overHeight","overWidthLeft","overWidthRight","overLengthFront","overLengthAfter", "createdBy", "createdOn","status") 
+                    VALUES (containerNumber,soc,size,type,sealNumber,operator,tempratureFrom,tempratureTo,onHold,damages,remarks,dischargeDate,loadDate,fullOutDate,emptyInDate,emptyOutDate,fullInDate,lclStatus,dueDate,overHeight,overWidthLeft,overWidthRight,overLengthFront,overLengthAfter, createdBy, CURRENT_DATE, status);
+                    
+                SELECT current_identity_value() into ID from dummy;
+                insertedCount = insertedCount + 1;
+
+                --INSERT INTO #dummy_container_in_use (id) VALUES (:ID);
+            END IF;
+        END FOR;
+
+        temp_container_cargo =  SELECT JT.*
+        FROM JSON_TABLE(
+            TO_CLOB(:IN_PARAM),
+            '$.cargoDetails[*]' COLUMNS(
+                "id" BIGINT PATH '$.id',
+
+                "blNumber" BIGINT PATH '$.blNumber',
+                "containerID" BIGINT PATH '$.containerID',
+                "vgm" INTEGER PATH '$.vgm',
+                "cargoTypeCode" NVARCHAR(256) PATH '$.cargoTypeCode',
+                "cargoType" NVARCHAR(256) PATH '$.cargoType',
+                "projectionTypeCode" BIGINT PATH '$.projectionTypeCode',
+                "projectionType" BIGINT PATH '$.projectionType',
+                "cargoWeight" BIGINT PATH '$.cargoWeight',
+                "tareWeight" BIGINT PATH '$.tareWeight',
+                "cbm" BIGINT PATH '$.cbm',
+                "packages" BIGINT PATH '$.packages',
+
+                "packageCode" BIGINT PATH '$.packageCode',
+                "packageType" NVARCHAR(256) PATH '$.packageType',
+                "customsCode" NVARCHAR(256) PATH '$.customsCode',
+                "customsType" NVARCHAR(256) PATH '$.customsType',
+                "hsCode" DOUBLE PATH '$.hsCode',
+                "hsType" NVARCHAR(256) PATH '$.hsType',
+                "imco" NVARCHAR(256) PATH '$.imco',
+                "oog" INTEGER PATH '$.oog',
+                "fclOrLcl" INTEGER PATH '$.fclOrLcl',
+                "part" INTEGER PATH '$.part',
+                
+                "marksAndNumbers" NVARCHAR(256) PATH '$.marksAndNumbers',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+
+        FOR i in 1..RECORD_COUNT(:temp_container_cargo) do
+            cargoId = :temp_container_cargo."id"[:i];
+            blNumber = :temp_container_cargo."blNumber"[:i];
+            containerID = :temp_container_cargo."containerID"[:i];
+            vgm = :temp_container_cargo."vgm"[:i];
+            cargoTypeCode = :temp_container_cargo."cargoTypeCode"[:i];
+            cargoType = :temp_container_cargo."cargoType"[:i];
+            projectionTypeCode = :temp_container_cargo."projectionTypeCode"[:i];
+            projectionType = :temp_container_cargo."projectionType"[:i];
+            cargoWeight = :temp_container_cargo."cargoWeight"[:i];
+            tareWeight = :temp_container_cargo."tareWeight"[:i];
+            cbm = :temp_container_cargo."cbm"[:i];
+
+            packages = :temp_container_cargo."packages"[:i];
+            packageCode = :temp_container_cargo."packageCode"[:i];
+            packageType = :temp_container_cargo."packageType"[:i];
+            customsCode = :temp_container_cargo."customsCode"[:i];
+            customsType = :temp_container_cargo."customsType"[:i];
+            hsCode = :temp_container_cargo."hsCode"[:i];
+            hsType = :temp_container_cargo."hsType"[:i];
+            imco = :temp_container_cargo."imco"[:i];
+            oog = :temp_container_cargo."oog"[:i];
+            fclOrLcl = :temp_container_cargo."fclOrLcl"[:i];
+
+            part = :temp_container_cargo."part"[:i];
+            marksAndNumbers = :temp_container_cargo."marksAndNumbers"[:i];
+            cargoStatus = :temp_container_cargo."status"[:i];
+
+            IF cargoId > 0 AND containerID > 0 THEN
+                -- Record exists in "container_cargo", perform an update
+                UPDATE "container_cargo"
+                SET 
+                    "blNumber" = :blNumber,
+                    "containerID" = :containerID,
+                    "vgm" = :vgm,
+                    "cargoTypeCode" = :cargoTypeCode,
+                    "cargoType" = :cargoType,
+                    "projectionTypeCode" = :projectionTypeCode,
+                    "projectionType" = :projectionType,
+                    "cargoWeight" = :cargoWeight,
+                    "tareWeight" = :tareWeight,
+                    "cbm" = :cbm,
+                    "packages" = :packages,
+                    "packageCode" = :packageCode,
+                    "packageType" = :packageType,
+                    "customsCode" = :customsCode,
+                    "customsType" = :customsType,
+                    "hsCode" = :hsCode,
+                    "hsType" = :hsType,
+                    "imco" = :imco,
+                    "oog" = :oog,
+                    "fclOrLcl" = :fclOrLcl,
+                    "part" = :part,
+                    "marksAndNumbers" = :marksAndNumbers,
+                    "status" = :cargoStatus
+                WHERE "id" = :cargoId;
+                
+            ELSE
+                -- Record doesn't exist in "container_cargo", perform an insert
+                INSERT INTO "container_cargo" ("blNumber","containerID","vgm","cargoTypeCode","cargoType","projectionTypeCode","projectionType","cargoWeight","tareWeight","cbm","packages","packageCode","packageType","customsCode","customsType","hsCode","hsType","imco","oog","fclOrLcl","part","marksAndNumbers","status") 
+                                       VALUES (blNumber,ID,vgm,cargoTypeCode,cargoType,projectionTypeCode,projectionType,cargoWeight,tareWeight,cbm,packages,packageCode,packageType,customsCode,customsType,hsCode,hsType,imco,oog,fclOrLcl,part,marksAndNumbers, cargoStatus);
+
+            END IF;
+        END FOR;
+            SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",  NULL "containerTypeName",* FROM "container_in_use" WHERE "id" = :id;
+
+    DROP TABLE #dummy_container_in_use;
+END;

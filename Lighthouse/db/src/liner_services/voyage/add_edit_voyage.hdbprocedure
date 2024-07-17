@@ -1,0 +1,185 @@
+PROCEDURE "ADD_EDIT_VOYAGE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) AS 
+BEGIN
+	DECLARE  ID BIGINT := 0;
+	DECLARE voyageType BIGINT;
+    DECLARE callPort BIGINT;
+    DECLARE accountNumber BIGINT;
+    DECLARE vesselID BIGINT;
+    DECLARE vesselName NVARCHAR(256);
+    DECLARE voyageIn BIGINT;
+    DECLARE voyageOut BIGINT;
+    DECLARE vesselETA DATETIME;
+    DECLARE vesselETS DATETIME;
+    DECLARE lastPort BIGINT;
+    DECLARE nextPort BIGINT;
+    DECLARE vesselRotationNumber BIGINT;
+    DECLARE mrnNumber BIGINT;
+    DECLARE service BIGINT;
+    DECLARE operator BIGINT;
+    DECLARE dpIn BIGINT;
+    DECLARE dpOut BIGINT;
+    DECLARE masterName NVARCHAR(256);
+    DECLARE nationality NVARCHAR(256);
+    DECLARE carNumber BIGINT;
+    DECLARE manifestNumber BIGINT;
+    DECLARE createdBy NVARCHAR(256);
+    DECLARE createdOn DATE;
+    DECLARE updatedBy NVARCHAR(256);
+    DECLARE updatedOn DATE;
+    DECLARE status INTEGER;
+    
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+    DECLARE i INTEGER;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+
+
+    -- Set up an exception handler for the custom exception
+    DECLARE empty_name CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR empty_name
+    BEGIN
+        EX_MESSAGE := ' ' || ::SQL_ERROR_MESSAGE;
+        -- DROP TABLE #temp_hirerchy1;
+    END;
+    SELECT JSON_VALUE(:IN_PARAM, '$.bulkPost') INTO bulk_post FROM DUMMY;
+    CREATE LOCAL TEMPORARY TABLE #dummy_voyage (id INT);
+
+    temp_voyage = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "voyageType" BIGINT PATH '$.voyageType',
+                "callPort" BIGINT PATH '$.callPort',
+                "accountNumber" BIGINT PATH '$.accountNumber',
+                "vesselID" BIGINT PATH '$.vesselID',
+                "vesselName" NVARCHAR(256) PATH '$.vesselName',
+                "voyageIn" BIGINT PATH '$.voyageIn',
+                "voyageOut" BIGINT PATH '$.voyageOut',
+                "vesselETA" DATETIME PATH '$.vesselETA',
+                "vesselETS" DATETIME PATH '$.vesselETS',
+                "lastPort" BIGINT PATH '$.lastPort',
+                "nextPort" BIGINT PATH '$.nextPort',
+                "vesselRotationNumber" BIGINT PATH '$.vesselRotationNumber',
+                "mrnNumber" BIGINT PATH '$.mrnNumber',
+                "service" BIGINT PATH '$.service',
+                "operator" BIGINT PATH '$.operator',
+                "dpIn" BIGINT PATH '$.dpIn',
+                "dpOut" BIGINT PATH '$.dpOut',
+                "masterName" NVARCHAR(256) PATH '$.masterName',
+                "nationality" NVARCHAR(256) PATH '$.nationality',
+                "carNumber" BIGINT PATH '$.carNumber',
+                "manifestNumber" BIGINT PATH '$.manifestNumber',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_voyage) do
+            id = :temp_voyage."id"[:i];
+            voyageType = :temp_voyage."voyageType"[:i];
+            callPort = :temp_voyage."callPort"[:i];
+            accountNumber = :temp_voyage."accountNumber"[:i];
+            vesselID = :temp_voyage."vesselID"[:i];
+            vesselName = :temp_voyage."vesselName"[:i];
+            voyageIn = :temp_voyage."voyageIn"[:i];
+            voyageOut = :temp_voyage."voyageOut"[:i];
+            vesselETA = :temp_voyage."vesselETA"[:i];
+            vesselETS = :temp_voyage."vesselETS"[:i];
+            lastPort = :temp_voyage."lastPort"[:i];
+            nextPort = :temp_voyage."nextPort"[:i];
+            vesselRotationNumber = :temp_voyage."vesselRotationNumber"[:i];
+            mrnNumber = :temp_voyage."mrnNumber"[:i];
+            service = :temp_voyage."service"[:i];
+            operator = :temp_voyage."operator"[:i];
+            dpIn = :temp_voyage."dpIn"[:i];
+            dpOut = :temp_voyage."dpOut"[:i];
+            masterName = :temp_voyage."masterName"[:i];
+            nationality = :temp_voyage."nationality"[:i];
+            carNumber = :temp_voyage."carNumber"[:i];
+            manifestNumber = :temp_voyage."manifestNumber"[:i];
+            createdBy = :temp_voyage."createdBy"[:i];
+            createdOn = CURRENT_DATE;
+            updatedBy = null;
+            updatedOn = null;
+            status = :temp_voyage."status"[:i];
+            bulk_post = :temp_voyage."bulkPost"[:i];
+            
+            IF id > 0 THEN
+                -- Record exists in "voyage", perform an update
+                UPDATE "voyage"
+                SET
+					"voyageType"= :voyageType,
+					"callPort"= :callPort,
+					"accountNumber"= :accountNumber,
+					"vesselID"= :vesselID,
+					"vesselName"= :vesselName,
+					"voyageIn"= :voyageIn,
+					"voyageOut"= :voyageOut,
+					"vesselETA"= :vesselETA,
+					"vesselETS"= :vesselETS,
+					"lastPort"= :lastPort,
+					"nextPort"= :nextPort,
+					"vesselRotationNumber"= :vesselRotationNumber,
+					"mrnNumber"= :mrnNumber,
+					"service"= :service,
+					"operator"= :operator,
+					"dpIn"= :dpIn,
+					"dpOut"= :dpOut,
+					"masterName"= :masterName,
+					"nationality"= :nationality,
+					"carNumber"= :carNumber,
+					"manifestNumber"= :manifestNumber,
+					"updatedBy"= :updatedBy,
+					"updatedOn"= CURRENT_DATE,
+					"status"= :status
+                WHERE
+                "id" = :ID;
+                updatedCount = updatedCount + 1;
+                INSERT INTO #dummy_voyage (id) VALUES (:ID);
+            ELSE
+                -- Record doesn't exist in "voyage", perform an insert
+                INSERT INTO "voyage" ("voyageType","callPort","accountNumber","vesselID","vesselName","voyageIn","voyageOut","vesselETA","vesselETS","lastPort","nextPort","vesselRotationNumber","mrnNumber","service","operator","dpIn","dpOut","masterName","nationality","carNumber","manifestNumber","createdBy","createdOn","status") VALUES (voyageType,callPort,accountNumber,vesselID,vesselName,voyageIn,voyageOut,vesselETA,vesselETS,lastPort,nextPort,vesselRotationNumber,mrnNumber,service,operator,dpIn,dpOut,masterName,nationality,carNumber,manifestNumber,createdBy,CURRENT_DATE,status);
+                SELECT current_identity_value() into ID from dummy;
+                insertedCount = insertedCount + 1;
+                INSERT INTO #dummy_voyage (id) VALUES (:ID);
+            END IF;
+        END FOR;
+    
+    SELECT  
+    0 "recordCount",:insertedCount "inserted", :updatedCount "updated",
+    dv.id AS "id",
+            v."voyageType",
+            v."callPort",
+            v."accountNumber",
+            v."vesselID",
+            v."vesselName",
+            v."voyageIn",
+            v."voyageOut",
+            v."vesselETA",
+            v."vesselETS",
+            v."lastPort",
+            v."nextPort",
+            v."vesselRotationNumber",
+            v."mrnNumber",
+            v."service",
+            v."operator",
+            v."dpIn",
+            v."dpOut",
+            v."masterName",
+            v."nationality",
+            v."carNumber",
+            v."manifestNumber",
+            v."createdBy",
+            v."createdOn",
+            v."updatedBy",
+            v."updatedOn",
+            v."status"
+    FROM #dummy_voyage dv
+    JOIN "voyage" v ON dv.id = v."id";
+    
+    DROP TABLE #dummy_voyage;
+END;

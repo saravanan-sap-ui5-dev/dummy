@@ -1,0 +1,72 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+
+    <Table inset="false" items="{items}" visible="{containerView}" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>voTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" visible="{create}" text="{i18n>cnBtnCreate}" width="70px" press="onNavContainerCreate" />
+                    <Button type="Transparent" visible="{add}" enabled="{visible>/edit}" text="{i18n>cnBtnAdd}" width="70px" press="onAddContainer" />
+                    <Button type="Transparent" visible="{remove}" enabled="{visible>/edit}" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voContainerNo}" />
+            </Column>
+            <Column width="10rem">
+                <Text text="{i18n>voBLNo}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voSize}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>voType}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>voOperator}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voOnHold}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voSoc}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voMovement}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>voStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press="onContainerDetails" visible="true">
+                <cells>
+                    <ObjectIdentifier title="{containerNo}" />
+                    <Text text="{blno}" />
+                    <Text text="{size}" />
+                    <Text text="{type}" />
+                    <Text text="{operator}" />
+                    <Text text="{onHold}" />
+                    <Text text="{soc}" />
+                    <Text text="{movement}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

@@ -1,0 +1,137 @@
+PROCEDURE "ADD_EDIT_CONTAINERS" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE ID BIGINT := 0;
+    DECLARE con_id BIGINT :=0;
+    DECLARE con_containerNo NVARCHAR(256);
+    DECLARE con_type BIGINT;
+    DECLARE con_soc INTEGER;
+    DECLARE con_size INTEGER;
+    DECLARE con_ownedBy NVARCHAR(256);
+    DECLARE con_ownedByName NVARCHAR(256);
+    DECLARE con_createdBy NVARCHAR(256);
+    DECLARE con_createdOn DATE;
+    DECLARE con_updatedBy NVARCHAR(256);
+    DECLARE con_updatedOn DATE;
+    DECLARE con_status INTEGER;
+   
+    
+        -- Other variable declarations...
+    DECLARE i INTEGER;
+    DECLARE QUERY NVARCHAR(2000) :='';
+    DECLARE exContainerNo INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'Container Number already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+    
+    temp_containers = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "containerNo" NVARCHAR(256) PATH '$.containerNo',
+                "type" BIGINT PATH '$.type',
+                "soc" INTEGER PATH '$.soc',
+                "size" INTEGER PATH '$.size',
+                "ownedBy" NVARCHAR(256) PATH '$.ownedBy',
+                "ownedByName" NVARCHAR(256) PATH '$.ownedByName',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+
+          FOR i in 1..RECORD_COUNT(:temp_containers) do
+            con_id = :temp_containers."id"[:i];
+            con_containerNo = :temp_containers."containerNo"[:i];
+            con_type = :temp_containers."type"[:i];
+            con_soc = :temp_containers."soc"[:i];
+            con_size = :temp_containers."size"[:i];
+            con_ownedBy = :temp_containers."ownedBy"[:i];
+            con_ownedByName = :temp_containers."ownedByName"[:i];
+            con_createdBy = :temp_containers."createdBy"[:i];
+            con_createdOn = CURRENT_DATE;
+            con_updatedBy = null;
+            con_updatedOn = null;
+            con_status = :temp_containers."status"[:i];
+            bulk_post = :temp_containers."bulkPost"[:i];
+
+            IF con_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "containers" WHERE "containerNo" = ?' INTO exContainerNo USING :con_containerNo;
+                IF exContainerNo > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "containers" WHERE "containerNo" = ?' INTO exId USING :con_containerNo;
+                END IF;
+                IF bulk_post = 'false' AND exContainerNo > 0 AND exId != con_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "containers" WHERE "containerNo" = ?' INTO exContainerNo USING :con_containerNo;
+                IF bulk_post = 'false' AND exContainerNo > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+
+            IF con_id > 0  OR exContainerNo > 0 THEN
+                -- Record exists in "containers", perform an update
+            IF con_id > 0 THEN
+                UPDATE "containers"
+                SET
+            	"containerNo" = con_containerNo,
+	            "type" = con_type,
+	            "soc" = con_soc,
+	            "size" = con_size,
+                "ownedBy" = con_ownedBy,
+                "ownedByName" = con_ownedByName,
+	            "updatedBy" = con_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = con_status
+                WHERE
+                "id" = con_id;
+            END IF;
+             IF exContainerNo > 0 THEN
+                UPDATE "containers"
+                SET
+            	"containerNo" = con_containerNo,
+	            "type" = con_type,
+	            "soc" = con_soc,
+	            "size" = con_size,
+                "ownedBy" = con_ownedBy,
+                "ownedByName" = con_ownedByName,
+	            "updatedBy" = con_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = con_status
+                WHERE
+                "containerNo" = con_containerNo;
+            END IF;
+               updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "containers", perform an insert
+                INSERT INTO "containers" ("containerNo","type","soc", "size","ownedBy","ownedByName","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (con_containerNo,con_type,con_soc, con_size,con_ownedBy, con_ownedByName,con_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,   
+	    	    	con_status);
+                SELECT current_identity_value() into con_id from dummy;
+                 insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+         IF bulk_post = 'true' THEN
+
+        SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",*,null "containerTypeName" FROM "containers" WHERE "containerNo" = :con_containerNo;
+		ELSE
+            SELECT 0 "recordCount", 0 "inserted", 0 "updated",*,null "containerTypeName" FROM "containers" WHERE "id" = :con_id;
+        END IF;
+END

@@ -1,0 +1,78 @@
+<mvc:View controllerName="com.lighthouse.admin.application_config.ApplicationConfig"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:u="sap.ui.unified"
+    xmlns:tnt="sap.tnt"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="pageAppConfig" useIconTabBar="true" showTitleInHeaderContent="true" showHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" showFooter="{= !${visible>/view}}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="Application Configuration" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="Application Configuration" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:actions>
+                    <Button id="btnEdit" visible="{= !${visible>/create}}" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" width="70px"/>
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="Attachment Folder Configuration">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="Attachment Folder Configuration">
+                        <VBox class="sapUiSmallMargin">
+                            <form:SimpleForm id="sfConfig1" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                                <form:content>
+                                    <Label required="true" text="Attachment Folder Path"></Label>
+                                    <Input value="{/attachment_folder_path}" editable="{visible>/edit}"/>
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                                <form:content>
+                                    <Label/>
+                                    <Text class="textInfo" text="Ex: D:/[Folder1]/[Folder2]/..."/>
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                                <form:content>
+                                    <Label required="true" text="Archive Folder Path"></Label>
+                                    <Input value="{/archive_folder_path}" editable="{visible>/edit}"/>
+                                    <Label required="true" text="Archive Period (in years)"></Label>
+                                    <Input value="{/archive_period}" type="Number" editable="{visible>/edit}" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                                <form:content>
+                                    <Label/>
+                                    <Text class="textInfo" text="Ex: D:/[Folder1]/[Folder2]/..."/>
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnAppConfigError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" press="onSave" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

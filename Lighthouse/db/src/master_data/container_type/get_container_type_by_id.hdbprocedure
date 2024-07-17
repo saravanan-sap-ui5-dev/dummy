@@ -1,0 +1,20 @@
+PROCEDURE "GET_CONTAINER_TYPE_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN 
+  IF(:ID > 0) THEN
+  SELECT 
+    "id",
+    "name",
+    "code",
+    "description",
+    "createdBy",
+    "createdOn",
+    "updatedBy",
+    "updatedOn",
+    "status",
+    0 AS "recordCount",
+    0 "inserted",
+    0 "updated"
+  FROM "container_type"
+  WHERE "id" = :ID;
+END IF;
+END

@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    xmlns:core="sap.ui.core"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog title="Upload" contentWidth="30%">
+        <content>
+            <form:SimpleForm id="sf_attachment" editable="true" layout="ColumnLayout">
+                <form:content>
+                    <Label required="true" text="File" />
+                    <u:FileUploader id="fileUploader" width="100%" enabled="{= ${attachmentType>/key}!=='1'}" visible="{= ${attachmentType>/key}!=='1'}" change="onFileChange" uploadComplete="handleUploadComplete" name="myFileUpload" iconOnly="true" icon="sap-icon://attachment" tooltip="Upload your file to the local server" field:type="FileUploader" field:validate="required"/>
+                    <Label required="true" text="URL" />
+                    <Input enabled="{= ${attachmentType>/key}==='1'}" visible="{= ${attachmentType>/key}==='1'}" value="{newAttachmentMdl>/url}" liveChange="onChangeUrl" field:type="Input" field:validate="required"/>
+                    <Label required="true" text="Name" />
+                    <Input value="{newAttachmentMdl>/name}" field:type="Input" field:validate="required"/>
+                    <Label text="Description" />
+                    <Input value="{newAttachmentMdl>/description}"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button text="Submit" type="Emphasized" press=".onUploadAttachment" ariaHasPopup="Dialog" />
+                    <Button text="Cancel" type="Ghost" press=".onCloseAttachmentDialog" ariaHasPopup="Dialog" />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

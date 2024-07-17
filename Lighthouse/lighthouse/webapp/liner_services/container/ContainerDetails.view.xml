@@ -1,0 +1,132 @@
+<mvc:View controllerName="com.lighthouse.liner_services.container.ContainerDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_ContainerDetails" useIconTabBar="true" showTitleInHeaderContent="true" showFooter="{= !${visible>/view} || !!${errors>/}.length}" showHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{/general/containerNumber}" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{/general/containerNumber}" />
+                </uxap:snappedHeading>
+                <uxap:snappedTitleOnMobile>
+                    <Title text="{/general/containerNumber}" />
+                </uxap:snappedTitleOnMobile>
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>coId}" text="{/item}" visible="{= !${visible>/create}}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>coId}" text="{/item}" visible="{= !${visible>/create}}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" />
+                </uxap:actions>
+
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cohcBLNo}" text="HLCUALY220338926" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcShipmentNo}" text="39668836" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcShippingLine}" text="Hapag Lloyd" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cohcVessel}" text="Northern Dexterity/0009" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcVesselETA}" text="01/01/2023" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcVesselETS}" text="03/01/2023" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cohcPol}" text="Jebel Ali (JEA) " class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcPod}" text="Port of Sohar (SOH)" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcCargo}" text=" Food stuff" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cohcSizeAndType}" text="{/general/size_type}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcStatus}" text="{/general/statusText}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cohcExtraFreeDays}" text="6" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>coGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>coGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_General" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>coContainerMovementSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_ContainerMovement" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>coCargoDetailsSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_CargoDetails" type="XML" binding="{/cargoDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>coProjectionsSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_Projections" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>coChargesSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_Charges" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnAttachmentsSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <core:Fragment fragmentName="com.lighthouse.init.fragment.attachment.Attachment" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false" visible="{=!${visible>/create}}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{sectionName}" />
+                                        <Text text="{slNo}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnContainerInUseDetailErr" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" width="70px" press="postContainersInUse" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" width="70px" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

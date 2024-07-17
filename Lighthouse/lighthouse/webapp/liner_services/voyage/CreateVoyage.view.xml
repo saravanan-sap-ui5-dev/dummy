@@ -1,0 +1,126 @@
+<mvc:View controllerName="com.lighthouse.liner_services.voyage.CreateVoyage"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <uxap:ObjectPageLayout id="page_CreateVoyages" useIconTabBar="true" showTitleInHeaderContent="true" showFooter="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{i18n>voCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="{i18n>voCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:actions>
+                    <Button type="Ghost" text="{i18n>voBtnUploadManifest}" press="onUploadManifest" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_General" type="XML" binding="{/general}" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voOperationalDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_OperationalDetails" type="XML" binding="{/general}" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voBayanDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_BayanDetails" type="XML" binding="{/general}" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voImportBLsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="End" width="100%">
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Import" type="XML" binding="{/imports}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voExportBLsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="End" width="100%">
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Export" type="XML" binding="{/exports}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voTransshipmentSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>voDischargeDetailsSection}">
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton id="sbtnDischarge" selectedKey="{visible>/dischargeKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>voBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>voContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <Panel>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Import" type="XML" binding="{/transshipmentImport}"/>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Container" type="XML" binding="{/dischargeContainers}"/>
+                            </Panel>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>voLoadDetailsSection}">
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton id="sbtnLoad" selectedKey="{visible>/loadKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>voBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>voContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <Panel>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Export" type="XML" binding="{/transshipmentExport}"/>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Container" type="XML" binding="{/loadContainers}"/>
+                            </Panel>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voAttachmentSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.init.fragment.attachment.Attachment" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnCVoyageError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="Error" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" press="postVoyages" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

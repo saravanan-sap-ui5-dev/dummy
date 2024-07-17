@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox>
+            <form:SimpleForm id="veForm" editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4" singleContainerFullSize="true" class="sapUiSmallMarginTop">
+                <form:content>
+                    <!--         <Label text="Vessel Code" />
+                    <Input/> -->
+                    <Label text="{i18n>veVesselName}" required="true" />
+                    <Input value="{name}" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                    <Label text="{i18n>veShippingLine}" />
+                    <ComboBox id="cbShippingLineGen" items="{/shippingLineCollection}" selectedKey="{shippingLineId}" editable="{visible>/edit}">
+                        <core:Item key="{cardCode}" text="{cardName}"/>
+                    </ComboBox>
+                    <Label text="{i18n>veCallSign}" />
+                    <Input value="{callSign}" type="Number" editable="{visible>/edit}"/>
+                    <Label text="{i18n>veIMONumber}" required="true" />
+                    <Input value="{imo}" type="Number" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                    <Label text="{i18n>veStatus}" />
+                    <Select items="{masterDataMdl>/status}" editable="{visible>/edit}" selectedKey="{status}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </Select>
+                    <Label text="{i18n>veNationality}" />
+                    <Input value="{nationality}" editable="{visible>/edit}"/>
+
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+
+</core:FragmentDefinition>

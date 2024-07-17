@@ -1,0 +1,10 @@
+<ActionSheet id="actionSheet"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" showCancelButton="true" placement="Bottom">
+    <Button text="{i18n>imABtnArrivalNotice}" />
+    <Button text="{i18n>imABtnDeliveryOrder}" />
+    <Button text="{i18n>imABtnOutstanding}" />
+    <Button text="{i18n>imABtnDemurrageCollection}" />
+    <Button text="{i18n>imABtnDetentionCollection}" />
+    <Button text="{i18n>imABtnDocumentation}" />
+</ActionSheet>

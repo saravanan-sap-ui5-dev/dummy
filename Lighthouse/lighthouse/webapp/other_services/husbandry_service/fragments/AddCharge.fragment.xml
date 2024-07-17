@@ -1,0 +1,109 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput">
+    <Dialog title="{i18n>excDialogTitle}" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <uxap:ObjectPageLayout showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+            <uxap:sections>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>excGeneralSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="Charge Code" />
+                                    <Input value="{ExportsMdl>/chargeCode}" showValueHelp="true" />
+                                    <Label text="Unit Price" />
+                                    <Input value="{ExportsMdl>/unitPrice}" />
+                                    <Label text="Amount" />
+                                    <Input value="{ExportsMdl>/amount}"/>
+                                    <Label text="Description" />
+                                    <TextArea />
+                                    <Label text="Charge Name" />
+                                    <Input value="{ExportsMdl>/chargerName}" editable="false" />
+                                    <Label text="No of Units" />
+                                    <Input value="{ExportsMdl>/noOfUnits}" />
+                                    <Label text="Cost" />
+                                    <Input value="{ExportsMdl>/amount}"/>
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>excVATSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>excVATCode}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}" />
+                                    <Label text="{i18n>excVATAmount}" />
+                                    <Input value="{ExportsMdl>/vatAmount}" />
+                                    <Label text="{i18n>excVATRate}" />
+                                    <Input value="{ExportsMdl>/vatRate}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>excOtherDetailsSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>excChargerType}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Local" key="1" />
+                                        <core:Item text="Carrier" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>excInvoiceTo}" />
+                                    <Input value="{ExportsMdl>/amount}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                                    <Label text="{i18n>excPrepaid}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Yes" key="1" />
+                                        <core:Item text="No" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>excLinerFreightCharge}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Yes" key="1" />
+                                        <core:Item text="No" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>excPartyAccNo}" />
+                                    <Input value="{ExportsMdl>/partyAccNo}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>excUSDCurrencySection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>excUSDConversionRate}" />
+                                    <Input value="{ExportsMdl>/chargeCode}" />
+                                    <Label text="{i18n>excAmountInUSD}" />
+                                    <Input value="{ExportsMdl>/amount}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnAdd}" press="onSaveCharge" width="70px" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

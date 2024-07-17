@@ -5,7 +5,7 @@ version: 1.0.0-SNAPSHOT
 modules:
 - name: Lighthouse-srv
   type: java
-  path: gen/srv
+  path: srv
   properties:
     JBP_CONFIG_COMPONENTS: 'jres: [''com.sap.xs.java.buildpack.jre.SAPMachineJRE'']'
     JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 21.+ }'
@@ -47,6 +47,36 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: Lighthouse-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: Lighthouse-destination-service
+    parameters:
+      content-target: true
+  - name: Lighthouse-repo-host
+    parameters:
+      service-key:
+        name: Lighthouse-repo-host-key
+  - name: uaa_Lighthouse
+    parameters:
+      service-key:
+        name: uaa_Lighthouse-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: route_Lighthouse_repo_host
+          ServiceInstanceName: Lighthouse-html5-srv
+          ServiceKeyName: Lighthouse-repo-host-key
+          sap.cloud.service: route
+        - Authentication: OAuth2UserTokenExchange
+          Name: route_uaa_Lighthouse
+          ServiceInstanceName: Lighthouse-xsuaa-service
+          ServiceKeyName: uaa_Lighthouse-key
+          sap.cloud.service: route
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
 - name: db
   type: hdb
   path: db
@@ -77,6 +107,13 @@ resources:
     service: destination
     service-name: Lighthouse-destination-service
     service-plan: lite
+- name: uaa_Lighthouse
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: Lighthouse-xsuaa-service
+    service-plan: application
 - name: hdi_db
   type: com.sap.xs.hdi-container
   properties:
@@ -84,3 +121,8 @@ resources:
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk@^6 cds build --production

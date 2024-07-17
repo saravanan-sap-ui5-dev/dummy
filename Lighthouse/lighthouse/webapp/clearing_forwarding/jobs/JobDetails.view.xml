@@ -1,0 +1,145 @@
+<mvc:View controllerName="com.lighthouse.clearing_forwarding.jobs.JobDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_JobDetails" showFooter="{= !${visible>/view} || !!${errors>/}.length}" useIconTabBar="true" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="HLCUALY220338926" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="HLCUALY220338926" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>joId}" text="{/item}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>joId}" text="{/item}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>johcService}" text="Sea" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>johcBLType}" text="Import" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>johcStatus}" text="Active" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>johcAgent}" text="Sam" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>johcShippingLine}" text="HL" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>johcCompletedOn}" text="05/01/2023" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>johcPol}" text="Port Sohar" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>johcPod}" text="Damietta" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cnhcCreatedBy}" text="Tom" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcCreatedOn}" text="01/01/2023" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cnhcUpdatedBy}" text="Tom" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcUpdatedOn}" text="01/01/2023" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>joGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>joGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_General" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joChargesSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_Charges" type="XML" binding="{/charges}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joPaymentsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_Payments" type="XML" binding="{/payments}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>joCargoAndContainersSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>joCargoSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Cargo" type="XML" binding="{/cargoDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joContainersSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Container" type="XML" binding="{/containerDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>joCargoAndContainersSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>joCommunicationSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_Communication" type="XML" binding="{/communicationDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnCImportError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

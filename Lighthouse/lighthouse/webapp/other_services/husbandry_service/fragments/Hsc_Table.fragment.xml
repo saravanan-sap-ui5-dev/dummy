@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Table id="tableHusbandryService" items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false" class="sapUiSmallMarginTop">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" text="{i18n>cnBtnCreate}" press="onPressNavCreate"/>
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://excel-attachment" enabled="false" tooltip="{i18n>cnExportTooltip}" press="onPressExport" />
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="onPressAFSettings" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="5em">
+                <Text text="ID" />
+            </Column>
+            <Column>
+                <Text text="Shipping Line" />
+            </Column>
+            <Column>
+                <Text text="Port" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Vessel ID" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Date" />
+            </Column>
+            <Column>
+                <Text text="Status" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="{type}" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{id}"/>
+                    <Text text="{shippingLine}"/>
+                    <Text text="{port}" />
+                    <Text text="{vesselId}" />
+                    <Text text="{date}" />
+                    <Text text="{= ${status}===0?'Active':'Draft'}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

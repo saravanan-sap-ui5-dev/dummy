@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm id="containerForm" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coContainerNo}" required="true"/>
+                    <Input value="{containerNo}" editable="{visible>/edit}" field:type="Input" field:validate="required" showValueHelp="false"/>
+                    <Label text="{i18n>coType}" required="true" />
+                    <ComboBox id = "containerContainerTypeId" items = "{/containerTypeCollection}" selectedKey="{type}" field:type="ComboBox" field:validate="required" editable="{visible>/edit}">
+                        <core:Item key="{id}" text="{name}"/>
+                    </ComboBox>
+                    <Label text="{i18n>coSoc}" />
+                    <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{soc}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coStatus}" />
+                    <Select items="{masterDataMdl>/status}" selectedKey="{status}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </Select>
+                    <Label text="{i18n>coSize2040}" />
+                    <ComboBox items="{masterDataMdl>/container_size}" selectedKey="{size}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coOwnedBy}" />
+                    <Input value="{ownedByName}" editable="{visible>/edit}" showValueHelp="true" liveChange="onClearMasterField" valueHelpRequest="onPressCustomer"/>
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

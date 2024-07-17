@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="First Name" />
+                <Input value="{firstName}" editable="{visible>/edit}" />
+                <Label text="Middle Name" />
+                <Input value="{middleName}" editable="{visible>/edit}" />
+
+                <Label text="Last Name" />
+                <Input value="{lastName}" editable="{visible>/edit}" />
+
+                <Label text="Status" />
+                <ComboBox items="{masterDataMdl>/status}" selectedKey="{active}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                </ComboBox>
+
+                <Label text="Gender" />
+                <Input value="{gender}" editable="{visible>/edit}"/>
+                <Label text="Date of Birth" />
+                <DatePicker value="{dateOfBirth}" placeholder=" " editable="{visible>/edit}" />
+
+                <Label text="Remarks" />
+                <TextArea value="{remarks}" editable="{visible>/edit}" />
+
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

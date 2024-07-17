@@ -1,0 +1,45 @@
+PROCEDURE "GET_ATTACHMENTS_BY_ID" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE NVARCHAR(200)) AS 
+BEGIN
+
+  DECLARE ID BIGINT;
+  DECLARE REF_TYPE BIGINT;
+  DECLARE REF_ID BIGINT;
+  DECLARE STATUS BIGINT;
+  DECLARE "TOTAL_RECORDS" INTEGER :=0;
+
+  
+   -- Declare a custom exception condition for SQL error code 10001
+  DECLARE invalid_input CONDITION FOR SQL_ERROR_CODE 10001;
+  
+  -- Set up an exception handler for the custom exception
+  DECLARE EXIT HANDLER FOR invalid_input
+  BEGIN
+      EX_MESSAGE := 'Invalid input arguments';
+  END;
+  
+  -- Extract values from JSON
+  SELECT JSON_VALUE(:IN_PARAM, '$.id') INTO ID FROM DUMMY;
+  SELECT JSON_VALUE(:IN_PARAM, '$.refObjectType') INTO REF_TYPE FROM DUMMY;
+  SELECT JSON_VALUE(:IN_PARAM, '$.refObjectId') INTO REF_ID FROM DUMMY;
+  SELECT JSON_VALUE(:IN_PARAM, '$.status') INTO STATUS FROM DUMMY;
+
+-- Check conditions
+IF (NOT(REF_TYPE > 0 AND REF_ID > 0)) THEN
+    -- Raise the custom exception
+    SIGNAL invalid_input;
+END IF;
+  
+  IF (REF_TYPE > 0 AND REF_ID > 0) THEN
+
+    -- Your code to select the "attachments" table here
+    temp = SELECT * FROM "attachments" 
+    WHERE "refObjectType" = REF_TYPE 
+    AND "refObjectId" = REF_ID 
+    AND "status" = 2;
+
+    SELECT count(*) INTO "TOTAL_RECORDS" FROM :temp;
+
+    SELECT  :TOTAL_RECORDS "recordCount","id","name","description","url","type","path","mimeType","refObjectType","refObjectId","createdBy","updatedBy","createdOn","updatedOn","status" FROM :temp ORDER BY "id" DESC; 
+  
+  END IF;
+END 

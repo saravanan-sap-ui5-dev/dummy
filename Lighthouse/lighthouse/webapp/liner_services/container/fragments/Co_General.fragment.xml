@@ -1,0 +1,61 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm id="containerInUseForm" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coContainerNo}" required="true" />
+                    <Input value="{containerNumber}" editable="{visible>/create}" field:type="Input" field:validate="required" liveChange="onClearMasterField" valueHelpRequest="onPressContainer" showValueHelp="true"/>
+                    <Label text="{i18n>coSize2040}" />
+                    <ComboBox items="{masterDataMdl>/container_size}" selectedKey="{size}" editable="false">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coSealNo}" />
+                    <Input value="{sealNumber}" type="Number" editable="{visible>/edit}" />
+                    <Label text="{i18n>coFrom}" />
+                    <Input value="{tempratureFrom}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coOnHold}" />
+                    <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{onHold}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coStatus}" />
+                    <Select items="{masterDataMdl>/status}" selectedKey="{status}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </Select>
+
+                    <Label text="{i18n>coSoc}" />
+                    <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{soc}" editable="false">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+
+                    <Label text="{i18n>coType}" />
+                    <ComboBox items = "{/containerTypeCollection}" selectedKey="{type}" editable="false">
+                        <core:Item key="{id}" text="{name}"/>
+                    </ComboBox>
+                    <Label text="{i18n>coOperator}" />
+                    <Input value="{operator}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressShippingLine" />
+                    <Label text="{i18n>coTo}" />
+                    <Input value="{tempratureTo}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDamages}" />
+                    <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{damages}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coRemarks}" />
+                    <TextArea value="{remarks}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

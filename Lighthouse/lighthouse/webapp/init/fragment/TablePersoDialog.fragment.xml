@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <ViewSettingsDialog confirm="handleTablePersoDialogConfirm" reset="resetPersoDialog" cancel="handleTablePersoCancel">
+        <customTabs>
+            <ViewSettingsCustomTab icon="sap-icon://action-settings" title="Columns" tooltip="Application Settings">
+                <content>
+                    <Table items="{settings>/columns}" selectionChange="onSelectItem"  mode="MultiSelect">
+                        <columns>
+                            <Column>
+                                <Label design="Bold" text="Select All"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem vAlign="Middle"  selected="{settings>visible}">
+                                <cells>
+                                    <Text text="{settings>label}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </ViewSettingsCustomTab>
+        </customTabs>
+    </ViewSettingsDialog>
+</core:FragmentDefinition>

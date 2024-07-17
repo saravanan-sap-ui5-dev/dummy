@@ -1,1 +1,213 @@
 /* Enter your custom styles here */
+.login_background {
+  background-image: url("../images/logon_screen_background_2.jpg");
+  background-size: contain !important;
+  background-position: top !important;
+  background-repeat: no-repeat;
+}
+
+/* Portrait and Landscape */
+@media (max-width: 700px) {
+  .copyright {
+    font-size: smaller;
+    position: relative;
+    top: 50px;
+  }
+}
+
+@media (min-width: 700px) {
+  .copyright {
+    font-size: smaller;
+    position: relative;
+    top: 100px;
+  }
+}
+
+.FormLabel .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12)>.sapMLabel {
+  text-align: start !important;
+}
+
+/* .sapUiFormCL.sapUiFormCLWideColumns .sapUiFormElementLbl:not(.sapUiFormCLCellsL12)>.sapMLabel {
+  text-align: start !important;
+  float: none;
+} */
+
+.loginError.sapMMsgStripInformation .sapMMsgStripIcon {
+  color: #f83434 !important;
+}
+
+.dashboard .sapUxAPBlockContainer {
+  background: transparent !important;
+}
+
+.sapUiGlobalBackgroundImage {
+  background-size: auto !important;
+  background-position: top !important;
+}
+
+.tileLayout {
+  float: left !important;
+}
+
+/* @font-face {
+  font-family: "BusinessSuiteInAppSymbols"; 
+  src: url("sap/ushell/themes/base/fonts/") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+} */
+
+.tileIcon .sapMNCIconImage {
+  font-size: 3rem;
+}
+
+.sapMGTHdrTxt>.sapMText {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.sapMNCLargeFontSize:not(.sapMNCIconImage) {
+  font-size: 2.25rem;
+  font-weight: bold;
+}
+
+.formPadding .sapUiFormCLContainer {
+  padding: 0rem 0.75rem 0rem 0.75rem;
+}
+
+.sapUiFormResGrid>div {
+  padding: 1rem 0.75rem !important;
+  box-sizing: border-box;
+}
+
+/* .sapUiFormLblColon td:not(.sapUiGridLabelFull).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiRespGridMedia-Std-Phone.sapUiFormResGridCont>:not(.sapUiRespGridSpanS12).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>:not(.sapUiRespGridSpanM12).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiRespGridMedia-Std-Desktop.sapUiFormResGridCont>:not(.sapUiRespGridSpanL12).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiRespGridMedia-Std-LargeDesktop.sapUiFormResGridCont>:not(.sapUiRespGridSpanXL12).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiFormResLayout .sapUiRFLRow:first-child>.sapUiRFLContainer:first-child:not(.sapUiRFLFullLength)>.sapUiRFLContainerContent.sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiFormCL.sapUiFormCLSmallColumns :not(.sapUiFormCLCellsS12).sapUiFormElementLbl>.sapMLabel,
+.sapUiFormLblColon .sapUiFormCL.sapUiFormCLWideColumns :not(.sapUiFormCLCellsL12).sapUiFormElementLbl>.sapMLabel {
+  text-align: start !important;
+} */
+
+.sapTntInfoLabel .sapTntInfoLabelInner {
+  text-transform: capitalize !important;
+}
+
+.bussinessIcon .sapTntNavLIItem .sapTntNavLIGroupIcon {
+  font-size: 1.6rem !important;
+}
+
+/* .sapMBtnInner{
+  color: #0854a0;
+  border: 0.0625rem solid #0854a0 !important;
+  background: transparent;
+} */
+
+/* #__bar2-btnClear-inner {
+  color: #0854a0;
+  border: 0.0625rem solid #0854a0 !important;
+  background: transparent;
+}
+
+#__bar2-btnFilters-inner {
+  color: #0854a0;
+  border: 0.0625rem solid #0854a0 !important;
+  background: transparent;
+} */
+
+.sapUxAPObjectChildPage {
+  width: 0rem !important;
+}
+
+/* Grid Table Start */
+/* .sapUiTableCell {
+  position: relative;
+  box-sizing: border-box;
+  border-right: 0 solid #e5e5e5;
+  border-bottom: 0.0625rem solid #e5e5e5;
+}
+
+#container-com\.lighthouse---ImportDetails--tempFrom,
+#container-com\.lighthouse---ImportDetails--tempTo,
+#container-com\.lighthouse---ImportDetails--tempFrom_1,
+#container-com\.lighthouse---ImportDetails--tempTo_1,
+#container-com\.lighthouse---ImportDetails--imcoClass,
+#container-com\.lighthouse---ImportDetails--imcoUnno,
+#container-com\.lighthouse---ImportDetails--imcoClass_1,
+#container-com\.lighthouse---ImportDetails--imcoUnno_1.sapUiTableCell.sapUiTableHeaderCell {
+  box-sizing: border-box;
+  border-right: 0.0625rem solid #e5e5e5;
+  border-left: 0.0625rem solid #e5e5e5;
+  border-bottom: 0 solid #e5e5e5;
+}
+
+#container-com\.lighthouse---ExportDetails--tempFrom,
+#container-com\.lighthouse---ExportDetails--tempFrom_1,
+#container-com\.lighthouse---ExportDetails--tempTo_1,
+#container-com\.lighthouse---ExportDetails--imcoClass,
+#container-com\.lighthouse---ExportDetails--imcoClass_1,
+#container-com\.lighthouse---ExportDetails--imcoNo_1,
+#container-com\.lighthouse---ExportDetails--imcoPage_1,
+#container-com\.lighthouse---ExportDetails--imcoPt_1,
+#container-com\.lighthouse---ExportDetails--imcoDesc_1.sapUiTableCell.sapUiTableHeaderCell {
+  box-sizing: border-box;
+  border-right: 0.0625rem solid #e5e5e5;
+  border-left: 0.0625rem solid #e5e5e5;
+  border-bottom: 0 solid #e5e5e5;
+}
+
+.sapUiTableRowSelectionHeaderCell {
+  min-height: 0rem;
+} */
+
+/* Grid Table End */
+
+#container-com\.lighthouse---ExportDetails--temp.sapMListTblCell.sapMListTblHeaderCell {
+  border-left: solid 1px;
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---ExportDetails--imco.sapMListTblCell.sapMListTblHeaderCell {
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---ImportDetails--temp.sapMListTblCell.sapMListTblHeaderCell {
+  border-left: solid 1px;
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---ImportDetails--imco.sapMListTblCell.sapMListTblHeaderCell {
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---CreateTrip--temp.sapMListTblCell.sapMListTblHeaderCell {
+  border-left: solid 1px;
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---CreateTrip--imco.sapMListTblCell.sapMListTblHeaderCell {
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---TripDetails--temp.sapMListTblCell.sapMListTblHeaderCell {
+  border-left: solid 1px;
+  border-right: solid 1px;
+}
+
+#container-com\.lighthouse---TripDetails--imco.sapMListTblCell.sapMListTblHeaderCell {
+  border-right: solid 1px;
+}
+
+.borderBoxRight {
+  border-right: solid 1px;
+}
+
+.textInfo {
+  font-style: italic;
+  color: #adb0b2;
+  font-size: 12px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: 0%;
+}

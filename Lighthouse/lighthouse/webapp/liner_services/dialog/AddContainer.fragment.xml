@@ -1,0 +1,26 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="{i18n>coDialogTitle}" contentWidth="70%" contentHeight="60%" verticalScrolling="true">
+        <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_FilterBar" type="XML" />
+        <ScrollContainer vertical="true" height="80%">
+            <core:Fragment fragmentName="com.lighthouse.liner_services.container.fragments.Co_Table" type="XML" binding="{/containerItems}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSelect}" press="onCloseDialog" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

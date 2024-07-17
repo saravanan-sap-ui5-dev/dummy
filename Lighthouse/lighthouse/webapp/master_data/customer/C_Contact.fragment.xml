@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <VBox>
+
+        <!-- <Title text="Import Contacts" titleStyle="H6"/> -->
+        <Table id="tableImportContact" items="{items}" inset="false" growing="true" sticky="ColumnHeaders,HeaderToolbar" mode="MultiSelect" alternateRowColors="true" delete="onPressDeleteItem">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <Label design="Bold" text="{i18n>cnTableTitle} ({= ${items}.length})" visible="{= ${items}.length>0}" />
+                        <ToolbarSpacer />
+                        <Button text="Add" type="Transparent" enabled="{visible>/edit}" press="onAddContact"/>
+                        <Button text="Remove" type="Transparent" enabled="{visible>/edit}" press = "onRemoveContact"/>
+
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column hAlign="Begin">
+                    <Text text="{i18n>cuName}"/>
+                </Column>
+                <Column hAlign="Begin">
+                    <Text text="{i18n>cuContactType}" />
+                </Column>
+                <Column hAlign="Begin">
+                    <Text text="{i18n>cuPhone}" />
+                </Column>
+                <Column hAlign="Begin">
+                    <Text text="{i18n>cuEmail}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation" vAlign="Middle" press="onPressContact">
+                    <cells>
+                        <Text text="{firstName} {lastName}"/>
+                        <Text text="{parts:['contactType', 'masterDataMdl>/contactType'], formatter:'.formatter.contactType'}"/>
+                        <Text text="{mobilePhone}"/>
+                        <Text text="{e_Mail}"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </VBox>
+</core:FragmentDefinition>

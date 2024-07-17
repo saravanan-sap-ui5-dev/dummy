@@ -1,0 +1,5 @@
+<mvc:View controllerName="com.lighthouse.init.NotFound"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+	<MessagePage title="Not Found" showHeader="false" text="Sorry, but the requested resource is not available." description="Please check the URL and try again." showNavButton="true" navButtonPress="onNavBack"/>
+</mvc:View>

@@ -1,0 +1,77 @@
+<mvc:View controllerName="com.lighthouse.admin.users.CreateUser"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="pageCreateUser" showFooter="true" useIconTabBar="true" showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{i18n>usrCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{i18n>usrCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>usrGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>usrGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_General" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrOrganizationSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Organization" type="XML" binding="{/organization}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrPersonalSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Personal" type="XML" binding="{/personal}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrElectronicAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_ElectronicAddress" type="XML" binding="{/electronicAddress}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrBankDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_BankDetails" type="XML" binding="{/bankDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>usrAddressandEducationSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>usrPrimaryAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_PrimaryAddress" type="XML" binding="{/primaryAddress}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrSecondaryAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_SecondaryAddress" type="XML" binding="{/secondaryAddress}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrEducationSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Education" type="XML" binding="{/education}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnUserError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

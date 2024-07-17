@@ -1,0 +1,41 @@
+<mvc:View controllerName="com.lighthouse.master_data.container.ManageContainer"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <f:DynamicPage id="page_mngContainers" headerExpanded="true" preserveHeaderStateOnScroll="true" showFooter="{= (!${visible>/view} || ${errors>/}.length!== 0)}">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>coPageTitle}" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                <f:content>
+                    <core:Fragment fragmentName="com.lighthouse.master_data.container.fragments.Co_FilterBar" type="XML" binding="{/advancedFilter}" />
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+            <core:Fragment fragmentName="com.lighthouse.master_data.container.fragments.Co_Table" type="XML" binding="{/table}"/>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <Button id="btnManageContainersErr" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

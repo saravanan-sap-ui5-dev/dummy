@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput">
+
+    <Table id = "shippingLinePortId" inset="false" items="{items}" mode="{=${visible>/edit}===true?${mode}:'None'}" delete="onDeleteShippingLinePort" sticky="ColumnHeaders,HeaderToolbar"  alternateRowColors="true">
+        <headerToolbar>
+            <OverflowToolbar>
+                <Label design="Bold" text="{i18n>cnTableTitle} ({= ${items}.length})" visible="{= ${items}.length>0}"/>
+                <ToolbarSpacer/>
+                <Button id = "btnAddShippingLinePortId" text="{i18n>cnBtnAdd}" type="Transparent" press="onAddShippingLine" enabled="{= !${visible>/view}}"/>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column >
+                <Text text="{i18n>pcShippingLine}" />
+            </Column>
+            <Column hAlign="Center">
+                <Text text="{i18n>pcPortCode}" />
+            </Column>
+            <Column hAlign="Center" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcZoneCode}" />
+            </Column>
+            <Column hAlign="Begin" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcZoneName}"/>
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle">
+                <cells>
+                    <ComboBox items="{/shippingLineCollection}" selectedKey="{shippingLineId}" valueState = "{shippingLineValueState}" valueStateText = "{shippingLineValueStateText}" change="onChangeShippingLinePort" editable="{visible>/edit}" width="100%">
+                        <core:Item text="{cardName}" key="{cardCode}"/>
+                    </ComboBox>
+                    <Input id="portCode" value="{portCode}" valueState = "{portCodeValueState}" valueStateText = "{portCodeValueStateText}" editable="{visible>/edit}" liveChange="onChangeShippingLinePort" />
+                    <Input id="zoneCode" value="{zoneCode}" valueState = "{zoneCodeValueState}" valueStateText = "{zoneCodeValueStateText}" editable="{visible>/edit}" liveChange="onChangeShippingLinePort" />
+                    <Input id="zoneName" value="{zoneName}" valueState = "{zoneNameValueState}" valueStateText = "{zoneNameValueStateText}" editable="{visible>/edit}" liveChange="onChangeShippingLinePort" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

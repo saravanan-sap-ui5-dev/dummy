@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Bank Account No" />
+                <Input value="{bankAccount}" editable="{visible>/edit}" />
+                <Label text="Bank Branch" />
+                <ComboBox selectedKey="{bankBranch}" editable="{visible>/edit}">
+                    <core:Item key="1" text="Muscat"/>
+                    <core:Item key="2" text="Dubai"/>
+                </ComboBox>
+                <Label text="Bank Name" />
+                <ComboBox selectedKey="{bankCode}" editable="{visible>/edit}">
+                    <core:Item key="1" text="Bank Muscat"/>
+                    <core:Item key="2" text="Bank Dubai"/>
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

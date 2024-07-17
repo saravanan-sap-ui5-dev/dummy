@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="HS Code" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.master_data.hs_code.HS_FilterBar" type="XML" binding="{/advancedFilter}"/>
+        <ScrollContainer vertical="true" height="80%">
+            <core:Fragment fragmentName="com.lighthouse.master_data.hs_code.HS_Table" type="XML" binding="{/masterScreenTable}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Select" press="onPressHsCodeEdit"/>
+                <Button type="Ghost" text="Cancel" press="onCloseHsCodeDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

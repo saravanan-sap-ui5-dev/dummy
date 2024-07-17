@@ -1,0 +1,523 @@
+PROCEDURE "ADD_EDIT_SHIPMENT" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) AS 
+BEGIN
+	DECLARE ID BIGINT := 0;
+	DECLARE blNumber NVARCHAR(256);
+    DECLARE blDate DATE;
+    DECLARE blType BIGINT;
+    DECLARE shipmentNumber BIGINT;
+    DECLARE shippingType BIGINT;
+    DECLARE seawayBill BIGINT;
+    DECLARE shippingLine BIGINT;
+    DECLARE voyageID BIGINT;
+    DECLARE voyageDate DATE;
+    DECLARE deliveryType BIGINT;
+    
+    DECLARE vesselID BIGINT;
+    DECLARE vesselName NVARCHAR(256);
+    DECLARE feederVesselID BIGINT;
+    DECLARE feederVesselName NVARCHAR(256);
+    DECLARE exVesselID BIGINT;
+    DECLARE exVesselName NVARCHAR(256);
+    DECLARE portOfLoading BIGINT;
+    DECLARE transshipmentPort BIGINT;
+    DECLARE portOfDischarge BIGINT;
+    DECLARE portOfDestination BIGINT;
+
+    DECLARE placeOfReceipt BIGINT;
+    DECLARE placeOfDelivery BIGINT;
+    DECLARE fclOrLcl BIGINT;
+    DECLARE scimrnNumber BIGINT;
+    DECLARE sciService BIGINT;
+    DECLARE shipperReference NVARCHAR(256);
+    DECLARE thdPrepaid BIGINT;
+    DECLARE masterBL NVARCHAR(256);
+    DECLARE slot3rdPartyOP BIGINT;
+    DECLARE remarks NVARCHAR(256);
+
+    DECLARE firstOnCarriageVesselID BIGINT;
+    DECLARE secondOnCarriageVesselID BIGINT;
+    DECLARE finalOnCarriageVesselID BIGINT;
+    DECLARE firstOnCarriageVesselName NVARCHAR(256);
+    DECLARE secondOnCarriageVesselName NVARCHAR(256);
+    DECLARE finalOnCarriageVesselName NVARCHAR(256);
+    DECLARE firstOnCarriageUptoPort BIGINT;
+    DECLARE secondOnCarriageUptoPort BIGINT;
+    DECLARE finalOnCarriageUptoPort BIGINT;
+    DECLARE cargoWeight BIGINT;
+
+    DECLARE tareWeight BIGINT;
+    DECLARE cbm BIGINT;
+    DECLARE cargoDescription NVARCHAR(256);
+    DECLARE type BIGINT;
+    DECLARE totalPackages BIGINT;
+    DECLARE hsCode BIGINT;
+    DECLARE hsCodeDescription NVARCHAR(256);
+    DECLARE cargoTypeCode BIGINT;
+    DECLARE cargoTypeName NVARCHAR(256);
+    DECLARE personalEffect BIGINT;
+
+    DECLARE partIndicator BIGINT;
+    DECLARE avgWt20Cntr NVARCHAR(256);
+    DECLARE avgWt40Cntr NVARCHAR(256);
+    DECLARE voyageType BIGINT;
+    DECLARE callPort BIGINT;
+    DECLARE accountNumber BIGINT;
+    DECLARE voyageIn BIGINT;
+    DECLARE voyageOut BIGINT;
+    DECLARE vesselETA DATETIME;
+    DECLARE vesselETS DATETIME;
+
+    DECLARE lastPort BIGINT;
+    DECLARE nextPort BIGINT;
+    DECLARE vesselRotationNumber BIGINT;
+    DECLARE mrnNumber BIGINT;
+    DECLARE service BIGINT;
+    DECLARE operator BIGINT;
+    DECLARE dpIn BIGINT;
+    DECLARE dpOut BIGINT;
+    DECLARE masterName NVARCHAR(256);
+    DECLARE nationality BIGINT;
+
+    DECLARE carNumber BIGINT;
+    DECLARE manifestNumber BIGINT;
+
+    DECLARE createdBy NVARCHAR(256);
+    DECLARE createdOn DATE;
+    DECLARE updatedBy NVARCHAR(256);
+    DECLARE updatedOn DATE;
+    DECLARE status INTEGER;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+    
+    DECLARE i INTEGER;
+    DECLARE exShipmentNumber INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    DECLARE partyId BIGINT;
+    DECLARE partyName NVARCHAR(256);
+    DECLARE country NVARCHAR(256);
+    DECLARE city NVARCHAR(256);
+    DECLARE phone NVARCHAR(256);
+    DECLARE email NVARCHAR(256);
+    DECLARE fax BIGINT;
+    DECLARE partyAccountNumber BIGINT;
+    DECLARE localOrForeign BIGINT;
+    DECLARE cardCode NVARCHAR(256);
+    DECLARE customerID BIGINT;
+    DECLARE shipmentID BIGINT;
+    DECLARE partyStatus INTEGER;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'This shipment number already exist.' || ::SQL_ERROR_MESSAGE;
+        DROP TABLE #dummy_shipment;
+    END;
+
+    CREATE LOCAL TEMPORARY TABLE #dummy_shipment (id INT);
+
+    temp_shipment = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+
+                "blNumber" NVARCHAR(256) PATH '$.blNumber',
+                "blDate" DATE PATH '$.blDate',
+                "blType" BIGINT PATH '$.blType',
+                "shipmentNumber" BIGINT PATH '$.shipmentNumber',
+                "shippingType" BIGINT PATH '$.shippingType',
+                "seawayBill" BIGINT PATH '$.seawayBill',
+                "shippingLine" BIGINT PATH '$.shippingLine',
+                "voyageID" BIGINT PATH '$.voyageID',
+                "voyageDate" DATE PATH '$.voyageDate',
+                "deliveryType" BIGINT PATH '$.deliveryType',
+
+                "vesselID" BIGINT PATH '$.vesselID',
+                "vesselName" NVARCHAR(256) PATH '$.vesselName',
+                "feederVesselID" BIGINT PATH '$.feederVesselID',
+                "feederVesselName" NVARCHAR(256) PATH '$.feederVesselName',
+                "exVesselID" BIGINT PATH '$.exVesselID',
+                "exVesselName" NVARCHAR(256) PATH '$.exVesselName',
+                "portOfLoading" BIGINT PATH '$.portOfLoading',
+                "transshipmentPort" BIGINT PATH '$.transshipmentPort',
+                "portOfDischarge" BIGINT PATH '$.portOfDischarge',
+                "portOfDestination" BIGINT PATH '$.portOfDestination',
+
+                "placeOfReceipt" BIGINT PATH '$.placeOfReceipt',
+                "placeOfDelivery" BIGINT PATH '$.placeOfDelivery',
+                "fclOrLcl" BIGINT PATH '$.fclOrLcl',
+                "scimrnNumber" BIGINT PATH '$.scimrnNumber',
+                "sciService" BIGINT PATH '$.sciService',
+                "shipperReference" NVARCHAR(256) PATH '$.shipperReference',
+                "thdPrepaid" BIGINT PATH '$.thdPrepaid',
+                "masterBL" NVARCHAR(256) PATH '$.masterBL',
+                "slot3rdPartyOP" BIGINT PATH '$.slot3rdPartyOP',
+                "remarks" NVARCHAR(256) PATH '$.remarks',
+
+                "firstOnCarriageVesselID" BIGINT PATH '$.firstOnCarriageVesselID',
+                "secondOnCarriageVesselID" BIGINT PATH '$.secondOnCarriageVesselID',
+                "finalOnCarriageVesselID" BIGINT PATH '$.finalOnCarriageVesselID',
+                "firstOnCarriageVesselName" NVARCHAR(256) PATH '$.firstOnCarriageVesselName',
+                "secondOnCarriageVesselName" NVARCHAR(256) PATH '$.secondOnCarriageVesselName',
+                "finalOnCarriageVesselName" NVARCHAR(256) PATH '$.finalOnCarriageVesselName',
+                "firstOnCarriageUptoPort" BIGINT PATH '$.firstOnCarriageUptoPort',
+                "secondOnCarriageUptoPort" BIGINT PATH '$.secondOnCarriageUptoPort',
+                "finalOnCarriageUptoPort" BIGINT PATH '$.finalOnCarriageUptoPort',
+                "cargoWeight" BIGINT PATH '$.cargoWeight',
+
+                "tareWeight" BIGINT PATH '$.tareWeight',
+                "cbm" BIGINT PATH '$.cbm',
+                "cargoDescription" NVARCHAR(256) PATH '$.cargoDescription',
+                "type" BIGINT PATH '$.type',
+                "totalPackages" BIGINT PATH '$.totalPackages',
+                "hsCode" BIGINT PATH '$.hsCode',
+                "hsCodeDescription" NVARCHAR(256) PATH '$.hsCodeDescription',
+                "cargoTypeCode" BIGINT PATH '$.cargoTypeCode',
+                "cargoTypeName" NVARCHAR(256) PATH '$.cargoTypeName',
+                "personalEffect" BIGINT PATH '$.personalEffect',
+
+                "partIndicator" BIGINT PATH '$.partIndicator',
+                "avgWt20Cntr" NVARCHAR(256) PATH '$.avgWt20Cntr',
+                "avgWt40Cntr" NVARCHAR(256) PATH '$.avgWt40Cntr',
+                "voyageType" NVARCHAR(256) PATH '$.voyageType',
+                "callPort" BIGINT PATH '$.callPort',
+                "accountNumber" BIGINT PATH '$.accountNumber',
+                "voyageIn" BIGINT PATH '$.voyageIn',
+                "voyageOut" BIGINT PATH '$.voyageOut',
+                "vesselETA" DATETIME PATH '$.vesselETA',
+                "vesselETS" DATETIME PATH '$.vesselETS',
+
+                "lastPort" BIGINT PATH '$.lastPort',
+                "nextPort" BIGINT PATH '$.nextPort',
+                "vesselRotationNumber" BIGINT PATH '$.vesselRotationNumber',
+                "mrnNumber" BIGINT PATH '$.mrnNumber',
+                "service" BIGINT PATH '$.service',
+                "operator" BIGINT PATH '$.operator',
+                "dpIn" BIGINT PATH '$.dpIn',
+                "dpOut" BIGINT PATH '$.dpOut',
+                "masterName" BIGINT PATH '$.masterName',
+                "nationality" BIGINT PATH '$.nationality',
+
+                "carNumber" BIGINT PATH '$.carNumber',
+                "manifestNumber" NVARCHAR(256) PATH '$.manifestNumber',
+
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_shipment) do
+            id = :temp_shipment."id"[:i];
+            blNumber = :temp_shipment."blNumber"[:i];
+            blDate = :temp_shipment."blDate"[:i];
+            blType = :temp_shipment."blType"[:i];
+            shipmentNumber = :temp_shipment."shipmentNumber"[:i];
+            shippingType = :temp_shipment."shippingType"[:i];
+            seawayBill = :temp_shipment."seawayBill"[:i];
+            shippingLine = :temp_shipment."shippingLine"[:i];
+            voyageID = :temp_shipment."voyageID"[:i];
+            voyageDate = :temp_shipment."voyageDate"[:i];
+            deliveryType = :temp_shipment."deliveryType"[:i];
+
+            vesselID = :temp_shipment."vesselID"[:i];
+            vesselName = :temp_shipment."vesselName"[:i];
+            feederVesselID = :temp_shipment."feederVesselID"[:i];
+            feederVesselName = :temp_shipment."feederVesselName"[:i];
+            exVesselID = :temp_shipment."exVesselID"[:i];
+            exVesselName = :temp_shipment."exVesselName"[:i];
+            portOfLoading = :temp_shipment."portOfLoading"[:i];
+            transshipmentPort = :temp_shipment."transshipmentPort"[:i];
+            portOfDischarge = :temp_shipment."portOfDischarge"[:i];
+            portOfDestination = :temp_shipment."portOfDestination"[:i];
+
+            placeOfReceipt = :temp_shipment."placeOfReceipt"[:i];
+            placeOfDelivery = :temp_shipment."placeOfDelivery"[:i];
+            fclOrLcl = :temp_shipment."fclOrLcl"[:i];
+            scimrnNumber = :temp_shipment."scimrnNumber"[:i];
+            sciService = :temp_shipment."sciService"[:i];
+            shipperReference = :temp_shipment."shipperReference"[:i];
+            thdPrepaid = :temp_shipment."thdPrepaid"[:i];
+            masterBL = :temp_shipment."masterBL"[:i];
+            slot3rdPartyOP = :temp_shipment."slot3rdPartyOP"[:i];
+            remarks = :temp_shipment."remarks"[:i];
+
+            firstOnCarriageVesselID = :temp_shipment."firstOnCarriageVesselID"[:i];
+            secondOnCarriageVesselID = :temp_shipment."secondOnCarriageVesselID"[:i];
+            finalOnCarriageVesselID = :temp_shipment."finalOnCarriageVesselID"[:i];
+            firstOnCarriageVesselName = :temp_shipment."firstOnCarriageVesselName"[:i];
+            secondOnCarriageVesselName = :temp_shipment."secondOnCarriageVesselName"[:i];
+            finalOnCarriageVesselName = :temp_shipment."finalOnCarriageVesselName"[:i];
+            firstOnCarriageUptoPort = :temp_shipment."firstOnCarriageUptoPort"[:i];
+            secondOnCarriageUptoPort = :temp_shipment."secondOnCarriageUptoPort"[:i];
+            finalOnCarriageUptoPort = :temp_shipment."finalOnCarriageUptoPort"[:i];
+            cargoWeight = :temp_shipment."cargoWeight"[:i];
+
+            tareWeight = :temp_shipment."tareWeight"[:i];
+            cbm = :temp_shipment."cbm"[:i];
+            cargoDescription = :temp_shipment."cargoDescription"[:i];
+            type = :temp_shipment."type"[:i];
+            totalPackages = :temp_shipment."totalPackages"[:i];
+            hsCode = :temp_shipment."hsCode"[:i];
+            hsCodeDescription = :temp_shipment."hsCodeDescription"[:i];
+            cargoTypeCode = :temp_shipment."cargoTypeCode"[:i];
+            cargoTypeName = :temp_shipment."cargoTypeName"[:i];
+            personalEffect = :temp_shipment."personalEffect"[:i];
+
+            partIndicator = :temp_shipment."partIndicator"[:i];
+            avgWt20Cntr = :temp_shipment."avgWt20Cntr"[:i];
+            avgWt40Cntr = :temp_shipment."avgWt40Cntr"[:i];
+            voyageType = :temp_shipment."voyageType"[:i];
+            callPort = :temp_shipment."callPort"[:i];
+            accountNumber = :temp_shipment."accountNumber"[:i];
+            voyageIn = :temp_shipment."voyageIn"[:i];
+            voyageOut = :temp_shipment."voyageOut"[:i];
+            vesselETA = :temp_shipment."vesselETA"[:i];
+            vesselETS = :temp_shipment."vesselETS"[:i];
+
+            lastPort = :temp_shipment."lastPort"[:i];
+            nextPort = :temp_shipment."nextPort"[:i];
+            vesselRotationNumber = :temp_shipment."vesselRotationNumber"[:i];
+            mrnNumber = :temp_shipment."mrnNumber"[:i];
+            service = :temp_shipment."service"[:i];
+            operator = :temp_shipment."operator"[:i];
+            dpIn = :temp_shipment."dpIn"[:i];
+            dpOut = :temp_shipment."dpOut"[:i];
+            masterName = :temp_shipment."masterName"[:i];
+            nationality = :temp_shipment."nationality"[:i];
+
+            carNumber = :temp_shipment."carNumber"[:i];
+            manifestNumber = :temp_shipment."manifestNumber"[:i];
+
+            createdBy = :temp_shipment."createdBy"[:i];
+            createdOn = :temp_shipment."createdOn"[:i];
+            updatedBy = :temp_shipment."updatedBy"[:i];
+            updatedOn = :temp_shipment."updatedOn"[:i];
+            status = :temp_shipment."status"[:i];
+
+            bulk_post = :temp_shipment."bulkPost"[:i];
+
+             IF id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "shipment" WHERE "shipmentNumber" = ?' INTO exShipmentNumber USING :shipmentNumber;
+                IF exShipmentNumber > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "shipment" WHERE "shipmentNumber" = ?' INTO exId USING :shipmentNumber;
+                END IF;
+                IF bulk_post = 'false' AND exShipmentNumber > 0 AND exId != id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "shipment" WHERE "shipmentNumber" = ?' INTO exShipmentNumber USING :shipmentNumber;
+                --exId := null;
+                IF bulk_post = 'false' AND exShipmentNumber > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+            
+            IF id > 0 THEN
+                -- Record exists in "shipment", perform an update
+                UPDATE "shipment"
+                SET
+                    "blNumber" = :blNumber,
+                    "blDate" = :blDate,
+                    "blType" = :blType,
+                    "shipmentNumber" = :shipmentNumber,
+                    "shippingType" = :shippingType,
+                    "seawayBill" = :seawayBill,
+                    "shippingLine" = :shippingLine,
+                    "voyageID" = :voyageID,
+                    "voyageDate" = :voyageDate,
+                    "deliveryType" = :deliveryType,
+                
+                    "vesselID" = :vesselID,
+                    "vesselName" = :vesselName,
+                    "feederVesselID" = :feederVesselID,
+                    "feederVesselName" = :feederVesselName,
+                    "exVesselID" = :exVesselID,
+                    "exVesselName" = :exVesselName,
+                    "portOfLoading" = :portOfLoading,
+                    "transshipmentPort" = :transshipmentPort,
+                    "portOfDischarge" = :portOfDischarge,
+                    "portOfDestination" = :portOfDestination,
+                
+                    "placeOfReceipt" = :placeOfReceipt,
+                    "placeOfDelivery" = :placeOfDelivery,
+                    "fclOrLcl" = :fclOrLcl,
+                    "scimrnNumber" = :scimrnNumber,
+                    "sciService" = :sciService,
+                    "shipperReference" = :shipperReference,
+                    "thdPrepaid" = :thdPrepaid,
+                    "masterBL" = :masterBL,
+                    "slot3rdPartyOP" = :slot3rdPartyOP,
+                    "remarks" = :remarks,
+                
+                    "firstOnCarriageVesselID" = :firstOnCarriageVesselID,
+                    "secondOnCarriageVesselID" = :secondOnCarriageVesselID,
+                    "finalOnCarriageVesselID" = :finalOnCarriageVesselID,
+                    "firstOnCarriageVesselName" = :firstOnCarriageVesselName,
+                    "secondOnCarriageVesselName" = :secondOnCarriageVesselName,
+                    "finalOnCarriageVesselName" = :finalOnCarriageVesselName,
+                    "firstOnCarriageUptoPort" = :firstOnCarriageUptoPort,
+                    "secondOnCarriageUptoPort" = :secondOnCarriageUptoPort,
+                    "finalOnCarriageUptoPort" = :finalOnCarriageUptoPort,
+                    "cargoWeight" = :cargoWeight,
+                
+                    "tareWeight" = :tareWeight,
+                    "cbm" = :cbm,
+                    "cargoDescription" = :cargoDescription,
+                    "type" = :type,
+                    "totalPackages" = :totalPackages,
+                    "hsCode" = :hsCode,
+                    "hsCodeDescription" = :hsCodeDescription,
+                    "cargoTypeCode" = :cargoTypeCode,
+                    "cargoTypeName" = :cargoTypeName,
+                    "personalEffect" = :personalEffect,
+                
+                    "partIndicator" = :partIndicator,
+                    "avgWt20Cntr" = :avgWt20Cntr,
+                    "avgWt40Cntr" = :avgWt40Cntr,
+                    "voyageType" = :voyageType,
+                    "callPort" = :callPort,
+                    "accountNumber" = :accountNumber,
+                    "voyageIn" = :voyageIn,
+                    "voyageOut" = :voyageOut,
+                    "vesselETA" = :vesselETA,
+                    "vesselETS" = :vesselETS,
+                
+                    "lastPort" = :lastPort,
+                    "nextPort" = :nextPort,
+                    "vesselRotationNumber" = :vesselRotationNumber,
+                    "mrnNumber" = :mrnNumber,
+                    "service" = :service,
+                    "operator" = :operator,
+                    "dpIn" = :dpIn,
+                    "dpOut" = :dpOut,
+                    "masterName" = :masterName,
+                    "nationality" = :nationality,
+                
+                    "carNumber" = :carNumber,
+                    "manifestNumber" = :manifestNumber,
+
+                    "updatedBy" = :updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = :status
+                WHERE
+                    "id" = :ID;
+
+                updatedCount = updatedCount + 1;
+
+            ELSE
+                -- Record doesn't exist in "shipment", perform an insert
+                    INSERT INTO "shipment" (
+                        "blNumber", "blDate", "blType", "shipmentNumber", "shippingType", "seawayBill", "shippingLine", "voyageID", "voyageDate", "deliveryType",
+                        "vesselID", "vesselName", "feederVesselID", "feederVesselName", "exVesselID", "exVesselName", "portOfLoading", "transshipmentPort", "portOfDischarge", "portOfDestination",
+                        "placeOfReceipt", "placeOfDelivery", "fclOrLcl", "scimrnNumber", "sciService", "shipperReference", "thdPrepaid", "masterBL", "slot3rdPartyOP", "remarks",
+                        "firstOnCarriageVesselID", "secondOnCarriageVesselID", "finalOnCarriageVesselID", "firstOnCarriageVesselName", "secondOnCarriageVesselName", "finalOnCarriageVesselName", "firstOnCarriageUptoPort", "secondOnCarriageUptoPort", "finalOnCarriageUptoPort", "cargoWeight",
+                        "tareWeight", "cbm", "cargoDescription", "type", "totalPackages", "hsCode", "hsCodeDescription", "cargoTypeCode", "cargoTypeName", "personalEffect",
+                        "partIndicator", "avgWt20Cntr", "avgWt40Cntr", "voyageType", "callPort", "accountNumber", "voyageIn", "voyageOut", "vesselETA", "vesselETS",
+                        "lastPort", "nextPort", "vesselRotationNumber", "mrnNumber", "service", "operator", "dpIn", "dpOut", "masterName", "nationality",
+                        "carNumber", "manifestNumber", "createdBy", "createdOn","status"
+                    ) VALUES (
+                        blNumber, blDate, blType, shipmentNumber, shippingType, seawayBill, shippingLine, voyageID, voyageDate, deliveryType,
+                        vesselID, vesselName, feederVesselID, feederVesselName, exVesselID, exVesselName, portOfLoading, transshipmentPort, portOfDischarge, portOfDestination,
+                        placeOfReceipt, placeOfDelivery, fclOrLcl, scimrnNumber, sciService, shipperReference, thdPrepaid, masterBL, slot3rdPartyOP, remarks,
+                        firstOnCarriageVesselID, secondOnCarriageVesselID, finalOnCarriageVesselID, firstOnCarriageVesselName, secondOnCarriageVesselName, finalOnCarriageVesselName, firstOnCarriageUptoPort, secondOnCarriageUptoPort, finalOnCarriageUptoPort, cargoWeight,
+                        tareWeight, cbm, cargoDescription, type, totalPackages, hsCode, hsCodeDescription, cargoTypeCode, cargoTypeName, personalEffect,
+                        partIndicator, avgWt20Cntr, avgWt40Cntr, voyageType, callPort, accountNumber, voyageIn, voyageOut, vesselETA, vesselETS,
+                        lastPort, nextPort, vesselRotationNumber, mrnNumber, service, operator, dpIn, dpOut, masterName, nationality,
+                        carNumber, manifestNumber, createdBy, CURRENT_DATE, status
+                    );
+                    
+                SELECT current_identity_value() into ID from dummy;
+
+                insertedCount = insertedCount + 1;
+
+            END IF;
+        END FOR;
+
+        temp_shipment_party =  SELECT JT.*
+        FROM JSON_TABLE(
+            TO_CLOB(:IN_PARAM),
+            '$.parties[*]' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "country" NVARCHAR(256) PATH '$.country',
+                "city" NVARCHAR(256) PATH '$.city',
+                "phone" NVARCHAR(256) PATH '$.phone',
+                "email" NVARCHAR(256) PATH '$.email',
+                "fax" BIGINT PATH '$.fax',
+                "accountNumber" BIGINT PATH '$.accountNumber',
+                "localOrForeign" BIGINT PATH '$.localOrForeign',
+                "cardCode" NVARCHAR(256) PATH '$.cardCode',
+                "customerID" BIGINT PATH '$.customerID',
+                "shipmentID" BIGINT PATH '$.shipmentID',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+
+        FOR i in 1..RECORD_COUNT(:temp_shipment_party) do
+            partyId = :temp_shipment_party."id"[:i];
+            partyName = :temp_shipment_party."name"[:i];
+            country = :temp_shipment_party."country"[:i];
+            city = :temp_shipment_party."city"[:i];
+            phone = :temp_shipment_party."phone"[:i];
+            email = :temp_shipment_party."email"[:i];
+            fax = :temp_shipment_party."fax"[:i];
+            partyAccountNumber = :temp_shipment_party."accountNumber"[:i];
+            localOrForeign = :temp_shipment_party."localOrForeign"[:i];
+            cardCode = :temp_shipment_party."cardCode"[:i];
+            customerID = :temp_shipment_party."customerID"[:i];
+            shipmentID = :temp_shipment_party."shipmentID"[:i];
+            partyStatus = :temp_shipment_party."status"[:i];
+
+            IF partyId > 0 THEN
+                -- Record exists in "shipment_party", perform an update
+                UPDATE "shipment_party"
+                SET 
+                    "name" = :partyName,
+                    "country" = :country,
+                    "city" = :city,
+                    "phone" = :phone,
+                    "email" = :email,
+                    "fax" = :fax,
+                    "accountNumber" = :partyAccountNumber,
+                    "localOrForeign" = :localOrForeign,
+                    "cardCode" = :cardCode,
+                    "customerID" = :customerID,
+                    "shipmentID" = :shipmentID,
+                    "status" = :partyStatus
+                WHERE id = :partyId;
+                
+            ELSE
+                -- Record doesn't exist in "shipment_party", perform an insert
+                INSERT INTO "shipment_party" ("name", "country", "city", "phone", "email", "fax", "accountNumber", "localOrForeign", "cardCode", "customerID","shipmentID", "status") VALUES (partyName, country, city, phone, email, fax, partyAccountNumber, localOrForeign, cardCode, customerID, :ID, partyStatus);
+
+            END IF;
+        END FOR;
+    
+    DROP TABLE #dummy_shipment;
+    IF bulk_post = 'true' THEN
+        SELECT :insertedCount "inserted", :updatedCount "updated",0 "recordCount","id","blNumber", "blDate", "blType", "shipmentNumber", "shippingType", "seawayBill", "shippingLine", "voyageID", "voyageDate", "deliveryType",
+                        "vesselID", "vesselName", "feederVesselID", "feederVesselName", "exVesselID", "exVesselName", "portOfLoading", "transshipmentPort", "portOfDischarge", "portOfDestination",
+                        "placeOfReceipt", "placeOfDelivery", "fclOrLcl", "scimrnNumber", "sciService", "shipperReference", "thdPrepaid", "masterBL", "slot3rdPartyOP", "remarks",
+                        "firstOnCarriageVesselID", "secondOnCarriageVesselID", "finalOnCarriageVesselID", "firstOnCarriageVesselName", "secondOnCarriageVesselName", "finalOnCarriageVesselName", "firstOnCarriageUptoPort", "secondOnCarriageUptoPort", "finalOnCarriageUptoPort", "cargoWeight",
+                        "tareWeight", "cbm", "cargoDescription", "type", "totalPackages", "hsCode", "hsCodeDescription", "cargoTypeCode", "cargoTypeName", "personalEffect",
+                        "partIndicator", "avgWt20Cntr", "avgWt40Cntr", "voyageType", "callPort", "accountNumber", "voyageIn", "voyageOut", "vesselETA", "vesselETS",
+                        "lastPort", "nextPort", "vesselRotationNumber", "mrnNumber", "service", "operator", "dpIn", "dpOut", "masterName", "nationality",
+                        "carNumber", "manifestNumber", "createdBy", "createdOn","updatedBy","updatedOn","status" FROM "shipment" WHERE "shipmentNumber" = :shipmentNumber;
+    ELSE
+        SELECT 0 "inserted", 0 "updated",0 "recordCount","id","blNumber", "blDate", "blType", "shipmentNumber", "shippingType", "seawayBill", "shippingLine", "voyageID", "voyageDate", "deliveryType",
+                        "vesselID", "vesselName", "feederVesselID", "feederVesselName", "exVesselID", "exVesselName", "portOfLoading", "transshipmentPort", "portOfDischarge", "portOfDestination",
+                        "placeOfReceipt", "placeOfDelivery", "fclOrLcl", "scimrnNumber", "sciService", "shipperReference", "thdPrepaid", "masterBL", "slot3rdPartyOP", "remarks",
+                        "firstOnCarriageVesselID", "secondOnCarriageVesselID", "finalOnCarriageVesselID", "firstOnCarriageVesselName", "secondOnCarriageVesselName", "finalOnCarriageVesselName", "firstOnCarriageUptoPort", "secondOnCarriageUptoPort", "finalOnCarriageUptoPort", "cargoWeight",
+                        "tareWeight", "cbm", "cargoDescription", "type", "totalPackages", "hsCode", "hsCodeDescription", "cargoTypeCode", "cargoTypeName", "personalEffect",
+                        "partIndicator", "avgWt20Cntr", "avgWt40Cntr", "voyageType", "callPort", "accountNumber", "voyageIn", "voyageOut", "vesselETA", "vesselETS",
+                        "lastPort", "nextPort", "vesselRotationNumber", "mrnNumber", "service", "operator", "dpIn", "dpOut", "masterName", "nationality",
+                        "carNumber", "manifestNumber", "createdBy", "createdOn","updatedBy","updatedOn","status" FROM "shipment" WHERE "id" = :ID;
+    END IF;
+END;

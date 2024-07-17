@@ -1,0 +1,20 @@
+PROCEDURE "GET_CUSTOMS_PACKAGE_CODE_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN 
+  IF(:ID > 0) THEN
+  SELECT 
+   0 "inserted", 
+   0 "updated",
+    "id",
+    "name",
+    "code",
+    "description",
+    "createdBy",
+    "createdOn",
+    "updatedBy",
+    "updatedOn",
+    "status",
+    0 AS "recordCount"
+  FROM "customs_package_code"
+  WHERE "id" = :ID;
+END IF;
+END

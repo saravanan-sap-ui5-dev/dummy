@@ -1,0 +1,84 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>tsVoyageType}" required="true" />
+                    <ComboBox selectedKey="">
+                        <core:Item key="1" text="Container" />
+                        <core:Item key="2" text="RoRo" />
+                    </ComboBox>
+                    <Label text="{i18n>tsStatus}" required="true" />
+                    <ComboBox selectedKey="">
+                        <core:Item key="1" text="Draft" />
+                        <core:Item key="2" text="Active" />
+                        <core:Item key="3" text="In-active" />
+
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <!--  <Label text="Shipping Line" />
+                    <Input showValueHelp="true" valueHelpRequest="onPressShippingLine" /> -->
+                    <Label text="{i18n>tsCallPort}" />
+                    <ComboBox selectedKey="">
+                        <core:Item key="1" text="Buraimi" />
+                        <core:Item key="2" text="Suwaiq" />
+                        <core:Item key="3" text="Sur" />
+                        <core:Item key="4" text="Port Sultan Qaboos" />
+                        <core:Item key="5" text="Port Sohar" />
+                        <core:Item key="6" text="Port Salalah" />
+                        <core:Item key="7" text="Port Duqm" />
+                        <core:Item key="8" text="Muscat" />
+                    </ComboBox>
+                    <Label text="{i18n>tsAccountNo}" />
+                    <Input />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>tsVesselId}" />
+                    <Input showValueHelp="true" valueHelpRequest="onPressVessel">
+                    </Input>
+                    <Label text="{i18n>tsVesselName}" />
+                    <Input editable="false" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>tsVoyageIn}" />
+                    <Input />
+                    <Label text="{i18n>tsVoyageOut}" />
+                    <Input />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>tsVesselETA}" />
+                    <DateTimePicker placeholder=" " change="handleChange" />
+                    <Label text="{i18n>tsVesselETS}" />
+                    <DateTimePicker placeholder=" " change="handleChange" />
+                </form:content>
+            </form:SimpleForm>
+            <!-- <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="Account No" />
+                    <Input />
+                </form:content>
+            </form:SimpleForm> -->
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,63 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox>
+            <form:SimpleForm id="cuForm" editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4" singleContainerFullSize="true" class="sapUiSmallMarginTop">
+                <form:content>
+                    <Label text="{i18n>cuName}" required="true"/>
+                    <Input value="{cardName}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                    <Label text="{i18n>cuShortName}" />
+                    <Input value="{shortName}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuBusinessType}" />
+                    <Input value="{businessType}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>cuStatus}"/>
+                    <Select items="{masterDataMdl>/status}" selectedKey="{status}" editable="{visible>/edit}" change = "onChangeStatus">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </Select>
+                    <Label text="{i18n>cuContactPerson}" />
+                    <Input value="{contactPerson}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuPhone}" required="true"/>
+                    <Input value="{phone1}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                    <Label text="{i18n>cuEmail}" required="true"/>
+                    <Input value="{emailAddress}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                    <Label text="{i18n>cuFax}" />
+                    <Input value="{fax}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine1}" />
+                    <Input value="{addressLine1}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine2}" />
+                    <Input value="{addressLine2}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAddressLine3}"/>
+                    <Input value="{addressLine3}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuCity}"/>
+                    <ComboBox selectedKey="{city}" editable="{visible>/edit}">
+                        <core:Item key="CPO" text="CPO" />
+                        <core:Item key="Abhu Dhabi" text="Abhu Dhabi" />
+                        <core:Item key="Dhubai" text="Dhubai" />
+                    </ComboBox>
+                    <Label text="{i18n>cuPoBox}" />
+                    <Input value="{poBox}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuPinCode}" />
+                    <Input value="{zipCode}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAgentCode}" />
+                    <Input value="{agentCode}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuBayanCode}" />
+                    <Input value="{bayanCode}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuRemarks}" />
+                    <Input value="{remarks}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

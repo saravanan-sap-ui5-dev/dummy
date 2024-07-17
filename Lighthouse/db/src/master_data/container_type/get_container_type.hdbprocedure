@@ -1,0 +1,117 @@
+PROCEDURE "GET_CONTAINER_TYPE" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER,
+IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+  DECLARE CONTAINER_TYPE_ID BIGINT;
+  DECLARE CONTAINER_TYPE_NAME NVARCHAR(256);
+  DECLARE CODE NVARCHAR(256);
+  DECLARE DESCRIPTION NVARCHAR(256);
+  DECLARE CREATED_BY NVARCHAR(256);
+  DECLARE UPDATED_BY NVARCHAR(256);
+  DECLARE CREATED_ON_START DATE;
+  DECLARE CREATED_ON_END DATE;
+  DECLARE UPDATED_ON_START DATE;
+  DECLARE UPDATED_ON_END DATE;
+  DECLARE QUERY NVARCHAR(2000) :='';
+  DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+  DECLARE "TOTAL_RECORDS" INTEGER :=0;
+  DECLARE temp_container_type NVARCHAR(5000);
+  DECLARE temp_sort NVARCHAR(1000);
+  DECLARE CONTAINER_TYPE_STATUS_COLLECTION NCLOB;
+  DECLARE CONTAINER_TYPE_CODE_COLLECTION NCLOB;
+
+
+  temp_container_type := 'SELECT * FROM "container_type"';
+ 
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_container_type || ')' INTO "TOTAL_RECORDS";
+  
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+      QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated",* FROM (' || :temp_container_type || ') AS temp_table ORDER BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+      EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id filter
+      SELECT  0 "recordCount",0 "inserted",0 "updated","id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status" FROM "container_type"  WHERE "id" = ID ORDER BY "id" DESC;
+    ELSE -- for criteria based filter
+      IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO CONTAINER_TYPE_ID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.name') INTO "CONTAINER_TYPE_NAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.code') INTO "CODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.description') INTO "DESCRIPTION" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnStart') INTO CREATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnEnd') INTO CREATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnStart') INTO UPDATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnEnd') INTO UPDATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.statuses') INTO "CONTAINER_TYPE_STATUS_COLLECTION" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.containerTypeCodeCollection') INTO "CONTAINER_TYPE_CODE_COLLECTION" FROM DUMMY;
+
+
+        temp_container_type_status_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:CONTAINER_TYPE_STATUS_COLLECTION); 
+        temp_container_type_code_collection =   SELECT * FROM FUNC_SPLIT_STRING_VALUES_TO_TABLE(:CONTAINER_TYPE_CODE_COLLECTION); 
+
+        IF :CONTAINER_TYPE_NAME != ''  THEN  -- for criterials
+          QUERY = CASE WHEN QUERY = '' THEN '  LOWER("name") like ''%' ||  LOWER(:CONTAINER_TYPE_NAME) || '%'''  ELSE ' AND   LOWER("name") like ''%' ||  LOWER(:CONTAINER_TYPE_NAME) || '%''' END;
+        END IF;
+
+		    IF :CODE != ''  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN '  LOWER("code") like ''%' ||  LOWER(:CODE) || '%'''  ELSE ' AND   LOWER("code") like ''%' ||  LOWER(:CODE) || '%''' END;
+        END IF;
+
+        IF :CONTAINER_TYPE_ID > 0  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "id" =' || :CONTAINER_TYPE_ID   ELSE ' AND  "id" =' || :CONTAINER_TYPE_ID   END;
+        END IF;
+
+         IF EXISTS (SELECT * FROM :temp_container_type_code_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "code"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_code_collection) || ')'  ELSE ' AND  "code"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_code_collection) || ')' END;
+		    END IF;
+        
+        IF EXISTS (SELECT * FROM :temp_container_type_status_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "status"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_status_collection) || ')'  ELSE ' AND  "status"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_status_collection) || ')' END;
+		    END IF;
+		 
+		    IF :CREATED_BY != ''  THEN  -- for criterials
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+        
+		    IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !='' AND :CREATED_ON_END != '' THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN '"createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END'  ELSE ' AND "createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL AND :UPDATED_ON_START !='' AND :UPDATED_ON_END != '' THEN  -- for criterials
+           QUERY = QUERY || CASE WHEN QUERY = '' THEN '"updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END'  ELSE ' AND "updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_BY != ''  THEN  -- for criterials
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+        
+        IF(QUERY = '') THEN
+          QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated",* FROM "container_type" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+          EXECUTE IMMEDIATE :QUERY;
+        ELSE
+          IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !=''AND :CREATED_ON_END !=''OR :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL  AND :UPDATED_ON_START !=''AND :UPDATED_ON_END !=''	THEN  -- for criterials
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM ('|| :temp_container_type ||') WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+
+            QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated","id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status" FROM "container_type"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX, :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          ELSE 
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_type" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated","id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status" FROM "container_type"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+          END IF;
+        END IF;
+      ELSE
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated",* FROM "container_type" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+        EXECUTE IMMEDIATE :QUERY;
+      END IF;
+    END IF; 
+  END IF;
+END

@@ -1,0 +1,165 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:uxap="sap.uxap"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exBLNo}" />
+                    <Input editable="{visible>/edit}" value="{blno}" />
+                    <Label text="{i18n>exShipmentNo}" />
+                    <Input editable="{visible>/edit}" value="{shipmentNo}" />
+                    <Label text="{i18n>exBLType}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{ImportsMdl>/blType}">
+                        <core:Item key="1" text="Import" />
+                        <core:Item key="2" text="Export" />
+                        <core:Item key="3" text="Trans-shipment" />
+                    </ComboBox>
+
+                    <Label text="{i18n>exBLDate}" />
+                    <DatePicker editable="{visible>/edit}" value="{blDate}" placeholder=" " />
+                    <Label text="{i18n>exShippingLine}" />
+                    <Input editable="{visible>/edit}" value="{shippingLineName}" showValueHelp="true" valueHelpRequest="onPressShippingLine"/>
+                    <Label text="{i18n>exShippingType}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{ImportsMdl>/shippingType}">
+                        <core:Item key="1" text="Container" />
+                        <core:Item key="2" text="RoRo" />
+                        <core:Item key="3" text="Break-bulk" />
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exVesselId}" />
+                    <Input editable="{visible>/edit}" value="{vesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                    <Label text="{i18n>exVesselName}" />
+                    <Input value="{vesselName}" editable="false" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exVoyageId}" />
+                    <Input editable="{visible>/edit}" value="{voyageId}" showValueHelp="true" valueHelpRequest="onPressVoyage"/>
+                    <Label text="{i18n>exVoyageDate}" />
+                    <DatePicker value="{voyageDate}" editable="{visible>/edit}" placeholder=" "/>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exPortOfLoading}" />
+                    <Input editable="{visible>/edit}" value="{portOfLoading}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exPortOfDestination}" />
+                    <Input editable="{visible>/edit}" value="{portOfDestination}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exPlaceOfReceipt}" />
+                    <Input editable="{visible>/edit}" value="{placeOfReceipt}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exPlaceOfDelivery}" />
+                    <Input editable="{visible>/edit}" value="{placeOfDelivery}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exTransshipmentPort}" />
+                    <Input editable="{visible>/edit}" value="{transshipmentPort}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exSeawayBill}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{seawayBill}">
+                        <core:Item key="1" text="Yes" />
+                        <core:Item key="2" text="No" />
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exFclAndLcl}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{fclAndLcl}">
+                        <core:Item key="1" text="FCL" />
+                        <core:Item key="2" text="LCL" />
+                    </ComboBox>
+                    <Label text="{i18n>exDeliveryType}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{deliveryType}">
+                        <core:Item key="1" text="CY/FO" />
+                        <core:Item key="2" text="RAMP/RAMP" />
+                        <core:Item key="3" text="PIER/PIER" />
+                        <core:Item key="4" text="CY/CFS" />
+                        <core:Item key="5" text="HOUSE/CY" />
+                        <core:Item key="6" text="CY/HOUSE and HOUSE/HOUSE" />
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exSCIMRNNo}" />
+                    <Input editable="{visible>/edit}" value="{sciMrnNo}" />
+                    <Label text="{i18n>exSlot}" />
+                    <Input editable="{visible>/edit}" value="{slot}" showValueHelp="true" valueHelpRequest="onPressShippingLine" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>exSCIService}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{sciService}">
+                        <core:Item key="1" text="Feeder: Feeder vessel" />
+                        <core:Item key="2" text="IMED: India Mediterranean" />
+                        <core:Item key="3" text="ISE: India – Subcontinent Europe" />
+                        <core:Item key="4" text="ISEAFR: ISE + Africa" />
+                        <core:Item key="5" text="SMILE: SCI Middle-east India Liner Express" />
+                    </ComboBox>
+                    <Label text="{i18n>exStatus}" />
+                    <ComboBox editable="{visible>/edit}" selectedKey="{status}">
+                        <core:Item key="1" text="Draft" />
+                        <core:Item key="2" text="Active" />
+                        <core:Item key="2" text="Inactive" />
+                    </ComboBox>
+                    <Label text="Shipper Reference" />
+                    <Input editable="{visible>/edit}"/>
+
+                    <Label text="{i18n>exRemarks}" />
+                    <TextArea editable="{visible>/edit}" value="{finalOnCarriage/remarks}"/>
+
+
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <core:Title text="{i18n>ex1stOnCarriageSubSection}" />
+                    <Label text="{i18n>exVesselId}" />
+                    <Input editable="{visible>/edit}" value="{firstOnCarriage/vesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                    <Label text="{i18n>exUptoPort}" />
+                    <Input editable="{visible>/edit}" value="{firstOnCarriage/uptoPort}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exVesselName}" />
+                    <Input editable="false" value="{firstOnCarriage/vesselName}" showValueHelp="true" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <core:Title text="{i18n>ex2ndOnCarriageSubSection}" />
+                    <Label text="{i18n>exVesselId}" />
+                    <Input editable="{visible>/edit}" value="{secondOnCarriage/vesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                    <Label text="{i18n>exUptoPort}" />
+                    <Input editable="{visible>/edit}" value="{secondOnCarriage/uptoPort}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exVesselName}" />
+                    <Input editable="false" value="{secondOnCarriage/vesselName}" showValueHelp="true" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <core:Title text="{i18n>exFinalOnCarriageSubSection}" />
+                    <Label text="{i18n>exVesselId}" />
+                    <Input editable="{visible>/edit}" value="{finalOnCarriage/vesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                    <Label text="{i18n>exUptoPort}" />
+                    <Input editable="{visible>/edit}" value="{finalOnCarriage/uptoPort}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                    <Label text="{i18n>exVesselName}" />
+                    <Input editable="false" value="{finalOnCarriage/vesselName}" showValueHelp="true" />
+                </form:content>
+            </form:SimpleForm>
+
+        </VBox>
+    </VBox>
+</core:FragmentDefinition>

@@ -1,0 +1,166 @@
+<mvc:View controllerName="com.lighthouse.init.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:u="sap.uxap"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Page showHeader="true" enableScrolling="false" titleAlignment="Center" showFooter="false">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Image src="./images/logo1.jpg" height="35px" />
+                </contentLeft>
+                <contentMiddle>
+                </contentMiddle>
+                <contentRight>
+                    <Button icon="sap-icon://hint" type="Transparent" />
+                    <Button icon="sap-icon://bell" type="Transparent" />
+                    <Avatar initials="S" displaySize="XS" press=".menuPopoverOpen" />
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <u:ObjectPageLayout id="oplDashboard" showHeaderContent="false" class="dashboard">
+                <u:sections>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/linerService/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/linerService/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/candfServices/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/candfServices/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+                                            <!-- class="voyages" -->
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/otherServices/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/otherServices/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/finance/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/finance/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/admin/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/admin/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                    <u:ObjectPageSection titleUppercase="false" title="{dashboard>/masterData/title}">
+                        <u:subSections>
+                            <u:ObjectPageSubSection titleUppercase="false">
+                                <f:GridContainer columnsChange=".onGridColumnsChange" items="{dashboard>/masterData/items}">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="55px" columnSize="84px" gap="12px" />
+                                    </f:layout>
+                                    <f:layoutXS>
+                                        <f:GridContainerSettings rowSize="45px" columnSize="70px" gap="12px" />
+                                    </f:layoutXS>
+                                    <GenericTile state="{dashboard>state}" header="{dashboard>header}" subheader="{dashboard>subHeader}" press="onPressTile" app:route="{dashboard>route}" app:key="{dashboard>key}">
+                                        <layoutData>
+                                            <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                        </layoutData>
+                                        <TileContent footer="{dashboard>footer}">
+                                            <NumericContent value="{dashboard>value}" icon="{dashboard>icon}" withMargin="false" />
+                                        </TileContent>
+                                    </GenericTile>
+                                </f:GridContainer>
+                            </u:ObjectPageSubSection>
+                        </u:subSections>
+                    </u:ObjectPageSection>
+                </u:sections>
+            </u:ObjectPageLayout>
+        </content>
+    </Page>
+
+</mvc:View>

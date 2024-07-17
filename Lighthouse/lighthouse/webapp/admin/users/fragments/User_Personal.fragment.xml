@@ -1,0 +1,46 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Nationality" />
+                <ComboBox selectedKey="{citizenshipCountryCode}" editable="{visible>/edit}">
+                    <core:Item key="OM" text="Omani"/>
+                    <core:Item key="2" text="Indian"/>
+                    <core:Item key="3" text="Pakistani"/>
+                    <core:Item key="4" text="Bangladeshi"/>
+                    <core:Item key="5" text="Philippines"/>
+                    <core:Item key="6" text="Indonesia"/>
+                </ComboBox>
+                <Label text="Passport No" />
+                <Input value="{passportNumber}" editable="{visible>/edit}" />
+                <Label text="Passport Issue Date " />
+                <DatePicker placeholder=" " value="{passportIssueDate}" editable="{visible>/edit}" />
+                <Label text="Marital Status" />
+                <ComboBox selectedKey="{martialStatus}" editable="{visible>/edit}">
+                    <core:Item key="mts_Single" text="Single"/>
+                    <core:Item key="mts_Married" text="Married"/>
+                    <core:Item key="mts_Divorced" text="Divorced"/>
+                    <core:Item key="mts_Widowed" text="Widowed"/>
+                    <core:Item key="mts_NotSpecified" text="NotSpecified"/>
+                </ComboBox>
+                <Label text="ID No " />
+                <Input value="{idNumber}" editable="{visible>/edit}" />
+                <Label text="Country of Birth" />
+                <ComboBox selectedKey="{countryOfBirth}" editable="{visible>/edit}">
+                    <core:Item key="OM" text="Oman"/>
+                    <core:Item key="UAE" text="UAE"/>
+                </ComboBox>
+                <Label text="Passport Expiry Date" />
+                <DatePicker placeholder=" " value="{passportExpirationDate}" editable="{visible>/edit}" />
+                <Label text="Place of issue" />
+                <Input value="{passportIssuer}" editable="{visible>/edit}" />
+                <Label text="No of Children" />
+                <Input value="{numOfChildren}" editable="{visible>/edit}" />
+
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

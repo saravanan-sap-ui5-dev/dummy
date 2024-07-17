@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+
+    <Panel>
+        <VBox class="sapUiSmallMargin" backgroundDesign="Translucent">
+
+            <form:SimpleForm id="slForm" editable="true" layout="ColumnLayout" singleContainerFullSize="true" columnsM="2" columnsL="2" columnsXL="2" class="sapUiNoContentPadding formPadding">
+                <form:content>
+                    <Label text="{i18n>shCode}"  required="true" />
+                    <Input value="{code}" type="Number" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                    <Label text="{i18n>shName}" required="true" />
+                    <Input value="{cardName}" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                </form:content>
+            </form:SimpleForm>
+
+
+            <form:SimpleForm editable="true" layout="ColumnLayout" singleContainerFullSize="true" columnsM="2" columnsL="2" columnsXL="2" class="sapUiNoContentPadding formPadding">
+                <form:content>
+                    <Label text="{i18n>shAccountCode}" />
+                    <Input value="{accountCode}" type="Number" editable="{visible>/edit}"/>
+                    <Label text="{i18n>shDebitNotePrefix}" />
+                    <Input value="{debitNotePrefix}" editable="{visible>/edit}"/>
+                </form:content>
+            </form:SimpleForm>
+
+            <form:SimpleForm editable="true" layout="ColumnLayout" singleContainerFullSize="true" columnsM="2" columnsL="2" columnsXL="2" class="sapUiNoContentPadding formPadding">
+                <form:content>
+                    <Label text="{i18n>shStatus}" />
+                    <Select items="{masterDataMdl>/status}" editable="{visible>/edit}" change = "onChangeStatus" selectedKey="{status}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </Select>
+                </form:content>
+            </form:SimpleForm>
+
+        </VBox>
+    </Panel>
+
+</core:FragmentDefinition>

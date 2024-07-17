@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>tsLastPort}" />
+                    <Input showValueHelp="true" valueHelpRequest="onPressPortCode" />
+                    <Label text="{i18n>tsNextPort}" />
+                    <Input showValueHelp="true" valueHelpRequest="onPressPortCode" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>tsVesselRotationNo}" />
+                    <Input />
+                    <Label text="{i18n>tsMRNNo}" />
+                    <Input />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>tsService}" />
+                    <ComboBox>
+                        <core:Item text="G1" key="1" />
+                    </ComboBox>
+                    <Label text="{i18n>tsOperator}" />
+                    <Input showValueHelp="true" valueHelpRequest="onPressShippingLine" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                <form:content>
+                    <Label text="{i18n>tsDPIN}" />
+                    <Input />
+                    <Label text="{i18n>tsDPOUT}" />
+                    <Input />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

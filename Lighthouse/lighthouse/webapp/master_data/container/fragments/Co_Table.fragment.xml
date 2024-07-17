@@ -1,0 +1,85 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id ="table_Containers" inset="false" items="{path:'items', length:9999999999}" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({items/0/recordCount})" visible="{= ${items}.length>0}"/>
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" type="Transparent" press="onPressContainerCreate" />
+                    <ToolbarSeparator visible = "{visible/excelUploadDownload}" />
+                    <!-- <u:FileUploader id="fileUploader" sameFilenameAllowed="true" tooltip="Bulk Upload" icon="sap-icon://upload" iconOnly="true" buttonOnly="true" change="onPressBulkUpload" uploadComplete="handleUploadComplete"/> -->
+                    <Button icon="sap-icon://upload" iconFirst="true" visible = "{visible/excelUploadDownload}" type="Transparent" tooltip="Bulk Upload" press="onPressBulkUpload"/>
+                    <OverflowToolbarButton type="Transparent" visible = "{visible/excelUploadDownload}" icon="sap-icon://download" tooltip="{i18n>cnTemplate}" press="onPressTemplate" enabled="true"/>
+                    <ToolbarSeparator  />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton visible = "{visible/excelUploadDownload}" type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="handlePersoButtonPressed" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <noData>
+            <Text id="txt_noData" text="To start, set the relevant filters and choose &quot;Go&quot;."/>
+        </noData>
+        <columns>
+            <Column width="10rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coContainerNo}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Text text="{i18n>coSize}" />
+            </Column>
+            <Column >
+                <Text text="{i18n>coType}" />
+            </Column>
+            <Column width="10rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Text text="{i18n>coSoc}" />
+            </Column>
+            <Column width="8rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coOwnedBy}" />
+            </Column>
+            <Column width="7rem">
+                <Text text="{i18n>cnCreatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedOn}" />
+            </Column>
+            <Column width="7rem">
+                <Text text="{i18n>cnUpdatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedOn}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="{type}" press="onListItemPress" visible="true">
+                <cells>
+                    <ObjectIdentifier title="{containerNo}" />
+                    <Text text="{size}" />
+                    <Text text="{containerTypeName}" />
+                    <Text text="{soc}" />
+                    <Text text="{ownedByName}" />
+                    <Text text="{createdBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'createdOn'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{updatedBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'updatedOn'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

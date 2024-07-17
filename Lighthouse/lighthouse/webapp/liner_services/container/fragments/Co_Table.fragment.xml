@@ -1,0 +1,95 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="containerInUseTable" inset="false" items="{items}" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({items/0/recordCount})" visible="{= ${items}.length>0}" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" type="Transparent" press="onPressNavCreate" />
+                    <ToolbarSeparator />
+                    <Button icon="sap-icon://upload" iconFirst="true" type="Transparent" tooltip="Bulk Upload" press="onPressBulkUpload"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://download" tooltip="{i18n>cnTemplate}" press="onPressTemplate" enabled="true"/>
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="handlePersoButtonPressed" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <noData>
+            <Text id="txt_noData" text="To start, set the relevant filters and choose &quot;Go&quot;."/>
+        </noData>
+        <columns>
+            <Column width="10rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coContainerNo}" />
+            </Column>
+            <Column width="10rem">
+                <Text text="{i18n>coBLNo}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coSize}" />
+            </Column>
+            <Column width="12rem">
+                <Text text="{i18n>coType}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>coOperator}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coOnHold}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coSoc}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coMovement}" />
+            </Column>
+            <Column width="7rem">
+                <Text text="{i18n>cnCreatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedOn}" />
+            </Column>
+            <Column width="7rem">
+                <Text text="{i18n>cnUpdatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedOn}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>coStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="{type}" press="onListItemPress" visible="true">
+                <cells>
+                    <ObjectIdentifier title="{containerNumber}" />
+                    <Text text="{blno}" />
+                    <Text text="{size}" />
+                    <Text text="{containerTypeName}" />
+                    <Text text="{operator}" />
+                    <Text text="{onHold}" />
+                    <Text text="{soc}" />
+                    <Text text="{movement}" />
+                    <Text text="{createdBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'createdOn'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{updatedBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'updatedOn'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

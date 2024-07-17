@@ -1,0 +1,34 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox>
+            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4" singleContainerFullSize="true" class="sapUiSmallMarginTop">
+                <form:content>
+                    <Label text="{i18n>cuCodeDebtorAccNo}" />
+                    <Input value="{codes/debtAccNo}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuCreditorAccNo}" />
+                    <Input value="{codes/creditAccNo}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuVATID}" />
+                    <Input value="{codes/vatId}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuCDDExempt}" />
+                    <Input value="{codes/cddExempt}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAgentCode}" />
+                    <Input value="{codes/agentCode}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuBayanCode}" />
+                    <Input value="{codes/bayanCode}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,72 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel >
+        <Table id="cargoDetailTableId" items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" visible="{= ${items}.length>0}" />
+                        <ToolbarSpacer />
+                        <Button type="Transparent" text="{i18n>cnBtnAdd}" enabled="{= !${visible>/add}}"  width="70px" press="onAddCargo" />
+                        <Button type="Transparent" text="{i18n>cnBtnRemove}" enabled="{= !${visible>/add}}"  press="onRemoveCargo"/>
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column >
+                    <Text text="B/L No" />
+                </Column>
+                <Column >
+                    <Text text="Marks &amp; Numbers" />
+                </Column>
+                <Column >
+                    <Text text="Cargo Type" />
+                </Column>
+                <Column >
+                    <Text text="Cargo Weight" />
+                </Column>
+                <Column >
+                    <Text text="CBM" />
+                </Column>
+                <Column >
+                    <Text text="IMCO" />
+                </Column>
+                <Column >
+                    <Text text="OOG" />
+                </Column>
+                <Column >
+                    <Text text="FCL/LCL" />
+                </Column>
+                <Column >
+                    <Text text="Part" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle" type="Navigation" press="onPressCargoItem">
+                    <cells>
+                        <ObjectIdentifier title="{blNumber}" />
+                        <Text text="{marksAndNumbers}" />
+                        <Text text="{cargoType}" />
+                        <Text text="{cargoWeight}" />
+                        <Text text="{cbm}" />
+                        <Text text="{imco}" />
+                        <Text text="{oogText}" />
+                        <Text text="{fclOrLclText}" />
+                        <Text text="{partText}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Panel>
+</core:FragmentDefinition>

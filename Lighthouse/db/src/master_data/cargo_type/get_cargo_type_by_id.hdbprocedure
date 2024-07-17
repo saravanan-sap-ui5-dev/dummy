@@ -1,0 +1,20 @@
+PROCEDURE "GET_CARGO_TYPE_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN
+    IF(:ID > 0) THEN
+        SELECT
+            0 "inserted", 
+            0 "updated",
+            ct."id",
+            ct."name",
+            ct."code",
+            ct."description",
+            ct."createdBy",
+            ct."createdOn",
+            ct."updatedBy",
+            ct."updatedOn",
+            ct."status",
+            0 AS "recordCount"
+        FROM "cargo_type" AS ct
+        WHERE ct."id" = :ID;
+    END IF;
+END

@@ -1,0 +1,23 @@
+PROCEDURE "GET_IMO_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN
+    IF(:ID > 0) THEN
+        SELECT
+            0 "inserted", 
+            0 "updated",
+            imo."id",
+            imo."name",
+            imo."imcoClassNumber",
+            imo."imcoPageNumber",
+            imo."imcoPoint",
+            imo."unNumber",
+            imo."cargoDescription",
+            imo."createdBy",
+            imo."createdOn",
+            imo."updatedBy",
+            imo."updatedOn",
+            imo."status",
+            0 AS "recordCount"
+        FROM "imo" AS imo
+        WHERE imo."id" = :ID;
+    END IF;
+END

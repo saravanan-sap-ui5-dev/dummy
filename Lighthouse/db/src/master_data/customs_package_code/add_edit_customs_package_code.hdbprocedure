@@ -1,0 +1,126 @@
+PROCEDURE "ADD_EDIT_CUSTOMS_PACKAGE_CODE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE  ID BIGINT := 0;
+	DECLARE cpcid BIGINT := 0;
+    DECLARE cpcname NVARCHAR(256);
+    DECLARE cpccode NVARCHAR(256);
+    DECLARE cpcdescription NVARCHAR(256);
+    DECLARE cpccreatedBy NVARCHAR(256);
+    DECLARE cpccreatedOn DATE;
+    DECLARE cpcupdatedBy NVARCHAR(256);
+    DECLARE cpcupdatedOn DATE;
+    DECLARE cpcstatus INTEGER;
+	DECLARE i INTEGER;
+
+  -- Other variable declarations...
+    DECLARE QUERY NVARCHAR(2000) :='';
+    DECLARE exCode INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'Package Code already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+
+    SELECT JSON_VALUE(:IN_PARAM, '$.bulkPost') INTO bulk_post FROM DUMMY;
+	
+	temp_customs_package_code = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "code" NVARCHAR(256) PATH '$.code',
+				"description" NVARCHAR(256) PATH '$.description',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+     
+      
+          FOR i in 1..RECORD_COUNT(:temp_customs_package_code) do
+            cpcid = :temp_customs_package_code."id"[:i];
+            cpcname = :temp_customs_package_code."name"[:i];
+            cpccode = :temp_customs_package_code."code"[:i];
+			cpcdescription = :temp_customs_package_code."description"[:i];
+            cpccreatedBy = :temp_customs_package_code."createdBy"[:i];
+            cpccreatedOn = CURRENT_DATE;
+            cpcupdatedBy = null;
+            cpcupdatedOn = null;
+            cpcstatus = :temp_customs_package_code."status"[:i];
+            
+            bulk_post = :temp_customs_package_code."bulkPost"[:i];
+
+            IF cpcid IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "customs_package_code" WHERE "code" = ?' INTO exCode USING :cpccode;
+                IF exCode > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "customs_package_code" WHERE "code" = ?' INTO exId USING :cpccode;
+                END IF;
+                IF bulk_post = 'false' AND exCode > 0 AND exId != cpcid THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "customs_package_code" WHERE "code" = ?' INTO exCode USING :cpccode;
+                IF bulk_post = 'false' AND exCode > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+			
+            IF cpcid > 0 OR exCode > 0 THEN
+                -- Record exists in "customs_package_code", perform an update
+            IF cpcid > 0 THEN
+                UPDATE "customs_package_code"
+                SET
+            	"name" = cpcname,
+	            "code" = cpccode,
+				"description" = cpcdescription,
+	            "updatedBy" = cpcupdatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = cpcstatus
+                WHERE
+                "id" = cpcid;
+            END IF;
+            IF exCode > 0 THEN
+                UPDATE "customs_package_code"
+                SET
+            	"name" = cpcname,
+	            "code" = cpccode,
+				"description" = cpcdescription,
+	            "updatedBy" = cpcupdatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = cpcstatus
+                WHERE
+                "code" = cpccode;
+            END IF;
+               updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "customs_package_code", perform an insert
+                INSERT INTO "customs_package_code" ("name","code","description","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (cpcname,cpccode,cpcdescription,cpccreatedBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,
+	    	    	cpcstatus);
+                SELECT current_identity_value() into cpcid from dummy;
+
+                insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+        IF bulk_post = 'true' THEN
+
+        SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",* FROM "customs_package_code" WHERE "code" = :cpccode;
+		ELSE
+            SELECT 0 "recordCount", 0 "inserted", 0 "updated",* FROM "customs_package_code" WHERE "id" = :cpcid;
+        END IF;
+END

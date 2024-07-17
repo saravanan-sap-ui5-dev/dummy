@@ -1,0 +1,131 @@
+<mvc:View controllerName="com.lighthouse.admin.roles.RoleDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="pageRoleDetails" showFooter="{= !${visible>/view} || !!${errors>/}.length}" useIconTabBar="true" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="Import Users Role" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="Import Users Role" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="ID" text="{/item}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="ID" text="{/item}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cnhcCreatedBy}" text="Sam" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcCreatedOn}" text="24-04-2022" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cnhcUpdatedBy}" text="Sam" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcUpdatedOn}" text="24-04-2022" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="Status" text="Active" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="General">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="General">
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_General" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="Users">
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_Users" type="XML" binding="{/userList}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="Modules">
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_Modules" type="XML" binding="{/modules}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <!--  <uxap:ObjectPageSection titleUppercase="false" title="Users">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="Users">
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_Users" type="XML" binding="{/userList}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="Modules">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="Modules">
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_Modules" type="XML" binding="{/modules}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection> -->
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.admin.roles.fragments.Role_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnUserError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,4 @@
+PROCEDURE "MIN_SHIPPING_LINE" AS
+BEGIN
+	SELECT "id","name" FROM "shipping_line" WHERE "status" = 2;
+END

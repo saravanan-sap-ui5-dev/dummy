@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="{i18n>imVoyageTitle}" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_FilterBar" type="XML" />
+        <ScrollContainer vertical="true" height="60%">
+            <core:Fragment id="voTable" fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Table" type="XML" binding="{/voyage}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSelect}" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

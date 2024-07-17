@@ -1,0 +1,70 @@
+PROCEDURE "GET_CONTAINER_IN_USE_BY_ID" (IN ID BIGINT) AS 
+BEGIN 
+    IF ID > 0 THEN
+        SELECT  
+        0 "inserted", 
+        0 "updated",
+        ciu."id",
+                ciu."containerNumber",
+                NULL "containerTypeName",
+                ciu."soc",
+                ciu."size",
+                ciu."type",
+                ciu."sealNumber",
+                ciu."operator",
+                ciu."tempratureFrom",
+                ciu."tempratureTo",
+                ciu."onHold",
+                ciu."damages",
+                ciu."remarks",
+                ciu."dischargeDate",
+                ciu."loadDate",
+                ciu."fullOutDate",
+                ciu."emptyInDate",
+                ciu."emptyOutDate",
+                ciu."fullInDate",
+                ciu."lclStatus",
+                ciu."dueDate",
+                ciu."overHeight",
+                ciu."overWidthLeft",
+                ciu."overWidthRight",
+                ciu."overLengthFront",
+                ciu."overLengthAfter",
+                ciu."createdBy",
+                ciu."createdOn",
+                ciu."updatedBy",
+                ciu."updatedOn",
+                ciu."status",
+                cc."id" as "cargoId",
+                cc."containerID",
+                cc."blNumber",
+                cc."vgm",
+                cc."cargoTypeCode",
+                cc."cargoType",
+                cc."projectionTypeCode",
+                cc."projectionType",
+                cc."cargoWeight",
+                cc."tareWeight",
+                cc."cbm",
+                cc."packages",
+                cc."packageCode",
+                cc."packageType",
+                cc."customsCode",
+                cc."customsType",
+                cc."hsCode",
+                cc."hsType",
+                cc."imco",
+                cc."oog",
+                cc."fclOrLcl",
+                cc."part",
+                cc."marksAndNumbers",
+                cc."status" as "cargoStatus",
+                0 AS "recordCount"
+            FROM
+                "container_in_use" ciu
+            LEFT JOIN
+                "container_cargo" cc ON ciu."id" = cc."containerID"
+            WHERE
+                ciu."id" =  :ID;
+    END IF;
+END

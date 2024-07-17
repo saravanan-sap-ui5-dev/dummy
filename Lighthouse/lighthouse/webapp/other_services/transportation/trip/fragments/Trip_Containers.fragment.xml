@@ -1,0 +1,130 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:core="sap.ui.core">
+    <Table inset="false" items="{items}" mode="{mode}">
+        <headerToolbar>
+            <OverflowToolbar style="Clear">
+                <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                <ToolbarSpacer />
+                <Button text="{i18n>cnBtnAdd}" enabled="{visible>/edit}" type="Transparent" press="onAddContainer" width="70px" />
+                <Button text="{i18n>cnBtnRemove}" enabled="{visible>/edit}" type="Transparent" press="" width="70px" />
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="8rem">
+                <Label text="{i18n>imContainerNo}" design="Bold" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imSeal}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imSizeAndType}" />
+            </Column>
+            <Column width="2rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imSt}" />
+            </Column>
+            <Column width="3rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imFAndL}" />
+            </Column>
+            <Column width="5rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imCargoWt}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imTareWt}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imCBM}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imPkgs}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imSoc}" textAlign="Center" width="100%" />
+            </Column>
+            <Column id="temp" width="10rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <VBox width="100%" alignItems="Center">
+                    <Label text="{i18n>imTemp}" />
+                    <HBox width="100%" class="sapUiTinyMarginTop">
+                        <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                            <Label text="{i18n>imFrom}" />
+                        </FlexBox>
+                        <FlexBox direction="Row" width="100px" justifyContent="Center">
+                            <Label text="{i18n>imTo}" />
+                        </FlexBox>
+                    </HBox>
+                </VBox>
+            </Column>
+            <Column id="imco" width="10rem" minScreenWidth="Tablet" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <VBox width="100%" alignItems="Center">
+                    <Label text="{i18n>imImcoDetails}" />
+                    <HBox width="100%" class="sapUiTinyMarginTop">
+                        <FlexBox class="borderBoxRight" direction="Row" width="100px" justifyContent="Center">
+                            <Label text="{i18n>imClass}" />
+                        </FlexBox>
+                        <FlexBox direction="Row" width="100px" justifyContent="Center">
+                            <Label text="{i18n>imUnno}" />
+                        </FlexBox>
+                    </HBox>
+                </VBox>
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imOH}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imOLF}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imOLA}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imOWL}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true" hAlign="Center">
+                <Label text="{i18n>imOWR}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="{type}" vAlign="Middle" press="onPressContainer">
+                <cells>
+                    <Text text="{containerNo}" />
+                    <Text text="{seal}" />
+                    <Text text="{sizeAndType}" />
+                    <Text text="{st}" />
+                    <Text text="{fAndL}" />
+                    <Text text="{cargoWeight}" />
+                    <Text text="{tareWeight}" />
+                    <Text text="{cbm}" />
+                    <Text text="{packages}" />
+                    <Text text="{soc}" />
+                    <VBox width="100%" alignItems="Center">
+                        <HBox width="100%" class="sapUiTinyMarginTop">
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Text text="{fromTemp}" wrapping="false" />
+                            </FlexBox>
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Text text="{toTemp}" />
+                            </FlexBox>
+                        </HBox>
+                    </VBox>
+                    <VBox width="100%" alignItems="Center">
+                        <HBox width="100%" class="sapUiTinyMarginTop">
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Text text="{imcoClass}" />
+                            </FlexBox>
+                            <FlexBox direction="Row" width="100px" justifyContent="Center">
+                                <Text text="{imcoUnno}" />
+                            </FlexBox>
+                        </HBox>
+                    </VBox>
+                    <Text text="{oh}" />
+                    <Text text="{olf}" />
+                    <Text text="{ola}" />
+                    <Text text="{owl}" />
+                    <Text text="{owr}" />
+
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

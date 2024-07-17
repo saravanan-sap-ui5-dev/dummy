@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="Vehicle" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.master_data.vehicle.Ve_FilterBar" type="XML"/>
+        <ScrollContainer vertical="true" height="60%">
+            <core:Fragment fragmentName="com.lighthouse.master_data.vehicle.Ve_Table" type="XML" binding="{/vehicle}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Select" press="onPressVesselEdit"/>
+                <Button type="Ghost" text="Cancel" press="onCloseDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

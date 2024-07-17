@@ -1,0 +1,148 @@
+PROCEDURE "GET_VESSEL" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER,
+IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+  DECLARE VESSEL_ID BIGINT;
+  DECLARE VESSEL_NAME NVARCHAR(256);
+  DECLARE CALL_SIGN BIGINT;
+  DECLARE IMO BIGINT;
+  DECLARE IMO_COLLECTION NVARCHAR(256);
+  DECLARE SHIPPING_LINE_COLLECTION NCLOB;
+  DECLARE NATIONALITY NVARCHAR(256);
+  DECLARE SHIPPING_LINE_ID NVARCHAR(256);
+  DECLARE CREATED_BY NVARCHAR(256);
+  DECLARE UPDATED_BY NVARCHAR(256);
+  DECLARE CREATED_ON_START DATE;
+  DECLARE CREATED_ON_END DATE;
+  DECLARE UPDATED_ON_START DATE;
+  DECLARE UPDATED_ON_END DATE;
+  DECLARE QUERY NVARCHAR(2000) :='';
+  DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+  DECLARE "TOTAL_RECORDS" INTEGER :=0;
+  DECLARE temp_vessel NVARCHAR(5000);
+  DECLARE temp_sort NVARCHAR(1000);
+  DECLARE VESSEL_STATUS_COLLECTION NCLOB;
+
+  temp_vessel := 'SELECT * FROM "vessel"';
+  --temp_vessel := 'SELECT VES."id",VES."name",VES."callSign",VES."imo",VES."nationality",VES."shippingLineId" AS "vesselShippingLineId", VES."createdBy",VES."createdOn",VES."updatedBy",VES."updatedOn",VES."status", VESD."shippingLineId",VESD."vesselCode",VESD."vesselId" FROM "vessel" VES LEFT JOIN "vessel_details" VESD ON VES."id" = VESD."vesselId"';
+  --SELECT count(*) INTO "TOTAL_RECORDS" FROM :temp_shipping_line;
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_vessel || ')' INTO "TOTAL_RECORDS";
+  
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0 "updated",temp_table.*,temp_table."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM (' || :temp_vessel || ')  AS temp_table LEFT JOIN "shipping_line" SL ON SL."cardCode" = temp_table."shippingLineId" ORDER  BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+
+      EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id filter
+         SELECT  0 "recordCount",0 "inserted",0 "updated",VES.*,VES."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" WHERE VES."id" = ID ORDER BY VES."id" DESC;
+    ELSE -- for criteria based filter
+      IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO VESSEL_ID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.name') INTO "VESSEL_NAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.callSign') INTO "CALL_SIGN" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.imo') INTO IMO FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.imoCollection') INTO IMO_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.nationality') INTO NATIONALITY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.shippingLineIdCollection') INTO SHIPPING_LINE_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnStart') INTO CREATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnEnd') INTO CREATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnStart') INTO UPDATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnEnd') INTO UPDATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.statuses') INTO "VESSEL_STATUS_COLLECTION" FROM DUMMY;
+
+        temp_vessel_status_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:VESSEL_STATUS_COLLECTION); 
+        temp_shipping_line_collection =   SELECT * FROM FUNC_SPLIT_STRING_VALUES_TO_TABLE(:SHIPPING_LINE_COLLECTION); 
+
+        IF :VESSEL_NAME != ''  THEN  -- for criterials
+          QUERY = CASE WHEN QUERY = '' THEN '  LOWER(VES."name") like ''%' ||  LOWER(:VESSEL_NAME) || '%'''  ELSE ' AND   LOWER(VES."name") like ''%' ||  LOWER(:VESSEL_NAME) || '%''' END;
+        END IF;
+
+        IF :NATIONALITY != ''  THEN  -- for criterials
+          QUERY = CASE WHEN QUERY = '' THEN '  LOWER(VES."nationality") like ''%' ||  LOWER(:NATIONALITY) || '%'''  ELSE ' AND   LOWER(VES."nationality") like ''%' ||  LOWER(:NATIONALITY) || '%''' END;
+        END IF;
+
+        IF :CALL_SIGN > 0  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' VES."callSign" =' || :CALL_SIGN   ELSE ' AND  VES."callSign" =' || :CALL_SIGN   END;
+        END IF;
+        
+        IF :IMO > 0  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' VES."imo" =' || :IMO   ELSE ' AND  VES."imo" =' || :IMO   END;
+        END IF;
+
+        IF IMO_COLLECTION != '()' AND IMO_COLLECTION != '' THEN
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN ' "imo" IN ' || IMO_COLLECTION ELSE ' AND "imo" IN ' || IMO_COLLECTION END;
+        END IF;
+
+        IF :VESSEL_ID > 0  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' VES."id" =' || :VESSEL_ID   ELSE ' AND  VES."id" =' || :VESSEL_ID   END;
+        END IF;
+        
+        IF :CALL_SIGN > 0  THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' VES."callSign" =' || :CALL_SIGN   ELSE ' AND  VES."callSign" =' || :CALL_SIGN   END;
+        END IF;
+        
+        IF EXISTS (SELECT * FROM :temp_shipping_line_collection) THEN
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' SL."cardCode"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_shipping_line_collection) || ')'  ELSE ' AND  SL."cardCode"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_shipping_line_collection) || ')' END;
+        END IF;
+        
+        IF EXISTS (SELECT * FROM :temp_vessel_status_collection) THEN
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' VES."status"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_vessel_status_collection) || ')'  ELSE ' AND  VES."status"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_vessel_status_collection) || ')' END;
+        END IF;
+    
+        IF :CREATED_BY != ''  THEN  -- for criterials
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER(VES."createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER(VES."createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+        
+        IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !='' AND :CREATED_ON_END != '' THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN 'VES."createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END'  ELSE ' AND VES."createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL AND :UPDATED_ON_START !='' AND :UPDATED_ON_END != '' THEN  -- for criterials
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN 'VES."updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END'  ELSE ' AND VES."updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_BY != ''  THEN  -- for criterials
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER(VES."updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER(VES."updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+      
+        IF(QUERY = '') THEN
+          QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",'||0||' "inserted",'||0||' "updated",VES.*,VES."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;	  
+          EXECUTE IMMEDIATE :QUERY;
+
+        ELSE
+          IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !=''AND :CREATED_ON_END !=''OR :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL  AND :UPDATED_ON_START !=''AND :UPDATED_ON_END !='' THEN  -- for criterials
+            IF(SHIPPING_LINE_COLLECTION != '[]') THEN
+              EXECUTE IMMEDIATE 'SELECT count(*)  FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+            ELSE
+              EXECUTE IMMEDIATE 'SELECT count(*)  FROM ('|| :temp_vessel ||') AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+            END IF;
+            QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",'||0||' "inserted",'||0||' "updated",VES.*,VES."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX, :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          ELSE 
+            IF(SHIPPING_LINE_COLLECTION != '[]') THEN
+              EXECUTE IMMEDIATE 'SELECT count(*)  FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            ELSE
+              EXECUTE IMMEDIATE 'SELECT count(*)  FROM "vessel" AS VES WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            END IF;
+            QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",'||0||' "inserted",'||0||' "updated",VES.*,VES."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+          END IF;
+        END IF;
+      ELSE
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",'||0||' "inserted",'||0||' "updated",VES.*,VES."shippingLineId" AS "vesselShippingLineId",SL."name" AS "shippingLineName" FROM "vessel" AS VES LEFT JOIN "shipping_line" SL ON SL."cardCode" = VES."shippingLineId" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;	  
+        EXECUTE IMMEDIATE :QUERY;
+      END IF;
+    
+      END IF; 
+  END IF;
+--SELECT  :QUERY FROM DUMMY;
+END

@@ -1,0 +1,119 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog title="Add Cargo" contentWidth="100%" verticalScrolling="false">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <form:SimpleForm id ="cargoFormId" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coBLNo}" required="true" />
+                        <Input editable="{visible>/edit}" value="{/cargoTypeForm/blNumber}" field:type="Input" field:validate="required"  showValueHelp="true" valueHelpRequest="onAddBLView"/>
+                        <Label text="{i18n>coVGM}" />
+                        <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{/cargoTypeForm/vgm}" editable="{visible>/edit}">
+                            <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                        </ComboBox>
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coCargoTypeCode}" />
+                        <Input value="{/cargoTypeForm/cargoTypeCode}" liveChange="onClearMasterField" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressCargoType"/>
+                        <Label text="{i18n>coCargoType}" />
+                        <Input value="{/cargoTypeForm/cargoType}" editable="false" />
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coProjectionTypeCode}" />
+                        <Input value="{/cargoTypeForm/projectionTypeCode}" editable="{visible>/edit}" showValueHelp="true" />
+                        <Label text="{i18n>coProjectionType}" />
+                        <Input value="{/cargoTypeForm/projectionType}" editable="false" />
+                    </form:content>
+                </form:SimpleForm>
+
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coCargoWeight}" />
+                        <Input value="{/cargoTypeForm/cargoWeight}" type="Number" editable="{visible>/edit}" />
+                        <Label text="{i18n>coTareWeight}" />
+                        <Input value="{/cargoTypeForm/tareWeight}" type="Number" editable="{visible>/edit}" />
+                        <Label text="{i18n>coCBM}" />
+                        <Input value="{/cargoTypeForm/cbm}" type="Number" editable="{visible>/edit}" />
+                        <Label text="{i18n>coPackages}" />
+                        <Input value="{/cargoTypeForm/packages}" type="Number" editable="{visible>/edit}" />
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coPackageCode}" />
+                        <ComboBox selectedKey="{/cargoTypeForm/packageCode}" editable="{visible>/edit}">
+                            <core:Item key="1" text="BOX"/>
+                            <core:Item key="2" text="BAG"/>
+                            <core:Item key="2" text="PKG"/>
+                        </ComboBox>
+                        <Label text="{i18n>coPackageType}" />
+                        <Input value="{/cargoTypeForm/packageType}" editable="false" showValueHelp="true" />
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coCustomsCode}" />
+                        <Input value="{/cargoTypeForm/customsCode}" liveChange="onClearMasterField" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressCustomsPackageCode"/>
+                        <Label text="{i18n>coCustomsType}" />
+                        <Input value="{/cargoTypeForm/customsType}" editable="false" />
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coHSCode}" />
+                        <Input value="{/cargoTypeForm/hsCode}" editable="{visible>/edit}" liveChange="onClearMasterField" showValueHelp="true" valueHelpRequest="onPressHsCode"/>
+                        <Label text="{i18n>coHSType}" />
+                        <Input value="{/cargoTypeForm/hsType}" editable="false" />
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coIMCO}" />
+                        <Input value="{/cargoTypeForm/imco}" editable="{visible>/edit}" />
+                        <Label text="{i18n>coOOG}" />
+                        <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{/cargoTypeForm/oog}" editable="{visible>/edit}">
+                            <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                        </ComboBox>
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                    <form:content>
+                        <Label text="{i18n>coFCLAndLCL}" />
+                        <ComboBox items="{masterDataMdl>/fcl_lcl}" selectedKey="{/cargoTypeForm/fclOrLcl}" editable="{visible>/edit}">
+                            <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                        </ComboBox>
+                        <Label text="Marks &amp; Numbers"></Label>
+                        <TextArea value="{/cargoTypeForm/marksAndNumbers}" editable="{visible>/edit}"></TextArea>
+                        <Label text="{i18n>coPart}" />
+                        <ComboBox items="{masterDataMdl>/yes_or_no}" selectedKey="{/cargoTypeForm/part}" editable="{visible>/edit}">
+                            <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                        </ComboBox>
+
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnAdd}" press="onSubmitCargo" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseCargoFormDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

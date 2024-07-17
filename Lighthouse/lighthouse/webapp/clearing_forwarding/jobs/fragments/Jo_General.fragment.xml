@@ -1,0 +1,72 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>joService}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                    <core:Item key="1" text="Sea" />
+                    <core:Item key="2" text="Air" />
+                </ComboBox>
+                <Label text="{i18n>joAgent}" />
+                <Input value="Tom" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                <Label text="Shipping Date" />
+                <DatePicker placeholder=" " editable="{visible>/edit}" />
+                <Label text="{i18n>joBayanNo}" />
+                <Input value="" editable="{visible>/edit}" />
+                <Label text="{i18n>joBLType}" />
+                <ComboBox editable="{visible>/edit}">
+                    <core:Item key="1" text="Import" />
+                    <core:Item key="2" text="Export" />
+                </ComboBox>
+                <Label text="{i18n>joQuotationNo}" />
+                <Input value="" editable="{visible>/edit}" />
+                <Label text="{i18n>joShippingLine}" />
+                <Input value="Hapag Lloyd (HL)" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressShippingLine"/>
+                <Label text="Vessel ETA" />
+                <DatePicker placeholder=" " editable="{visible>/edit}" />
+                <Label text="Bayan Date" />
+                <DatePicker placeholder=" " editable="{visible>/edit}" />
+                <Label text="{i18n>joBLNo}" />
+                <Input value="HLCUALY220338926" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onAddBLView"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>joConsigneeCode}" />
+                <Input value="070032" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                <Label text="{i18n>joConsigneeName}" />
+                <Input value="Giffin Comp Associates" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>joPortOfLoading}" />
+                <Input value="Port of Sohar (SOH)" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>joPortOfDestination}" />
+                <Input value="Damietta (DME)" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>joTSPol}" />
+                <Input value="Jebel Ali (JEA)" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>joRemarks}" />
+                <TextArea value="Additional comments" editable="{visible>/edit}" />
+
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

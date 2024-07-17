@@ -1,0 +1,51 @@
+<mvc:View controllerName="com.lighthouse.master_data.AddEditPostalCode"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%" showFooter="true">
+    <f:DynamicPage headerExpanded="true">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{= ${postalCodeMdl>/item}?'Postal Code: '+${postalCodeMdl>/item}:'New Postal Code'}" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                <f:content>
+
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+            <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+                <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="true" class="sapUiSmallMarginTop formPadding">
+                    <form:content>
+                        <Label text="City Name" />
+                        <Input/>
+                        <Label text="Pin Code" />
+                        <Input/>
+                    </form:content>
+                </form:SimpleForm>
+            </Panel>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Save"/>
+                <Button type="Transparent" text="Cancel" press="onNavBack"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

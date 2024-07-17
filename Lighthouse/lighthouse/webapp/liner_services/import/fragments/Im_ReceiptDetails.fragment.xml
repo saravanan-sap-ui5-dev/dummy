@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Table items="{items}" mode="None" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnAdd}" width="70px" press="onAddReceipt" />
+                    <Button type="Transparent" visible="{visible>/create}" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="{i18n>imReceiptNo}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>imReceiptDate}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>imAmount}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{receiptNo}" />
+                    <Text text="{receiptDate}" />
+                    <Text text="{amount}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

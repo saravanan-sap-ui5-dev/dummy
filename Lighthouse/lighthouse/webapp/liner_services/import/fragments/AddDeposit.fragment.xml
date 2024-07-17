@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="{i18n>imAddDepositTitle}" contentWidth="70%" verticalScrolling="true">
+        <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiSmallMarginTop">
+            <form:content>
+                <Label text="{i18n>imId}" />
+                <Input value="{ImportMdl>/id}" showValueHelp="false" />
+                <Label text="{i18n>imAmount}" />
+                <Input value="{ImportMdl>/amount}" />
+                <Label text="{i18n>imDate}" />
+                <DatePicker value="{ImportMdl>/date}" placeholder=" " />
+            </form:content>
+        </form:SimpleForm>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnAdd}" press="onSaveDRRAmount" width="70px" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

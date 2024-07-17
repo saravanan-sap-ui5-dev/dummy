@@ -1,105 +1,1240 @@
 {
-  "_version": "1.59.0",
-  "sap.app": {
-    "id": "com.lighthouse",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
+    "_version": "1.42.0",
+    "sap.app": {
+        "id": "com.lighthouse",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.7.4",
+            "toolsId": "bbd1d01d-ed27-41d4-89f1-692b77885b36"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/sap/opu/odata/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            }
+        }
     },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:basic",
-      "version": "1.14.1",
-      "toolsId": "ef335b09-3e9e-48e2-ba53-e222479185d4"
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.102.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.f": {},
+                "sap.suite.ui.generic.template": {},
+                "sap.ui.comp": {},
+                "sap.ui.generic.app": {},
+                "sap.ui.table": {},
+                "sap.ushell": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "com.lighthouse.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {}
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "com.lighthouse",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false,
+                "transition": "slide",
+                "bypassed": {
+                    "target": "NotFound"
+                }
+            },
+            "routes": [
+                {
+                    "name": "login",
+                    "pattern": "",
+                    "target": [
+                        "Login"
+                    ]
+                },
+                {
+                    "name": "dashboard",
+                    "pattern": "dashboard",
+                    "target": [
+                        "Dashboard"
+                    ]
+                },
+                {
+                    "name": "ValidationTest",
+                    "pattern": "ValidationTest",
+                    "target": [
+                        "ValidationTest"
+                    ]
+                },
+                {
+                    "name": "mockScreenMaster",
+                    "pattern": "mockScreenMaster",
+                    "target": [
+                        "MockScreen"
+                    ]
+                },
+                {
+                    "name": "mockScreenDetailCreate",
+                    "pattern": "mockScreenDetailCreate",
+                    "target": [
+                        "MockScreenDetail"
+                    ]
+                },
+                {
+                    "name": "mockScreenDetailEdit",
+                    "pattern": "mockScreenDetailEdit/{name}",
+                    "target": [
+                        "MockScreenDetail"
+                    ]
+                },
+                {
+                    "name": "shippingLineMaster",
+                    "pattern": "shippingLineMaster",
+                    "target": [
+                        "ShippingLine"
+                    ]
+                },
+                {
+                    "name": "shippingLineDetailCreate",
+                    "pattern": "shippingLineDetailCreate",
+                    "target": [
+                        "AddEditShippingLine"
+                    ]
+                },
+                {
+                    "name": "shippingLineDetailEdit",
+                    "pattern": "shippingLineDetailEdit/{id}",
+                    "target": [
+                        "AddEditShippingLine"
+                    ]
+                },
+                {
+                    "name": "portCodeMaster",
+                    "pattern": "portCodeMaster",
+                    "target": [
+                        "ManagePortCode"
+                    ]
+                },
+                {
+                    "name": "portCodeDetailCreate",
+                    "pattern": "portCodeDetailCreate",
+                    "target": [
+                        "AddEditPortCode"
+                    ]
+                },
+                {
+                    "name": "portCodeDetailEdit",
+                    "pattern": "portCodeDetailEdit/{id}",
+                    "target": [
+                        "AddEditPortCode"
+                    ]
+                },
+                {
+                    "name": "callsignMaster",
+                    "pattern": "callsignMaster",
+                    "target": [
+                        "CallSign"
+                    ]
+                },
+                {
+                    "name": "callSignDetailEdit",
+                    "pattern": "callSignDetailEdit/{name}",
+                    "target": [
+                        "AddEditCallSign"
+                    ]
+                },
+                {
+                    "name": "callSignDetailCreate",
+                    "pattern": "callSignDetailCreate",
+                    "target": [
+                        "AddEditCallSign"
+                    ]
+                },
+                {
+                    "name": "iMOMaster",
+                    "pattern": "iMOMaster",
+                    "target": [
+                        "IMO"
+                    ]
+                },
+                {
+                    "name": "iMODetailCreate",
+                    "pattern": "iMODetailCreate",
+                    "target": [
+                        "AddEditIMO"
+                    ]
+                },
+                {
+                    "name": "iMODetailEdit",
+                    "pattern": "iMODetailEdit/{id}",
+                    "target": [
+                        "AddEditIMO"
+                    ]
+                },
+                {
+                    "name": "postalCode",
+                    "pattern": "postalCode",
+                    "target": [
+                        "PostalCode"
+                    ]
+                },
+                {
+                    "name": "postalCodeDetailCreate",
+                    "pattern": "postalCodeDetailCreate",
+                    "target": [
+                        "AddEditPostalCode"
+                    ]
+                },
+                {
+                    "name": "postalCodeDetailEdit",
+                    "pattern": "postalCodeDetailEdit/{name}",
+                    "target": [
+                        "AddEditPostalCode"
+                    ]
+                },
+                {
+                    "name": "customerMaster",
+                    "pattern": "customerMaster",
+                    "target": [
+                        "ManageCustomer"
+                    ]
+                },
+                {
+                    "name": "customerDetailCreate",
+                    "pattern": "customerDetailCreate",
+                    "target": [
+                        "AddEditCustomer"
+                    ]
+                },
+                {
+                    "name": "customerDetailEdit",
+                    "pattern": "customerDetailEdit/{id}",
+                    "target": [
+                        "AddEditCustomer"
+                    ]
+                },
+                {
+                    "name": "vesselMaster",
+                    "pattern": "vesselMaster",
+                    "target": [
+                        "Vessel"
+                    ]
+                },
+                {
+                    "name": "vesselDetailCreate",
+                    "pattern": "vesselDetailCreate",
+                    "target": [
+                        "AddEditVessel"
+                    ]
+                },
+                {
+                    "name": "vesselDetailEdit",
+                    "pattern": "vesselDetailEdit/{id}",
+                    "target": [
+                        "AddEditVessel"
+                    ]
+                },
+                {
+                    "name": "containertype",
+                    "pattern": "containertype",
+                    "target": [
+                        "ContainerType"
+                    ]
+                },
+                {
+                    "name": "containertypeCreate",
+                    "pattern": "containertypeCreate",
+                    "target": [
+                        "AddEditContainerType"
+                    ]
+                },
+                {
+                    "name": "containertypeEdit",
+                    "pattern": "containertypeEdit/{id}",
+                    "target": [
+                        "AddEditContainerType"
+                    ]
+                },
+                {
+                    "name": "cargoType",
+                    "pattern": "cargoType",
+                    "target": [
+                        "CargoType"
+                    ]
+                },
+                {
+                    "name": "cargoTypeDetailCreate",
+                    "pattern": "cargoTypeDetailCreate",
+                    "target": [
+                        "AddEditCargoType"
+                    ]
+                },
+                {
+                    "name": "cargoTypeDetailEdit",
+                    "pattern": "cargoTypeDetailEdit/{id}",
+                    "target": [
+                        "AddEditCargoType"
+                    ]
+                },
+                {
+                    "name": "hsCode",
+                    "pattern": "hsCode",
+                    "target": [
+                        "HSCode"
+                    ]
+                },
+                {
+                    "name": "hsCodeDetailCreate",
+                    "pattern": "hsCodeDetailCreate",
+                    "target": [
+                        "AddEditHSCode"
+                    ]
+                },
+                {
+                    "name": "hsCodeDetailEdit",
+                    "pattern": "hsCodeDetailEdit/{id}",
+                    "target": [
+                        "AddEditHSCode"
+                    ]
+                },
+                {
+                    "name": "customsPackageCode",
+                    "pattern": "customsPackageCode",
+                    "target": [
+                        "CustomsPackageCode"
+                    ]
+                },
+                {
+                    "name": "customsPackageCodeDetailCreate",
+                    "pattern": "customsPackageCodeDetailCreate",
+                    "target": [
+                        "AddEditCustomsPackageCode"
+                    ]
+                },
+                {
+                    "name": "customsPackageCodeDetailEdit",
+                    "pattern": "customsPackageCodeDetailEdit/{id}",
+                    "target": [
+                        "AddEditCustomsPackageCode"
+                    ]
+                },
+                {
+                    "name": "voyagesMaster",
+                    "pattern": "voyagesMaster",
+                    "target": [
+                        "ManageVoyages"
+                    ]
+                },
+                {
+                    "name": "voyagesDetailCreate",
+                    "pattern": "voyagesDetailCreate",
+                    "target": [
+                        "CreateVoyage"
+                    ]
+                },
+                {
+                    "name": "voyagesDetailEdit",
+                    "pattern": "voyagesDetailEdit/{id}",
+                    "target": [
+                        "VoyageDetails"
+                    ]
+                },
+                {
+                    "name": "manageImports",
+                    "pattern": "manageImports",
+                    "target": [
+                        "ManageImports"
+                    ]
+                },
+                {
+                    "name": "importsDetailCreate",
+                    "pattern": "importsDetailCreate",
+                    "target": [
+                        "CreateImports"
+                    ]
+                },
+                {
+                    "name": "importsDetailEdit",
+                    "pattern": "importsDetailEdit/{id}",
+                    "target": [
+                        "ImportDetails"
+                    ]
+                },
+                {
+                    "name": "manageExports",
+                    "pattern": "manageExports",
+                    "target": [
+                        "ManageExports"
+                    ]
+                },
+                {
+                    "name": "exportsDetailCreate",
+                    "pattern": "exportsDetailCreate",
+                    "target": [
+                        "CreateExports"
+                    ]
+                },
+                {
+                    "name": "exportsDetailEdit",
+                    "pattern": "exportsDetailEdit/{id}",
+                    "target": [
+                        "ExportDetails"
+                    ]
+                },
+                {
+                    "name": "containerMaster",
+                    "pattern": "containerMaster",
+                    "target": [
+                        "ManageContainer"
+                    ]
+                },
+                {
+                    "name": "containerDetailCreate",
+                    "pattern": "containerDetailCreate",
+                    "target": [
+                        "AddEditContainer"
+                    ]
+                },
+                {
+                    "name": "containerDetailEdit",
+                    "pattern": "containerDetailEdit/{id}",
+                    "target": [
+                        "AddEditContainer"
+                    ]
+                },
+                {
+                    "name": "containerMasterInUse",
+                    "pattern": "containerMasterInUse",
+                    "target": [
+                        "ManageContainerInUse"
+                    ]
+                },
+                {
+                    "name": "containerInUseDetailCreate",
+                    "pattern": "containerInUseDetailCreate",
+                    "target": [
+                        "CreateContainerInUse"
+                    ]
+                },
+                {
+                    "name": "containerInUseDetailEdit",
+                    "pattern": "containerInUseDetailEdit/{id}",
+                    "target": [
+                        "ContainerDetailsInUse"
+                    ]
+                },
+                {
+                    "name": "transshipmentMaster",
+                    "pattern": "transshipmentMaster",
+                    "target": [
+                        "ManageTransshipment"
+                    ]
+                },
+                {
+                    "name": "transshipmentDetailCreate",
+                    "pattern": "transshipmentDetailCreate",
+                    "target": [
+                        "CreateTransshipment"
+                    ]
+                },
+                {
+                    "name": "transshipmentDetailEdit",
+                    "pattern": "transshipmentDetailEdit/{id}",
+                    "target": [
+                        "TransshipmentDetails"
+                    ]
+                },
+                {
+                    "name": "jobMaster",
+                    "pattern": "jobMaster",
+                    "target": [
+                        "ManageJobs"
+                    ]
+                },
+                {
+                    "name": "jobDetailCreate",
+                    "pattern": "jobDetailCreate",
+                    "target": [
+                        "CreateJob"
+                    ]
+                },
+                {
+                    "name": "jobDetailEdit",
+                    "pattern": "jobDetailEdit/{id}",
+                    "target": [
+                        "JobDetails"
+                    ]
+                },
+                {
+                    "name": "manageTransportation",
+                    "pattern": "manageTransportation",
+                    "target": [
+                        "ManageTransportation"
+                    ]
+                },
+                {
+                    "name": "transportationDetailCreate",
+                    "pattern": "transportationDetailCreate",
+                    "target": [
+                        "CreateTransportation"
+                    ]
+                },
+                {
+                    "name": "transportationDetailEdit",
+                    "pattern": "transportationDetailEdit/{id}",
+                    "target": [
+                        "TransportationDetails"
+                    ]
+                },
+                {
+                    "name": "tripDetailsCreate",
+                    "pattern": "tripDetailsCreate",
+                    "target": [
+                        "CreateTrip"
+                    ]
+                },
+                {
+                    "name": "tripDetailsEdit",
+                    "pattern": "tripDetailsEdit/{id}",
+                    "target": [
+                        "TripDetails"
+                    ]
+                },
+                {
+                    "name": "vehicleMaster",
+                    "pattern": "vehicleMaster",
+                    "target": [
+                        "ManageVehicle"
+                    ]
+                },
+                {
+                    "name": "vehicleDetailCreate",
+                    "pattern": "vehicleDetailCreate",
+                    "target": [
+                        "AddEditVehicle"
+                    ]
+                },
+                {
+                    "name": "vehicleDetailEdit",
+                    "pattern": "vehicleDetailEdit/{id}",
+                    "target": [
+                        "AddEditVehicle"
+                    ]
+                },
+                {
+                    "name": "manageHusbandryService",
+                    "pattern": "manageHusbandryService",
+                    "target": [
+                        "ManageHusbandryService"
+                    ]
+                },
+                {
+                    "name": "husbandryServiceDetailsCreate",
+                    "pattern": "husbandryServiceDetailsCreate",
+                    "target": [
+                        "CreateHusbandryService"
+                    ]
+                },
+                {
+                    "name": "husbandryServiceDetailsEdit",
+                    "pattern": "husbandryServiceDetailsEdit/{id}",
+                    "target": [
+                        "HusbandryServiceDetails"
+                    ]
+                },
+                {
+                    "name": "serviceDetailsCreate",
+                    "pattern": "serviceDetailsCreate",
+                    "target": [
+                        "CreateService"
+                    ]
+                },
+                {
+                    "name": "serviceDetailsEdit",
+                    "pattern": "serviceDetailsEdit/{id}",
+                    "target": [
+                        "ServiceDetails"
+                    ]
+                },
+                {
+                    "name": "manageUser",
+                    "pattern": "manageUser",
+                    "target": [
+                        "ManageUser"
+                    ]
+                },
+                {
+                    "name": "userDetailCreate",
+                    "pattern": "userDetailCreate",
+                    "target": [
+                        "CreateUser"
+                    ]
+                },
+                {
+                    "name": "userDetailEdit",
+                    "pattern": "userDetailEdit/{id}",
+                    "target": [
+                        "UserDetails"
+                    ]
+                },
+                {
+                    "name": "manageRole",
+                    "pattern": "manageRole",
+                    "target": [
+                        "ManageRole"
+                    ]
+                },
+                {
+                    "name": "roleDetailCreate",
+                    "pattern": "roleDetailCreate",
+                    "target": [
+                        "CreateRole"
+                    ]
+                },
+                {
+                    "name": "roleDetailEdit",
+                    "pattern": "roleDetailEdit/{id}",
+                    "target": [
+                        "RoleDetails"
+                    ]
+                },
+                {
+                    "name": "applicationConfig",
+                    "pattern": "applicationConfig",
+                    "target": [
+                        "ApplicationConfig"
+                    ]
+                }
+            ],
+            "targets": {
+                "AppUnified": {
+                    "viewId": "AppUnified",
+                    "viewName": "init.AppUnified"
+                },
+                "NotFound": {
+                    "viewId": "NotFound",
+                    "viewName": "init.NotFound"
+                },
+                "Login": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Login",
+                    "viewName": "init.Login"
+                },
+                "Dashboard": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Dashboard",
+                    "viewName": "init.Dashboard"
+                },
+                "ShippingLine": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ShippingLine",
+                    "viewName": "master_data.shipping_line.ShippingLine",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditShippingLine": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditShippingLine",
+                    "viewName": "master_data.shipping_line.AddEditShippingLine",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManagePortCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManagePortCode",
+                    "viewName": "master_data.port_code.ManagePortCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditPortCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditPortCode",
+                    "viewName": "master_data.port_code.AddEditPortCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CallSign": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CallSign",
+                    "viewName": "master_data.call_sign.CallSign",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditCallSign": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditCallSign",
+                    "viewName": "master_data.call_sign.AddEditCallSign",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "IMO": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "IMO",
+                    "viewName": "master_data.imo.IMO",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditIMO": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditIMO",
+                    "viewName": "master_data.imo.AddEditIMO",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "PostalCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "PostalCode",
+                    "viewName": "master_data.postal_code.PostalCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditPostalCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditPostalCode",
+                    "viewName": "master_data.postal_code.AddEditPostalCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageCustomer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageCustomer",
+                    "viewName": "master_data.customer.ManageCustomer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditCustomer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditCustomer",
+                    "viewName": "master_data.customer.AddEditCustomer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "Vessel": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "Vessel",
+                    "viewName": "master_data.vessel.Vessel",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditVessel": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditVessel",
+                    "viewName": "master_data.vessel.AddEditVessel",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ContainerType": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ContainerType",
+                    "viewName": "master_data.container_type.ContainerType",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditContainerType": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditContainerType",
+                    "viewName": "master_data.container_type.AddEditContainerType",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CargoType": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CargoType",
+                    "viewName": "master_data.cargo_type.CargoType",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditCargoType": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditCargoType",
+                    "viewName": "master_data.cargo_type.AddEditCargoType",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "HSCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "HSCode",
+                    "viewName": "master_data.hs_code.HSCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditHSCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditHSCode",
+                    "viewName": "master_data.hs_code.AddEditHSCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CustomsPackageCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CustomsPackageCode",
+                    "viewName": "master_data.customs_package_code.CustomsPackageCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditCustomsPackageCode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditCustomsPackageCode",
+                    "viewName": "master_data.customs_package_code.AddEditCustomsPackageCode",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageVoyages": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageVoyages",
+                    "viewName": "liner_services.voyage.ManageVoyages",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateVoyage": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateVoyage",
+                    "viewName": "liner_services.voyage.CreateVoyage",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "VoyageDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "VoyageDetails",
+                    "viewName": "liner_services.voyage.VoyageDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageImports": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageImports",
+                    "viewName": "liner_services.import.ManageImports",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateImports": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateImports",
+                    "viewName": "liner_services.import.CreateImports",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ImportDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ImportDetails",
+                    "viewName": "liner_services.import.ImportDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageExports": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageExports",
+                    "viewName": "liner_services.export.ManageExports",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateExports": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateExports",
+                    "viewName": "liner_services.export.CreateExports",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ExportDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ExportDetails",
+                    "viewName": "liner_services.export.ExportDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageContainerInUse": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageContainerInUse",
+                    "viewName": "liner_services.container.ManageContainer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateContainerInUse": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateContainerInUse",
+                    "viewName": "liner_services.container.CreateContainer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ContainerDetailsInUse": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ContainerDetailsInUse",
+                    "viewName": "liner_services.container.ContainerDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageContainer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageContainer",
+                    "viewName": "master_data.container.ManageContainer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditContainer": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditContainer",
+                    "viewName": "master_data.container.AddEditContainer",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateTransshipment": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateTransshipment",
+                    "viewName": "liner_services.transshipment.CreateTransshipment",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "TransshipmentDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "TransshipmentDetails",
+                    "viewName": "liner_services.transshipment.TransshipmentDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageTransshipment": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageTransshipment",
+                    "viewName": "liner_services.transshipment.ManageTransshipment",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateJob": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateJob",
+                    "viewName": "clearing_forwarding.jobs.CreateJob",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "JobDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "JobDetails",
+                    "viewName": "clearing_forwarding.jobs.JobDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageJobs": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageJobs",
+                    "viewName": "clearing_forwarding.jobs.ManageJobs",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageTransportation": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageTransportation",
+                    "viewName": "other_services.transportation.ManageTransportation",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateTransportation": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateTransportation",
+                    "viewName": "other_services.transportation.CreateTransportation",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "TransportationDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "TransportationDetails",
+                    "viewName": "other_services.transportation.TransportationDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateTrip": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateTrip",
+                    "viewName": "other_services.transportation.trip.CreateTrip",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "TripDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "TripDetails",
+                    "viewName": "other_services.transportation.trip.TripDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageVehicle": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageVehicle",
+                    "viewName": "master_data.vehicle.ManageVehicle",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "AddEditVehicle": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "AddEditVehicle",
+                    "viewName": "master_data.vehicle.AddEditVehicle",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageHusbandryService": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageHusbandryService",
+                    "viewName": "other_services.husbandry_service.ManageHusbandryService",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateHusbandryService": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateHusbandryService",
+                    "viewName": "other_services.husbandry_service.CreateHusbandryService",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "HusbandryServiceDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "HusbandryServiceDetails",
+                    "viewName": "other_services.husbandry_service.HusbandryServiceDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateService": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateService",
+                    "viewName": "other_services.husbandry_service.service.CreateService",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ServiceDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ServiceDetails",
+                    "viewName": "other_services.husbandry_service.service.ServiceDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageUser": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageUser",
+                    "viewName": "admin.users.ManageUser",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateUser": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateUser",
+                    "viewName": "admin.users.CreateUser",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "UserDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "UserDetails",
+                    "viewName": "admin.users.UserDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ManageRole": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ManageRole",
+                    "viewName": "admin.roles.ManageRole",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "CreateRole": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateRole",
+                    "viewName": "admin.roles.CreateRole",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "RoleDetails": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "RoleDetails",
+                    "viewName": "admin.roles.RoleDetails",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                },
+                "ApplicationConfig": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "ApplicationConfig",
+                    "viewName": "admin.application_config.ApplicationConfig",
+                    "parent": "AppUnified",
+                    "controlId": "pageContainer",
+                    "controlAggregation": "pages"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "com.lighthouse.init.App",
+            "type": "XML",
+            "async": true,
+            "id": "app"
+        }
     }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
-    },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "flexEnabled": true,
-    "dependencies": {
-      "minUI5Version": "1.126.0",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.f": {},
-        "sap.suite.ui.generic.template": {},
-        "sap.ui.comp": {},
-        "sap.ui.generic.app": {},
-        "sap.ui.table": {},
-        "sap.ushell": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "com.lighthouse.i18n.i18n"
-        }
-      }
-    },
-    "resources": {
-      "css": [
-        {
-          "uri": "css/style.css"
-        }
-      ]
-    },
-    "routing": {
-      "config": {
-        "routerClass": "sap.m.routing.Router",
-        "viewType": "XML",
-        "async": true,
-        "viewPath": "com.lighthouse.view",
-        "controlAggregation": "pages",
-        "controlId": "app",
-        "clearControlAggregation": false
-      },
-      "routes": [
-        {
-          "name": "RouteView1",
-          "pattern": ":?query:",
-          "target": [
-            "TargetView1"
-          ]
-        }
-      ],
-      "targets": {
-        "TargetView1": {
-          "viewType": "XML",
-          "transition": "slide",
-          "clearControlAggregation": false,
-          "viewId": "View1",
-          "viewName": "View1"
-        }
-      }
-    },
-    "rootView": {
-      "viewName": "com.lighthouse.view.App",
-      "type": "XML",
-      "async": true,
-      "id": "App"
-    }
-  }
 }

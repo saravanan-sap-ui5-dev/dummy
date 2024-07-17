@@ -1,0 +1,30 @@
+PROCEDURE "GET_VESSEL_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN IF(:ID > 0) THEN
+  SELECT 
+    0 AS "recordCount",
+    0 AS "inserted",
+    0 AS "updated",
+    sl."name" AS "shippingLineName",
+    v."id",
+    v."name",
+    v."callSign",
+    v."imo",
+    v."nationality",
+    v."shippingLineId" AS "vesselShippingLineId",
+    v."createdBy",
+    v."createdOn",
+    v."updatedBy",
+    v."updatedOn",
+    v."status",
+    vd."id" AS "vdId",
+    vd."shippingLineId",
+    vd."vesselCode",
+    vd."vesselId",
+    vd."status" AS "vesselDetailStatus"
+    FROM "vessel" v
+    LEFT JOIN "shipping_line" sl ON sl."cardCode" = v."shippingLineId"
+    LEFT JOIN "vessel_details" vd ON v."id" = vd."vesselId"
+    WHERE v."id" = :ID;
+    
+END IF;
+END

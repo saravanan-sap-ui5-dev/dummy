@@ -1,0 +1,116 @@
+<mvc:View controllerName="com.lighthouse.liner_services.import.CreateImports"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_AddEditImports" showFooter="true" useIconTabBar="true" showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{i18n>imCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{i18n>imCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>imGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>imGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_General" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imPartyDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_PartyDetails" type="XML" binding="{/partyDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imCargoSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Cargo" type="XML" binding="{/cargoDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imContainersSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Container" type="XML" binding="{/containerDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>imFreightDetailsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>imChargesSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Charges" type="XML" binding="{/chargesDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imDepositDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_DepositDetails" type="XML" binding="{/depositDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imReceiptDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_ReceiptDetails" type="XML" binding="{/receiptDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>imRefundDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_RefundDetails" type="XML" binding="{/refundDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>imCommunicationSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Communitcation" type="XML" binding="{/communicationDetails}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnCImportError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

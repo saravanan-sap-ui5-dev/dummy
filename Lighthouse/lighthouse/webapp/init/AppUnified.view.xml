@@ -1,0 +1,36 @@
+<mvc:View controllerName="com.lighthouse.init.AppUnified"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:f="sap.f"
+    xmlns:tnt="sap.tnt" height="100%">
+    <Page id="page_appUnified" showHeader="true" enableScrolling="false" titleAlignment="Center" showFooter="false">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://navigation-left-arrow" tooltip="Back" type="Ghost" press="onNavBack"/>
+                    <Image src="./images/logo1.jpg" height="35px" press="onPressLogo"/>
+                    <Title text="{/genericTitle}"/>
+                </contentLeft>
+                <contentMiddle>
+                </contentMiddle>
+                <contentRight>
+                    <Button icon="sap-icon://hint" type="Transparent" tooltip="{i18n>auBtnInfoTooltip}"/>
+                    <Button icon="sap-icon://bell" type="Transparent" tooltip="{i18n>auBtnNotifyTooltip}"/>
+                    <Avatar initials="S" displaySize="XS" press=".menuPopoverOpen" />
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+            <NavContainer id="pageContainer">
+                <pages />
+            </NavContainer>
+        </content>
+        <footer>
+            <OverflowToolbar>
+                <Button id="messagePopoverBtn" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="Error" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

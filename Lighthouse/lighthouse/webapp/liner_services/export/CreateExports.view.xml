@@ -1,0 +1,151 @@
+<mvc:View controllerName="com.lighthouse.liner_services.export.CreateExports"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_CreateExports" showFooter="true" useIconTabBar="true" showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{i18n>exCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{i18n>exCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>exGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>exGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_General" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>exPartyDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_PartyDetails" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>exCargoSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_CargoDetails" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>exContainersSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_Container" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>exFreightDetailsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>exGeneralSection}">
+                        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                            <form:content>
+                                <Label text="{i18n>exOceanFreight}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Prepaid" />
+                                    <core:Item key="2" text="Collect" />
+                                </ComboBox>
+                                <Label text="{i18n>exLoadPortTHC}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Prepaid" />
+                                    <core:Item key="2" text="Collect" />
+                                </ComboBox>
+                                <Label text="{i18n>exDestPortTHC}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Prepaid" />
+                                    <core:Item key="2" text="Collect" />
+                                </ComboBox>
+                                <Label text="{i18n>exPort}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Buraimi" />
+                                    <core:Item key="2" text="Suwaiq" />
+                                    <core:Item key="3" text="Sur" />
+                                    <core:Item key="4" text="Port Sultan Qaboos" />
+                                    <core:Item key="5" text="Port Sohar" />
+                                    <core:Item key="6" text="Port Salalah" />
+                                    <core:Item key="7" text="Port Duqm" />
+                                    <core:Item key="8" text="Muscat" />
+                                </ComboBox>
+                                <Label text="{i18n>exLoadPortHaulage}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Prepaid" />
+                                    <core:Item key="2" text="Collect" />
+                                </ComboBox>
+                                <Label text="{i18n>exDestPortHaulage}" />
+                                <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                    <core:Item key="1" text="Prepaid" />
+                                    <core:Item key="2" text="Collect" />
+                                </ComboBox>
+                            </form:content>
+                        </form:SimpleForm>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>exDebitNoteSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_DebitNote" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>exChargesSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_Charges" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>exCommunicationSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_Communitcation" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{VoyageMdl>/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{VoyageMdl>slNo}" />
+                                        <Text text="{VoyageMdl>sectionName}" />
+                                        <Text text="{VoyageMdl>modifiedOn}" />
+                                        <Text text="{VoyageMdl>modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnCExportError" visible="{=!!${errors&gt;/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

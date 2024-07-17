@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({=${items}.length})" visible="{= ${items}.length>0}"  />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" visible="false" text="{i18n>cnBtnAdd}" width="70px" press="onAddEducation" />
+                    <Button type="Transparent" visible="false" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column >
+                <Text text="Education Type" />
+            </Column>
+            <Column>
+                <Text text="Date From" />
+            </Column>
+            <Column >
+                <Text text="Date To" />
+            </Column>
+            <Column >
+                <Text text="Institute" />
+            </Column>
+            <Column >
+                <Text text="Major" />
+            </Column>
+            <Column >
+                <Text text="Diploma" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onPressEducation">
+                <cells>
+                    <ObjectIdentifier title="{educationType}" />
+                    <Text text="{fromDate}"/>
+                    <Text text="{toDate}"/>
+                    <Text text="{institute}" />
+                    <Text text="{major}"/>
+                    <Text text="{diploma}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

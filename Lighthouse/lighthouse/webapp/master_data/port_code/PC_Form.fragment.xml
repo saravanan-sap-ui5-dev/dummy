@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+            <form:SimpleForm id="portFormId" editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4">
+                <form:content>
+                    <Label text="{i18n>pcPortCode}" required="true"/>
+                    <Input value="{code}" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                    <Label text="{i18n>pcPortName}" required="true"/>
+                    <Input value="{cardName}" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                    <Label text="{i18n>pcPortCountryCode}" />
+                    <Input value="{countryCode}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>pcPortCustomsCode}" />
+                    <Input value="{customsCode}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>pcPortZoneCode}" />
+                    <Input value="{zoneCode}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>pcPortZoneName}" />
+                    <Input value="{zoneName}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>pcPortPostalCode}" />
+                    <Input value="{postalCode}" editable="{visible>/edit}"/>
+                    <Label text="{i18n>pcETADays}" />
+                    <Input value="{etaDays}" editable="{visible>/edit}"/>
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+
+</core:FragmentDefinition>

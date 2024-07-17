@@ -1,0 +1,4 @@
+PROCEDURE "GET_APP_CONFIG" () AS 
+BEGIN 
+    SELECT * FROM "application_configuration" WHERE "id" = 1;
+END

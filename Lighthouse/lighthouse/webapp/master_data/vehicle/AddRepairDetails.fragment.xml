@@ -1,0 +1,82 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="Repair Details" contentWidth="50%">
+        <Panel >
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Service Type" />
+                    <ComboBox selectedKey="{serviceType}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Repair"/>
+                        <core:Item key="2" text="Maintenance"/>
+                    </ComboBox>
+                    <Label text="Status" />
+                    <ComboBox selectedKey="{status}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Active"/>
+                        <core:Item key="2" text="Completed"/>
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Odometer Reading" />
+                    <Input value="{odometerReading}" editable="{visible>/edit}" />
+                    <Label text="Scheduled Drop" />
+                    <DatePicker value="{scheduledDrop}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Requester Code" />
+                    <Input value="{requesterCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                    <Label text="Requester Name" />
+                    <Input value="{requesterName}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Receipt ID" />
+                    <Input value="{receiptId}" editable="{visible>/edit}" />
+                    <Label text="Receipt Date" />
+                    <DatePicker value="{receiptDate}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Cost (OMR)" />
+                    <Input value="{cost}" editable="{visible>/edit}" />
+                    <Label text="Payment status" />
+                    <ComboBox value="{paymentStatus}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Pending"/>
+                        <core:Item key="2" text="Paid"/>
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Problem Description" />
+                    <TextArea value="{problemDescription}" editable="{visible>/edit}" />
+                    <Label text="Repair Required" />
+                    <TextArea value="{repairRequired}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </Panel>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="Add" />
+                <Button type="Ghost" text="Cancel" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+
+</core:FragmentDefinition>

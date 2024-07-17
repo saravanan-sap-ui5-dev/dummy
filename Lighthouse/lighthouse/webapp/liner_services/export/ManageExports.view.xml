@@ -1,0 +1,36 @@
+<mvc:View controllerName="com.lighthouse.liner_services.export.ManageExports"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:tnt="sap.tnt"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <f:DynamicPage id="page_Exports" headerExpanded="true">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{i18n>exPageTitle}" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                <f:content>
+                    <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_FilterBar" type="XML" />
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+            <core:Fragment fragmentName="com.lighthouse.liner_services.export.fragments.Ex_Table" type="XML" binding="{/}"/>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

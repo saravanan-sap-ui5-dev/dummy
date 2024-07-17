@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    xmlns:core="sap.ui.core"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog title="Upload Items" contentWidth="30%">
+        <content>
+            <form:SimpleForm id="sf_attachment" editable="true" layout="ColumnLayout" columnsM="2">
+                <form:content>
+                    <Label required="true" text="File" />
+                    <u:FileUploader id="excelFileUploader" change="handleUploadingExcel" width="100%" fileType="xlsx,xls,xlsm,xlsb,xlt,xltx,xltm" sameFilenameAllowed="true" iconOnly="false" icon="sap-icon://browse-folder" tooltip="Upload your file to the local server"/>
+                    <Label required="false" text="Name" />
+                    <Input value="{/excelFileName}" editable="false"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button text="Upload" type="Emphasized" press="bulkPost" ariaHasPopup="Dialog" />
+                    <Button text="Cancel" type="Ghost" press="handleCloseExcelUploadDialog" ariaHasPopup="Dialog" />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

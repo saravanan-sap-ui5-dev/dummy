@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Dialog title="{i18n>imDORevalidationTitle}">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <HBox class="sapUiSmallMargin">
+                    <ObjectAttribute title="{i18n>imDONo}" text="HL 20288 3" class="sapUiSmallMarginEnd" />
+                    <ObjectAttribute title="{i18n>imValidityDate}" text="05/01/2023" />
+                </HBox>
+                <form:SimpleForm editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="{i18n>imValidityUpto}" />
+                        <DatePicker placeholder=" " />
+                        <Label text="{i18n>imRemarks}" />
+                        <TextArea />
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button type="Emphasized" text="{i18n>cnBtnSubmit}" />
+                    <Button text="{i18n>cnBtnCancel}" type="Ghost" press="onCloseDialog" />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

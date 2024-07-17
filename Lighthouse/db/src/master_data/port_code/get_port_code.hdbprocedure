@@ -1,0 +1,115 @@
+PROCEDURE "GET_PORT_CODE" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER,
+IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+  DECLARE PORT_CODE_ID BIGINT;
+  DECLARE CARDCODE_COLLECTION NVARCHAR(5000);
+  DECLARE NAME NVARCHAR(256);
+  DECLARE CODE NVARCHAR(256);
+  DECLARE COUNTRYCODE NVARCHAR(256);
+  DECLARE CUSTOMSCODE NVARCHAR(256);
+  DECLARE ZONECODE NVARCHAR(256);
+  DECLARE ZONENAME NVARCHAR(256);
+  DECLARE POSTALCODE NVARCHAR(256);
+  DECLARE CREATED_BY NVARCHAR(256);
+  DECLARE UPDATED_BY NVARCHAR(256);
+
+  DECLARE QUERY NVARCHAR(2000) :='';
+  DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+  DECLARE "TOTAL_RECORDS" INTEGER :=0;
+
+  DECLARE temp_port_code NVARCHAR(5000);
+  DECLARE temp_sort NVARCHAR(1000);
+
+  temp_port_code := 'SELECT * FROM "port_code"';
+  --SELECT count(*) INTO "TOTAL_RECORDS" FROM :temp_port_code;
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_port_code || ')' INTO "TOTAL_RECORDS";
+  
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+      QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM (' || :temp_port_code || ') AS temp_table ORDER BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+      EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id filter
+      SELECT  0 "recordCount","id","name","code","countryCode","cardCode","customsCode","zoneCode","zoneName","postalCode","createdBy","updatedBy","status" FROM "port_code"  WHERE "id" = ID ORDER BY "id" DESC;
+    ELSE -- for criteria based filter
+      IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO PORT_CODE_ID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.cardCodeCollection') INTO CARDCODE_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.name') INTO "NAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.code') INTO "CODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.countryCode') INTO "COUNTRYCODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.customsCode') INTO "CUSTOMSCODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.zoneCode') INTO "ZONECODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.zoneName') INTO "ZONENAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.postalCode') INTO "POSTALCODE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+
+        temp_cardcode_collection =   SELECT * FROM FUNC_SPLIT_STRING_VALUES_TO_TABLE(:CARDCODE_COLLECTION); 
+
+        /* IF :PORT_CODE_ID > 0  THEN  
+            QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "id" =' || :PORT_CODE_ID   ELSE ' AND  "id" =' || :PORT_CODE_ID   END;
+        END IF; */
+
+        /* IF :NAME != ''  THEN 
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("name") like ''%' ||  LOWER(:NAME) || '%'''  ELSE ' AND   LOWER("name") like ''%' ||  LOWER(:NAME) || '%''' END;
+        END IF; */
+
+        IF :CODE != ''  THEN  
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("code") like ''%' ||  LOWER(:CODE) || '%'''  ELSE ' AND   LOWER("code") like ''%' ||  LOWER(:CODE) || '%''' END;
+        END IF;
+
+        IF :COUNTRYCODE != ''  THEN 
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("countryCode") like ''%' ||  LOWER(:COUNTRYCODE) || '%'''  ELSE ' AND   LOWER("countryCode") like ''%' ||  LOWER(:COUNTRYCODE) || '%''' END;
+        END IF;
+
+        IF :CUSTOMSCODE != ''  THEN 
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("customsCode") like ''%' ||  LOWER(:CUSTOMSCODE) || '%'''  ELSE ' AND   LOWER("customsCode") like ''%' ||  LOWER(:CUSTOMSCODE) || '%''' END;
+        END IF;
+
+        IF :ZONECODE != ''  THEN 
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("zoneCode") like ''%' ||  LOWER(:ZONECODE) || '%'''  ELSE ' AND   LOWER("zoneCode") like ''%' ||  LOWER(:ZONECODE) || '%''' END;
+        END IF;
+        
+        IF :ZONENAME != ''  THEN  
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("zoneName") like ''%' ||  LOWER(:ZONENAME) || '%'''  ELSE ' AND   LOWER("zoneName") like ''%' ||  LOWER(:ZONENAME) || '%''' END;
+        END IF;
+
+        IF :POSTALCODE != ''  THEN 
+            QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("postalCode") like ''%' ||  LOWER(:POSTALCODE) || '%'''  ELSE ' AND   LOWER("postalCode") like ''%' ||  LOWER(:POSTALCODE) || '%''' END;
+        END IF;
+        
+        IF :CREATED_BY != ''  THEN 
+              QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+        
+        IF :UPDATED_BY != ''  THEN  
+          QUERY =QUERY || CASE WHEN QUERY = '' THEN '  LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+        
+        IF EXISTS (SELECT * FROM :temp_cardcode_collection) THEN
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "cardCode"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_cardcode_collection) || ')'  ELSE ' AND  "cardCode"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_cardcode_collection) || ')' END;
+        END IF;
+        
+        IF(QUERY = '') THEN
+            QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "port_code" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+            EXECUTE IMMEDIATE :QUERY;
+        ELSE
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "port_code" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "port_code"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+        END IF;
+      ELSE
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "port_code" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+        EXECUTE IMMEDIATE :QUERY;
+      END IF;
+    END IF; 
+  END IF;
+END

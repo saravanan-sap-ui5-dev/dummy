@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="{i18n>imevDialogTitle}" contentWidth="70%" verticalScrolling="true">
+        <Table items="{VesselMdl>/Products}" mode="None" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <Label design="Bold" text="{i18n>cnTableTitle}({=${VesselMdl>/Products}.length})" />
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column width="10em">
+                    <Text text="{i18n>imevVesselId}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>imVesselName}" />
+                </Column>
+                <Column>
+                    <Text text="{i18n>imVoyage}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <ObjectIdentifier title="{VesselMdl>VesselCode}" />
+                        <Text text="{VesselMdl>VesselName}" />
+                        <Text text="{VesselMdl>Voyage}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Ghost" text="{i18n>cnBtnClose}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

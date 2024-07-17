@@ -1,0 +1,29 @@
+id;name
+1;Voyage
+2;Import
+3;Export
+4;Trans-shipment
+5;Container
+6;Operation
+7;Liner Service Reports
+8;Jobs
+9;Payments
+10;C&F Service Reports
+11;Transportation
+12;Vehicle
+13;Husbandry Service
+14;Other Service Reports
+15;Finance Reports
+16;Application Config
+17;User
+18;Role
+19;Customer
+20;Shipping Line
+21;Vessel
+22;Port Code
+23;Container Type
+24;Containers
+25;Cargo Type
+26;IMCO
+27;HS Code
+28;Customs Package Code

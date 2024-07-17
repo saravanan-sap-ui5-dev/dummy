@@ -1,0 +1,61 @@
+<core:FragmentDefinition controllerName="com.lighthouse.master_data.shipping_line.ShippingLine"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="tableVehicle" items="{items}" fixedLayout="true" visible="true" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" type="Transparent" press="onPressVehicleCreate" />
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://excel-attachment" tooltip="{i18n>cnExportTooltip}" press="onPressExport" enabled="false"/>
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="onPressAFSettings" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="5em">
+                <Text text="ID" />
+            </Column>
+            <Column>
+                <Text text="Registration No" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Type" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="Make" />
+            </Column>
+            <Column >
+                <Text text="Status" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="{type}" press="onPressVehicleEdit">
+                <cells>
+                    <ObjectIdentifier title="{id}" />
+                    <Text text="{registrationNo}" />
+                    <Text text="{vehicleType}" />
+                    <Text text="{make}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+
+</core:FragmentDefinition>

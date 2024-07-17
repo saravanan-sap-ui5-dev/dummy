@@ -1,0 +1,112 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <fb:FilterBar id="portCodeFilter" filterBarExpanded="true" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="true">
+        <fb:filterItems>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="A" label="{i18n>pcId}">
+                <fb:control>
+                    <Input value="{cardCode}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="B" label="{i18n>pcPortCode}">
+                <fb:control>
+                    <Input value="{code}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="C" label="{i18n>pcPortName}">
+                <fb:control>
+                    <Input value="{cardName}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="D" label="{i18n>pcCustomsCode}">
+                <fb:control>
+                    <Input value="{customsCode}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="E" label="{i18n>pcZoneCode}">
+                <fb:control>
+                    <Input value="{zoneCode}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="F" label="{i18n>pcZoneName}">
+                <fb:control>
+                    <Input value="{zoneName}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem visibleInFilterBar="true" groupName="optional" name="G" label="{i18n>pcPostalCode}">
+                <fb:control>
+                    <Input value="{postalCode}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="H" visibleInFilterBar="false" label="{i18n>shCreatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{createdBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="I" visibleInFilterBar="false" label="{i18n>shCreatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_end'
+                            }
+                        ]
+                    }" field:date="createdOnStart,createdOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="J" visibleInFilterBar="false" label="{i18n>shUpdatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{updatedBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="K" visibleInFilterBar="false" label="{i18n>shUpdatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_end'
+                            }
+                        ]
+                    }" field:date="updatedOnStart,updatedOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="L" visibleInFilterBar="false" label="{i18n>shStatus}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/status}" selectedKeys="{valid}" selectionChange = "onPressStatus">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+        </fb:filterItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

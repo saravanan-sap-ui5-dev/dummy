@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voMasterName}" />
+                <Input value="{masterName}" editable="{visible>/edit}"/>
+                <Label text="{i18n>voNationality}" />
+                <ComboBox selectedKey="{nationality}" editable="{visible>/edit}">
+                    <core:Item key="1" text="IN" />
+                    <core:Item key="2" text="AE" />
+                    <core:Item key="3" text="US" />
+                    <core:Item key="4" text="UK" />
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voCARNo}"  />
+                <Input value="{carNumber}" type = "Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>voManifestNo}" />
+                <Input value="{manifestNumber}" type = "Number" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

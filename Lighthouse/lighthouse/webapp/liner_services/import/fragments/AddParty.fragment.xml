@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <Dialog title="{i18n>imAddPartyTitle}">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <form:SimpleForm editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="{i18n>imType}" />
+                        <ComboBox>
+                            <core:Item key="1" text="Shipper" />
+                            <core:Item key="2" text="Consignee" />
+                            <core:Item key="3" text="Notify" />
+                            <core:Item key="4" text="Notify 1" />
+                            <core:Item key="5" text="Notify 2" />
+                            <core:Item key="6" text="Clearing Agen" />
+                            <core:Item key="7" text="Forwarder" />
+                            <core:Item key="8" text="Booking Party" />
+                            <core:Item key="9" text="Freight Payer" />
+                        </ComboBox>
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+                    <ToolbarSpacer />
+                    <Button type="Emphasized" text="{i18n>cnBtnSubmit}" press="onSubmitParty" />
+                    <Button text="{i18n>cnBtnCancel}" type="Ghost" press="onCloseDialog" />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

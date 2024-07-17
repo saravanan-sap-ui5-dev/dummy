@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <Dialog id="contactDialogueId" title="Add Contact" contentWidth="40%" verticalScrolling="true">
+        <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+            <VBox backgroundDesign="Transparent">
+                <form:SimpleForm id="contactFormId" editable="true" class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="{i18n>cuFirstName}" required="true" />
+                        <Input value="{/contactForm/firstName}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                        <Label text="{i18n>cuMiddleName}" />
+                        <Input value="{/contactForm/middleName}" editable="{visible>/edit}" />
+                        <Label text="{i18n>cuLastName}" required="true" />
+                        <Input value="{/contactForm/lastName}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                        <Label text="{i18n>cuContactType}"/>
+                        <ComboBox items="{masterDataMdl>/contactType}" selectedKey="{/contactForm/contactType}" editable="{visible>/edit}">
+                            <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                        </ComboBox>
+                        <Label text="{i18n>cuPhone}" required="true" />
+                        <Input value="{/contactForm/mobilePhone}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                        <Label text="{i18n>cuEmail}" required="true" />
+                        <Input value="{/contactForm/e_Mail}" editable="{visible>/edit}" field:type="Input" field:validate="required" />
+                        <Label text="{i18n>cuFax}" />
+                        <Input value="{/contactForm/fax}" editable="{visible>/edit}" />
+                        <Label text="{i18n>cuGender}"/>
+                        <ComboBox items="{masterDataMdl>/gender}" selectedKey="{/contactForm/gender}" editable="{visible>/edit}" selectionChange="onSelectGender">
+                            <core:Item key="{masterDataMdl>value}" text="{= ${masterDataMdl>description}.substr(3)}" />
+                        </ComboBox>
+                        <Label text="{i18n>cuAddressLine1}" />
+                        <Input value="{/contactForm/addressLine1}" editable="{visible>/edit}"/>
+                        <Label text="{i18n>cuAddressLine2}" />
+                        <Input value="{/contactForm/addressLine2}" editable="{visible>/edit}"/>
+                        <Label text="{i18n>cuAddressLine3}" />
+                        <Input value="{/contactForm/addressLine3}" editable="{visible>/edit}"/>
+                        <Label text="{i18n>cuCity}"/>
+                        <ComboBox items="" selectedKey="{/contactForm/city}" editable="{visible>/edit}">
+                            <core:Item key="CPO" text="CPO" />
+                            <core:Item key="Abhu Dhabi" text="Abhu Dhabi" />
+                            <core:Item key="Dhubai" text="Dhubai" />
+                        </ComboBox>
+                        <Label text="{i18n>cuPoBox}" />
+                        <Input value="{/contactForm/poBox}" editable="{visible>/edit}"/>
+                        <Label text="{i18n>cuPinCode}" />
+                        <Input value="{/contactForm/pinCode}" editable="{visible>/edit}"/>
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </Panel>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Add" press="onSubmitContact"/>
+                <Button type="Ghost" text="Cancel" press="onCloseContactDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

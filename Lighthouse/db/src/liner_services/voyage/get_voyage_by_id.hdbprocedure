@@ -1,0 +1,38 @@
+PROCEDURE "GET_VOYAGE_BY_ID" (IN ID BIGINT) AS 
+BEGIN 
+    IF ID > 0 THEN
+        SELECT 
+        0 "inserted", 
+        0 "updated",
+        v."id",
+            v."voyageType",
+            v."callPort",
+            v."accountNumber",
+            v."vesselID",
+            v."vesselName",
+            v."voyageIn",
+            v."voyageOut",
+            v."vesselETA",
+            v."vesselETS",
+            v."lastPort",
+            v."nextPort",
+            v."vesselRotationNumber",
+            v."mrnNumber",
+            v."service",
+            v."operator",
+            v."dpIn",
+            v."dpOut",
+            v."masterName",
+            v."nationality",
+            v."carNumber",
+            v."manifestNumber",
+            v."createdBy",
+            v."createdOn",
+            v."updatedBy",
+            v."updatedOn",
+            v."status",
+            0 AS "recordCount"
+        FROM "voyage" v
+        WHERE v."id" = :ID;
+    END IF;
+END

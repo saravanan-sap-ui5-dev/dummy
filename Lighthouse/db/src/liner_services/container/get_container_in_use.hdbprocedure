@@ -1,0 +1,159 @@
+PROCEDURE "GET_CONTAINER_IN_USE" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER, IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+	DECLARE CID BIGINT;
+  DECLARE CONTAINERNUMBER NVARCHAR(256); 
+	DECLARE BLNUMBER NVARCHAR(256); 
+  DECLARE TYPE_ID_COLLECTION NCLOB;
+	DECLARE OPERATOR BIGINT;
+  DECLARE ONHOLD_COLLECTION NCLOB;
+  DECLARE SOC_COLLECTION NCLOB;
+  DECLARE SIZE_COLLECTION NCLOB;
+  DECLARE MOVEMENT_COLLECTION NCLOB;
+  DECLARE MOVEMENT INTEGER;
+	DECLARE CREATED_BY NVARCHAR(256);
+	DECLARE UPDATED_BY NVARCHAR(256);
+	DECLARE CREATED_ON_START DATE;
+	DECLARE CREATED_ON_END DATE;
+	DECLARE UPDATED_ON_START DATE;
+	DECLARE UPDATED_ON_END DATE;
+	DECLARE STATUSES NVARCHAR(256);
+  DECLARE CONTAINERS_STATUS_COLLECTION NCLOB;
+	
+	DECLARE QUERY NVARCHAR(2000) :='';
+	DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+	DECLARE "TOTAL_RECORDS" INTEGER :=0;
+	DECLARE temp_sort NVARCHAR(1000);
+  DECLARE temp_container_in_use NVARCHAR(5000);
+
+  temp_container_in_use := 'SELECT * FROM "container_in_use"';
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_container_in_use || ')' INTO "TOTAL_RECORDS";
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+    
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+    QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use"  AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" ORDER BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+    EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id "filter"
+      SELECT  0 "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type"  WHERE CON."id" = ID ORDER BY CON."id" DESC;
+    ELSE
+    	IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO CID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.blNumber') INTO BLNUMBER FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.containerNumber') INTO CONTAINERNUMBER FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.socCollection') INTO SOC_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.sizeCollection') INTO SIZE_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.movementCollection') INTO MOVEMENT_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.typeIdCollection') INTO TYPE_ID_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.operator') INTO OPERATOR FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.onHoldCollection') INTO ONHOLD_COLLECTION FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.movement') INTO MOVEMENT FROM DUMMY;
+    	  SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnStart') INTO CREATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnEnd') INTO CREATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnStart') INTO UPDATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnEnd') INTO UPDATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.statuses') INTO CONTAINERS_STATUS_COLLECTION FROM DUMMY;
+
+    
+        temp_containers_status_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:CONTAINERS_STATUS_COLLECTION);
+        temp_soc_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:SOC_COLLECTION); 
+        temp_container_type_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:TYPE_ID_COLLECTION); 
+        temp_onHold_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:ONHOLD_COLLECTION);
+        temp_size_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:SIZE_COLLECTION); 
+        temp_movement_collection =   SELECT * FROM FUNC_SPLIT_VALUES_TO_TABLE(:MOVEMENT_COLLECTION); 
+
+        IF :CID > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  CON."id"=' ||  :CID  ELSE ' AND CON."id"=' ||  :CID END;
+        END IF;
+
+        IF :BLNUMBER > 0  THEN  --ToDo: based on the container cargo table blnumber we have filter
+          --QUERY := CASE WHEN QUERY = '' THEN '  "blNumber"=' ||  :BLNUMBER  ELSE ' AND "blNumber"=' ||  :BLNUMBER END;
+        END IF;
+
+        IF :CONTAINERNUMBER != ''  THEN  -- for criterials
+          QUERY = CASE WHEN QUERY = '' THEN '  LOWER("containerNumber") like ''%' ||  LOWER(:CONTAINERNUMBER) || '%'''  ELSE ' AND   LOWER("containerNumber") like ''%' ||  LOWER(:CONTAINERNUMBER) || '%''' END;
+        END IF;
+
+        IF EXISTS (SELECT * FROM :temp_soc_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CON."soc"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_soc_collection) || ')'  ELSE ' AND  CON."soc"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_soc_collection) || ')' END;
+		    END IF;
+
+        IF EXISTS (SELECT * FROM :temp_size_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CON."size"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_size_collection) || ')'  ELSE ' AND  CON."size"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_size_collection) || ')' END;
+		    END IF;
+
+        IF EXISTS (SELECT * FROM :temp_container_type_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CT."id"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_collection) || ')'  ELSE ' AND  CT."id"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_container_type_collection) || ')' END;
+	    	END IF;
+
+        IF :OPERATOR > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  CON."operator"=' ||  :OPERATOR  ELSE ' AND CON."operator"=' ||  :OPERATOR END;
+        END IF;
+
+        IF EXISTS (SELECT * FROM :temp_onHold_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CON."onHold"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_onHold_collection) || ')'  ELSE ' AND  CON."onHold"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_onHold_collection) || ')' END;
+		    END IF;
+         
+        IF EXISTS (SELECT * FROM :temp_movement_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CON."movement"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_movement_collection) || ')'  ELSE ' AND  CON."movement"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_movement_collection) || ')' END;
+		    END IF;
+
+        IF EXISTS (SELECT * FROM :temp_containers_status_collection) THEN
+		      QUERY = QUERY || CASE WHEN QUERY = '' THEN ' CON."status"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_containers_status_collection) || ')'  ELSE ' AND  CON."status"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_containers_status_collection) || ')' END;
+		    END IF;
+    
+        IF :CREATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER(CON."createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER(CON."createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+
+        IF :UPDATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER(CON."updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER(CON."updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+        
+        IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !='' AND :CREATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN 'CON."createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' ELSE ' AND CON."createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL AND :UPDATED_ON_START !='' AND :UPDATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN 'CON."updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END'  ELSE ' AND CON."updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END' END;
+        END IF;
+        
+        IF(QUERY = '') THEN
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+        EXECUTE IMMEDIATE :QUERY;
+
+        ELSE
+          IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !=''AND :CREATED_ON_END !=''OR :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL  AND :UPDATED_ON_START !=''AND :UPDATED_ON_END !='' THEN
+            --EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_in_use" AS CON WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+            IF(TYPE_ID_COLLECTION != '[]') THEN
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          ELSE
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM ('|| :temp_container_in_use ||') AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          END IF;
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX, :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          ELSE 
+           -- EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_in_use" AS CON WHERE '|| QUERY INTO "TOTAL_RECORDS";
+           IF(TYPE_ID_COLLECTION != '[]') THEN
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            ELSE
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "container_in_use" AS CON WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            END IF;
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+          END IF;
+        END IF;
+      ELSE
+        SELECT  :TOTAL_RECORDS "recordCount",0 "inserted",0"updated",CON.*,CT."name" AS "containerTypeName" FROM "container_in_use" AS CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" ORDER BY CON."id" DESC;
+      END IF;
+    END IF;
+  END IF;
+END

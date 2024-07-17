@@ -1,0 +1,233 @@
+PROCEDURE "GET_VOYAGE" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER,
+IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+  DECLARE VID BIGINT;
+  DECLARE VOYAGETYPE BIGINT;
+  DECLARE CALLPORT BIGINT;
+  DECLARE ACCOUNTNUMBER BIGINT;
+  DECLARE VESSELID BIGINT;
+  DECLARE VESSELNAME NVARCHAR(256);
+  DECLARE VOYAGEIN BIGINT;
+  DECLARE VOYAGEOUT BIGINT;
+  DECLARE VESSELETS DATETIME;
+  DECLARE LASTPORT BIGINT;
+  DECLARE NEXTPORT BIGINT;
+  DECLARE VESSELROTATIONNUMBER BIGINT;
+  DECLARE MRNNUMBER BIGINT;
+  DECLARE "SERVICE" BIGINT;
+  DECLARE OPERATOR BIGINT;
+  DECLARE DPIN BIGINT;
+  DECLARE DPOUT BIGINT;
+  DECLARE MASTERNAME NVARCHAR(256);
+  DECLARE NATIONALITY NVARCHAR(256);
+  DECLARE CARNUMBER BIGINT;
+  DECLARE MANIFESTNUMBER BIGINT;
+
+  DECLARE CREATED_BY NVARCHAR(256);
+  DECLARE UPDATED_BY NVARCHAR(256);
+  DECLARE CREATED_ON_START DATE;
+  DECLARE CREATED_ON_END DATE;
+  DECLARE UPDATED_ON_START DATE;
+  DECLARE UPDATED_ON_END DATE;
+  DECLARE VESSEL_ETA_START DATETIME;
+  DECLARE VESSEL_ETA_END DATETIME;
+  DECLARE VESSEL_ETS_START DATETIME;
+  DECLARE VESSEL_ETS_END DATETIME;
+  DECLARE STATUSES NVARCHAR(256);
+
+  DECLARE QUERY NVARCHAR(2000) :='';
+  DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+  DECLARE "TOTAL_RECORDS" INTEGER :=0;
+  DECLARE temp_sort NVARCHAR(1000);
+  DECLARE temp_voyage NVARCHAR(5000);
+  
+
+  temp_voyage := 'SELECT * FROM "voyage"';
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_voyage || ')' INTO "TOTAL_RECORDS";
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+ -- SELECT count(*) INTO "TOTAL_RECORDS" FROM "voyage";
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+    
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+    QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",* FROM "voyage" ORDER BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+    EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id filter
+      SELECT  0 "recordCount","id","voyageType","callPort","accountNumber","vesselID","vesselName","voyageIn","voyageOut","vesselETA","vesselETS","lastPort","nextPort","vesselRotationNumber","mrnNumber","service","operator","dpIn","dpOut","masterName","nationality","carNumber","manifestNumber","createdBy","createdOn","updatedBy","updatedOn","status" FROM "voyage"  WHERE "id" = ID ORDER BY "id" DESC;
+    ELSE
+    	IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO VID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.voyageType') INTO "VOYAGETYPE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.callPort') INTO "CALLPORT" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.accountNumber') INTO "ACCOUNTNUMBER" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselID') INTO "VESSELID" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselName') INTO "VESSELNAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.voyageIn') INTO "VOYAGEIN" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.voyageOut') INTO "VOYAGEOUT" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselETAStart') INTO VESSEL_ETA_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselETAEnd') INTO VESSEL_ETA_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselETSStart') INTO VESSEL_ETS_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselETSEnd') INTO VESSEL_ETS_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselETS') INTO "VESSELETS" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.lastPort') INTO "LASTPORT" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.nextPort') INTO "NEXTPORT" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselRotationNumber') INTO "VESSELROTATIONNUMBER" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.mrnNumber') INTO "MRNNUMBER" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.service') INTO "SERVICE" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.operator') INTO "OPERATOR" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.dpIn') INTO "DPIN" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.dpOut') INTO "DPOUT" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.masterName') INTO "MASTERNAME" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.nationality') INTO "NATIONALITY" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.carNumber') INTO "CARNUMBER" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.manifestNumber') INTO "MANIFESTNUMBER" FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnStart') INTO CREATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnEnd') INTO CREATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnStart') INTO UPDATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnEnd') INTO UPDATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.statuses') INTO "STATUSES" FROM DUMMY;
+    
+        IF :VID > 0  THEN  
+        QUERY := CASE WHEN QUERY = '' THEN '  "id"=' ||  :VID  ELSE ' AND "id"=' ||  :VID END;
+        END IF;
+
+        IF :VOYAGETYPE > 0  THEN  
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "voyageType"=' ||  :VOYAGETYPE  ELSE ' AND "voyageType"=' ||  :VOYAGETYPE END;
+        END IF;
+
+        IF :CALLPORT > 0  THEN  
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "callPort"=' ||  :CALLPORT  ELSE ' AND "callPort"=' ||  :CALLPORT END;
+        END IF;
+
+        IF :ACCOUNTNUMBER > 0  THEN  
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "accountNumber"=' ||  :ACCOUNTNUMBER  ELSE ' AND "accountNumber"=' ||  :ACCOUNTNUMBER END;
+        END IF;
+
+        IF :VESSELID > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "vesselID"=' ||  :VESSELID  ELSE ' AND "vesselID"=' ||  :VESSELID END;
+        END IF;
+
+        IF :VESSELNAME != ''  THEN 
+          QUERY = QUERY || CASE WHEN QUERY = '' THEN '  LOWER("vesselName") like ''%' ||  LOWER(:VESSELNAME) || '%'''  ELSE ' AND   LOWER("vesselName") like ''%' ||  LOWER(:VESSELNAME) || '%''' END;
+          END IF;
+
+        IF :VOYAGEIN > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "voyageIn"=' ||  :VOYAGEIN  ELSE ' AND "voyageIn"=' ||  :VOYAGEIN END;
+        END IF;
+
+        IF :VOYAGEOUT > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "voyageOut"=' ||  :VOYAGEOUT  ELSE ' AND "voyageOut"=' ||  :VOYAGEOUT END;
+        END IF;
+
+        IF :VESSEL_ETA_START IS NOT NULL AND :VESSEL_ETA_END IS NOT NULL AND :VESSEL_ETA_START !='' AND :VESSEL_ETA_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"vesselETA" BETWEEN :VESSEL_ETA_START AND :VESSEL_ETA_END' ELSE ' AND "vesselETA" BETWEEN :VESSEL_ETA_START AND :VESSEL_ETA_END' END;
+        END IF;
+
+        IF :VESSEL_ETS_START IS NOT NULL AND :VESSEL_ETS_END IS NOT NULL AND :VESSEL_ETS_START !='' AND :VESSEL_ETS_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"vesselETS" BETWEEN :VESSEL_ETS_START AND :VESSEL_ETS_END' ELSE ' AND "vesselETS" BETWEEN :VESSEL_ETS_START AND :VESSEL_ETS_END' END;
+        END IF;
+
+
+        IF :VESSELETS != ''  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "vesselETS"=' ||  :VESSELETS  ELSE ' AND "vesselETS"=' ||  :VESSELETS END;
+        END IF;
+        
+        IF :LASTPORT > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "lastPort"=' ||  :LASTPORT  ELSE ' AND "lastPort"=' ||  :LASTPORT END;
+        END IF;
+
+        IF :NEXTPORT > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :NEXTPORT  ELSE ' AND "nextPort"=' ||  :NEXTPORT END;
+        END IF;
+
+        IF :VESSELROTATIONNUMBER > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :VESSELROTATIONNUMBER  ELSE ' AND "nextPort"=' ||  :VESSELROTATIONNUMBER END;
+        END IF;
+
+          IF :MRNNUMBER > 0 THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :MRNNUMBER  ELSE ' AND "nextPort"=' ||  :MRNNUMBER END;
+        END IF;
+
+        IF :SERVICE > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :SERVICE  ELSE ' AND "nextPort"=' ||  :SERVICE END;
+        END IF;
+
+        IF :OPERATOR > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :OPERATOR  ELSE ' AND "nextPort"=' ||  :OPERATOR END;
+        END IF;
+
+        IF :DPIN > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :DPIN  ELSE ' AND "nextPort"=' ||  :DPIN END;
+        END IF;
+
+        IF :DPOUT > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :DPOUT  ELSE ' AND "nextPort"=' ||  :DPOUT END;
+        END IF;
+
+        IF :MASTERNAME != ''  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :MASTERNAME  ELSE ' AND "nextPort"=' ||  :MASTERNAME END;
+        END IF;
+
+        IF :NATIONALITY != ''  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :NATIONALITY  ELSE ' AND "nextPort"=' ||  :NATIONALITY END;
+        END IF;
+
+        IF :CARNUMBER > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :CARNUMBER  ELSE ' AND "nextPort"=' ||  :CARNUMBER END;
+        END IF;
+
+        IF :MANIFESTNUMBER > 0  THEN 
+          QUERY :=QUERY || CASE WHEN QUERY = '' THEN '  "nextPort"=' ||  :MANIFESTNUMBER  ELSE ' AND "nextPort"=' ||  :MANIFESTNUMBER END;
+        END IF;
+
+        IF STATUSES != '()' AND STATUSES != '' THEN
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN ' "status" IN ' || STATUSES ELSE ' AND "status" IN ' || STATUSES END;
+        END IF;
+    
+        IF :CREATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+
+        IF :UPDATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+        
+        IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !='' AND :CREATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' ELSE ' AND "createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL AND :UPDATED_ON_START !='' AND :UPDATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END'  ELSE ' AND "updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END' END;
+        END IF;
+        
+        IF(QUERY = '') THEN
+
+          QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",*,0"inserted",0"updated" FROM "voyage" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+          EXECUTE IMMEDIATE :QUERY;
+
+        ELSE
+          IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !=''AND :CREATED_ON_END !=''OR :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL  AND :UPDATED_ON_START !=''AND :UPDATED_ON_END !='' OR VESSEL_ETA_START IS NOT NULL AND :VESSEL_ETA_END IS NOT NULL AND :VESSEL_ETA_START !=''AND :VESSEL_ETA_END !='' OR VESSEL_ETS_START IS NOT NULL AND :VESSEL_ETS_END IS NOT NULL AND :VESSEL_ETS_START !=''AND :VESSEL_ETS_END !='' THEN
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "voyage" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END,:VESSEL_ETA_START, :VESSEL_ETA_END, :VESSEL_ETS_START, :VESSEL_ETS_END ;
+
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated","id","voyageType","callPort","accountNumber","vesselID","vesselName","voyageIn","voyageOut","vesselETA","vesselETS","lastPort","nextPort","vesselRotationNumber","mrnNumber","service","operator","dpIn","dpOut","masterName","nationality","carNumber","manifestNumber","createdBy","createdOn","updatedBy","updatedOn","status" FROM "voyage"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX, :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END,:VESSEL_ETA_START, :VESSEL_ETA_END, :VESSEL_ETS_START, :VESSEL_ETS_END;
+          ELSE 
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "voyage" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated","id","voyageType","callPort","accountNumber","vesselID","vesselName","voyageIn","voyageOut","vesselETA","vesselETS","lastPort","nextPort","vesselRotationNumber","mrnNumber","service","operator","dpIn","dpOut","masterName","nationality","carNumber","manifestNumber","createdBy","createdOn","updatedBy","updatedOn","status" FROM "voyage"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+          END IF;
+        END IF;
+      ELSE
+        SELECT  :TOTAL_RECORDS "recordCount",0 "inserted",0"updated","id","voyageType","callPort","accountNumber","vesselID","vesselName","voyageIn","voyageOut","vesselETA","vesselETS","lastPort","nextPort","vesselRotationNumber","mrnNumber","service","operator","dpIn","dpOut","masterName","nationality","carNumber","manifestNumber","createdBy","createdOn","updatedBy","updatedOn","status" FROM "voyage" ORDER BY "id" DESC;
+      END IF;
+    END IF;
+  END IF;
+END

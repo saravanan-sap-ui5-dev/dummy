@@ -1,0 +1,62 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="tableRepairAndMaintainenance" items="{items}" inset="false" growing="true" mode="{mode}" alternateRowColors="true" delete="onPressDeleteItem">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button text="Add" type="Transparent" enabled="{visible>/edit}" press="onAddRepair"/>
+                    <Button text="Remove" type="Transparent" enabled="{visible>/edit}"/>
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="7rem">
+                <Text text="Service Type" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Scheduled Drop" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Receipt No" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Receipt Date" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Requested By" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Payment Status" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Status" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="Navigation" vAlign="Middle" press="onRepairDetails">
+                <cells>
+                    <Text text="{serviceType}"/>
+                    <Text text="{scheduledDrop}"/>
+                    <Text text="{receiptNo}"/>
+                    <Text text="{receiptDate}"/>
+                    <Text text="{requestedBy}"/>
+                    <Text text="{paymentStatus}"/>
+                    <Text text="{status}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

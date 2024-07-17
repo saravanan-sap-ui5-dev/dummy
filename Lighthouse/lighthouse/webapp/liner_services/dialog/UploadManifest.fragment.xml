@@ -1,0 +1,102 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:u="sap.ui.unified"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Dialog id="mainDialog" title="{i18n>umDialogTitle}" contentWidth="70%" contentHeight="60%" resizable="false">
+        <content>
+            <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+                <VBox>
+                    <form:SimpleForm class="sapUiNoContentPadding" editable="true" layout="ColumnLayout" columnsXL="4" columnsL="3" columnsM="2">
+                        <form:content>
+                            <Label text="{i18n>umFileType}"/>
+                            <ComboBox selectedKey="">
+                                <core:Item key="1" text="IFTMC S2"/>
+                                <core:Item key="2" text="CUSTOMS MANIFEST"/>
+                                <core:Item key="3" text="IFCSUM-HI"/>
+                                <core:Item key="4" text="CODECO-MOV"/>
+                                <core:Item key="5" text="COARRI-COA"/>
+                            </ComboBox>
+                            <Label text="{i18n>umFile}"/>
+                            <u:FileUploader icon="sap-icon://browse-folder" width="100%" iconOnly="true" uploadUrl="upload/" tooltip="{i18n>umFileTooltip}" uploadComplete="handleUploadComplete"/>
+                        </form:content>
+                    </form:SimpleForm>
+                    <Button class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom" width="100px" type="Emphasized" text="{i18n>umBtnListBLs}"/>
+                </VBox>
+                <Toolbar>
+                    <Title text="{i18n>umManifestDetailsSection}"/>
+                </Toolbar>
+                <form:SimpleForm class="sapUiSmallMarginTop formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="3" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="{i18n>umShippingLine}" />
+                        <Input editable="false"/>
+                        <Label text="{i18n>umVoyageIn}" />
+                        <Input editable="false"/>
+                        <Label text="{i18n>umVesselName}" />
+                        <Input editable="false"/>
+                        <Label text="{i18n>umPortCall}" />
+                        <Input editable="false"/>
+                        <!-- <Label text="Voyage Index" />
+                        <Input editable="false"/>
+                        <Label text="Vessel Index" />
+                        <Input editable="false"/> -->
+                    </form:content>
+                </form:SimpleForm>
+                <form:SimpleForm class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="3" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                    <form:content>
+                        <Label text="{i18n>umVesselEta}" />
+                        <DateTimePicker displayFormat="dd-MM-yyyy HH:mm:ss" valueFormat="yyyy-MM-dd HH:mm:ss" editable="false" change="handleChange"/>
+                        <Label text="{i18n>umVesselEts}" />
+                        <DateTimePicker displayFormat="dd-MM-yyyy HH:mm:ss" valueFormat="yyyy-MM-dd HH:mm:ss" editable="false" change="handleChange"/>
+                    </form:content>
+                </form:SimpleForm>
+
+                <Toolbar>
+                    <Title text="Bill of Lading"/>
+                </Toolbar>
+                <Table items="{blListMdl>/}" mode="MultiSelect" sticky="ColumnHeaders,HeaderToolbar" alternateRowColors="true" inset="false" growing="true" growingThreshold="10">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Label design="Bold" text="{i18n>cnTableTitle}({=${blListMdl>/}.length})" />
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <!--  <Column hAlign="Begin">
+                            <Text text="S.No." />
+                        </Column> -->
+                        <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Begin">
+                            <Text text="{i18n>umBLNumber}" />
+                        </Column>
+                        <Column hAlign="Begin">
+                            <Text text="{i18n>umShippingLine}" />
+                        </Column>
+
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle">
+                            <cells>
+                                <!-- <Text text="{blListMdl>sNo}"/> -->
+                                <Text text="{blListMdl>blNo}" />
+                                <Text text="{blListMdl>line}" />
+
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <content>
+
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnUpload}" type="Emphasized" press="._generateInvalidUserInput" />
+                    <Button text="{i18n>cnBtnCancel}" type="Ghost" press="onCloseDialog" ariaHasPopup="Dialog" />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

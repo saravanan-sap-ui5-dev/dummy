@@ -1,0 +1,63 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="tableFuel" items="{items}" inset="false" growing="true" mode="{mode}" alternateRowColors="true" delete="onPressDeleteItem">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button text="Add" type="Transparent" enabled="{visible>/edit}" press="onAddFuel"/>
+                    <Button text="Remove" type="Transparent" enabled="{visible>/edit}"/>
+
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="7rem">
+                <Text text="Fuel Type" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Quantity" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Vendor" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Receipt No" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Receipt Date" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="Requested By" />
+            </Column>
+            <Column >
+                <Text text="Payment Status" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="{type}" vAlign="Middle" press="onFuelDetails">
+                <cells>
+                    <Text text="{fuelType}" />
+                    <Text text="{quantity}" />
+                    <Text text="{vendor}" />
+                    <Text text="{receiptNo}" />
+                    <Text text="{receiptDate}" />
+                    <Text text="{requestedBy}" />
+                    <Text text="{paymentStatus}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

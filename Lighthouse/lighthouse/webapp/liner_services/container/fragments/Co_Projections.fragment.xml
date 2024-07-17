@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                <form:content>
+                    <Label text="{i18n>coOverHeight}" />
+                    <Input value="{overHeight}" type="Number" editable="{visible>/edit}" />
+                    <Label text="{i18n>coOverLengthFront}" />
+                    <Input value="{overLengthFront}" type="Number" editable="{visible>/edit}" />
+                    <Label text="{i18n>coOverLengthAfter}" />
+                    <Input value="{overLengthAfter}" type="Number" editable="{visible>/edit}" />
+                    <Label text="{i18n>coOverWidthLeft}" />
+                    <Input value="{overWidthLeft}" type="Number" editable="{visible>/edit}" />
+                    <Label text="{i18n>coOverWidthRight}" />
+                    <Input value="{overWidthRight}" type="Number" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

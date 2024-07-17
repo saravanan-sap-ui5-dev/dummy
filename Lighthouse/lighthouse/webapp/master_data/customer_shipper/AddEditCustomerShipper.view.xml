@@ -1,0 +1,70 @@
+<mvc:View controllerName="com.lighthouse.master_data.AddEditCustomerShipper"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <f:DynamicPage headerExpanded="true">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{= ${customerShipper>/item}?'Customer Shipper: '+${customerShipper>/item}:'New Customer Shipper'}" />
+                </f:heading>
+                <!--   <f:actions>
+                    <Button type="Emphasized" text="Save"/>
+                    <Button type="Transparent" text="Save and Close" press="backToPortManage"/>
+                    <Button type="Transparent" text="Close" press="handleClose"/>
+                </f:actions>
+                <f:navigationActions>
+
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press="handleFullScreen" id="enterFullScreenBtn" tooltip="Enter Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/fullScreen} !== null }"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press="handleExitFullScreen" id="exitFullScreenBtn" tooltip="Exit Full Screen Mode" visible="{= ${/actionButtonsInfo/midColumn/exitFullScreen} !== null }"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press="handleClose" tooltip="Close end column" visible="{= ${/actionButtonsInfo/midColumn/closeColumn} !== null }"/>
+                </f:navigationActions> -->
+            </f:DynamicPageTitle>
+        </f:title>
+        <!-- DynamicPage Content -->
+
+        <f:content>
+            <!-- <Panel backgroundDesign="Transparent"> -->
+            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4" class="sapUiSmallMarginTop">
+                <form:content>
+                    <Label text="Customer Name" />
+                    <Input/>
+                    <Label text="Customer Short Name" />
+                    <Input/>
+                    <Label text="Customer Full Address" />
+                    <Input/>
+                    <Label text="Banking Details" />
+                    <Input/>
+                    <Label text="C&amp;F Agent license ID" />
+                    <Input/>
+                    <Label text="Bayan Code" />
+                    <Input/>
+                    <Label text="Customer Company Details" />
+                    <Input/>
+                    <Label text="Import Cargo Contact Details" />
+                    <Input/>
+                    <Label text="Export Cargo Contact Details" />
+                    <Input/>
+                </form:content>
+            </form:SimpleForm>
+            <!-- </Panel> -->
+        </f:content>
+        <f:footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Save"/>
+                <Button type="Transparent" text="Cancel" press="onNavBack"/>
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

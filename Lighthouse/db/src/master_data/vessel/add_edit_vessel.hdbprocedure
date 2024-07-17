@@ -1,0 +1,182 @@
+PROCEDURE "ADD_EDIT_VESSEL" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE ID BIGINT := 0;
+    -- vessel variable
+    DECLARE tv_id BIGINT :=0;
+    DECLARE tv_name NVARCHAR(256);
+    DECLARE tv_callSign BIGINT;
+    DECLARE tv_imo BIGINT;
+    DECLARE tv_nationality NVARCHAR(256);
+    DECLARE tv_shippingLineId NVARCHAR(256);
+    DECLARE tv_createdBy NVARCHAR(256);
+    DECLARE tv_createdOn DATE;
+    DECLARE tv_updatedBy NVARCHAR(256);
+    DECLARE tv_updatedOn DATE;
+    DECLARE tv_status INTEGER;
+    DECLARE bulk_post NVARCHAR(5);
+   
+    -- vessel detail variables
+    DECLARE tvd_id BIGINT :=0;
+    DECLARE tvd_shippingLineId NVARCHAR(256);
+    DECLARE tvd_vesselCode NVARCHAR(256);
+    DECLARE tvd_vesselId BIGINT;
+    DECLARE tvd_status INTEGER;
+
+    -- Other variable declarations...
+    DECLARE i INTEGER;
+    DECLARE j INTEGER;
+    DECLARE QUERY NVARCHAR(2000) :='';
+    DECLARE exImo INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'IMO Number already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+    
+    --CREATE LOCAL TEMPORARY TABLE #dummy_vessel (id INT);
+    --DROP TABLE #dummy_vessel;
+    
+    temp_vessel = SELECT JT.*
+            FROM JSON_TABLE(
+                :IN_PARAM,
+                '$[*]' COLUMNS(
+                    "id" BIGINT PATH '$.id',
+                    "name" NVARCHAR(256) PATH '$.name',
+                    "callSign" BIGINT PATH '$.callSign',
+                    "imo" BIGINT PATH '$.imo',
+                    "nationality" NVARCHAR(256) PATH '$.nationality',
+                    "shippingLineId" NVARCHAR(256) PATH '$.shippingLineId',
+                    "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                    "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                    "createdOn" DATE PATH '$.createdOn',
+                    "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                    "updatedOn" DATE PATH '$.updatedOn',
+                    "status" INTEGER PATH '$.status'
+                )
+            ) AS JT;
+    
+          FOR j in 1..RECORD_COUNT(:temp_vessel) do
+            tv_id = :temp_vessel."id"[:j];
+            tv_name = :temp_vessel."name"[:j];
+            tv_callSign = :temp_vessel."callSign"[:j];
+            tv_imo = :temp_vessel."imo"[:j];
+            tv_nationality = :temp_vessel."nationality"[:j];
+            tv_shippingLineId = :temp_vessel."shippingLineId"[:j];
+            tv_createdBy = :temp_vessel."createdBy"[:j];
+            tv_createdOn = CURRENT_DATE;
+            tv_updatedBy = null;
+            tv_updatedOn = null;
+            tv_status = :temp_vessel."status"[:j];
+
+            bulk_post = :temp_vessel."bulkPost"[:j];
+
+
+            IF tv_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "vessel" WHERE "imo" = ?' INTO exImo USING :tv_imo;
+                IF exImo > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "vessel" WHERE "imo" = ?' INTO exId USING :tv_imo;
+                END IF;
+                IF bulk_post = 'false' AND exImo > 0 AND exId != tv_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "vessel" WHERE "imo" = ?' INTO exImo USING :tv_imo;
+                --exId := null;
+                IF bulk_post = 'false' AND exImo > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+
+            IF tv_id > 0 OR exImo > 0 THEN
+                -- Record exists in "vessel", perform an update
+                IF tv_id > 0 THEN -- id based update
+                    UPDATE "vessel"
+                    SET
+                    "name" = tv_name,
+                    "callSign" = tv_callSign,
+                    "imo" = tv_imo,
+                    "nationality" = tv_nationality,
+                    "shippingLineId" = tv_shippingLineId,
+                    "updatedBy" = tv_updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = tv_status
+                    WHERE
+                    "id" = tv_id;
+                END IF;
+                IF exImo > 0 THEN -- imo based update
+                    UPDATE "vessel"
+                    SET
+                    "name" = tv_name,
+                    "callSign" = tv_callSign,
+                    "imo" = tv_imo,
+                    "nationality" = tv_nationality,
+                    "shippingLineId" = tv_shippingLineId,
+                    "updatedBy" = tv_updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = tv_status
+                    WHERE
+                    "imo" = tv_imo;
+                END IF;
+                updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "vessel", perform an insert
+                INSERT INTO "vessel" ("name","callSign","imo", "nationality", "shippingLineId","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (tv_name,tv_callSign,tv_imo, tv_nationality,tv_shippingLineId, tv_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,   
+	    	    	tv_status);
+                SELECT current_identity_value() into tv_id from dummy;
+
+                insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+
+        --Vessel Details
+	    temp_vessel_details = SELECT JT.*
+        FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$.vesselDetails[*]' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "shippingLineId" NVARCHAR(256) PATH '$.shippingLineId',
+                "vesselCode" NVARCHAR(256) PATH '$.vesselCode',
+                "vesselId" BIGINT PATH '$.vesselId',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_vessel_details) do
+            tvd_id = :temp_vessel_details."id"[:i];
+            tvd_shippingLineId = :temp_vessel_details."shippingLineId"[:i];
+            tvd_vesselId = tv_id;
+            tvd_vesselCode = :temp_vessel_details."vesselCode"[:i];
+            tvd_status = :temp_vessel_details."status"[:i];
+
+            IF tvd_id > 0 THEN
+                -- Record exists in "vessel_details", perform an update
+                UPDATE "vessel_details"
+                SET
+                "shippingLineId" = tvd_shippingLineId,
+                "vesselCode" = tvd_vesselCode,
+                "vesselId" = tvd_vesselId,
+                "status"  = tvd_status
+                WHERE
+                "id" = tvd_id;
+            ELSE
+                -- Record doesn't exist in "vessel_details", perform an insert
+                INSERT INTO "vessel_details" ("shippingLineId","vesselCode","vesselId","status")VALUES (tvd_shippingLineId,tvd_vesselCode,tvd_vesselId,tvd_status);
+            END IF;
+        END FOR;
+        
+        IF bulk_post = 'true' THEN
+            SELECT :insertedCount "inserted", :updatedCount "updated",0 "recordCount","id","name","callSign","imo", "nationality", "shippingLineId",null "shippingLineName", "createdBy","createdOn","updatedBy","updatedOn","status" FROM "vessel" WHERE "imo" = :tv_imo;
+        ELSE
+            SELECT 0 "inserted", 0 "updated",0 "recordCount","id","name","callSign","imo", "nationality", "shippingLineId",null "shippingLineName","createdBy","createdOn","updatedBy","updatedOn","status" FROM "vessel" WHERE "id" = :tv_id;
+        END IF;
+END

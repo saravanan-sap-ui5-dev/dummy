@@ -1,0 +1,119 @@
+PROCEDURE "ADD_EDIT_CARGO_TYPE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE  ID BIGINT := 0;
+	DECLARE ca_id BIGINT := 0;
+    DECLARE ca_name NVARCHAR(256);
+    DECLARE ca_code NVARCHAR(256);
+    DECLARE ca_description NVARCHAR(256);
+    DECLARE ca_createdBy NVARCHAR(256);
+    DECLARE ca_createdOn DATE;
+    DECLARE ca_updatedBy NVARCHAR(256);
+    DECLARE ca_updatedOn DATE;
+    DECLARE ca_status INTEGER;
+	DECLARE i INTEGER;
+
+    -- Other variable declarations...
+    DECLARE QUERY NVARCHAR(2000) :='';
+    DECLARE exCode INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'Code already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+
+	temp_cargo_type = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "code" NVARCHAR(256) PATH '$.code',
+				"description" NVARCHAR(256) PATH '$.description',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_cargo_type) do
+            ca_id = :temp_cargo_type."id"[:i];
+            ca_name = :temp_cargo_type."name"[:i];
+            ca_code = :temp_cargo_type."code"[:i];
+			ca_description = :temp_cargo_type."description"[:i];
+            ca_createdBy = :temp_cargo_type."createdBy"[:i];
+            ca_createdOn = CURRENT_DATE;
+            ca_updatedBy = null;
+            ca_updatedOn = null;
+            ca_status = :temp_cargo_type."status"[:i];
+            bulk_post = :temp_cargo_type."bulkPost"[:i];
+
+            IF ca_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "cargo_type" WHERE "code" = ?' INTO exCode USING :ca_code;
+                IF exCode > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "cargo_type" WHERE "code" = ?' INTO exId USING :ca_code;
+                END IF;
+                IF bulk_post = 'false' AND exCode > 0 AND exId != ca_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "cargo_type" WHERE "code" = ?' INTO exCode USING :ca_code;
+                IF bulk_post = 'false' AND exCode > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+            
+            IF ca_id > 0 OR exCode > 0 THEN
+                -- Record exists in "cargo_type", perform an update
+            IF ca_id > 0 THEN
+                UPDATE "cargo_type"
+                SET
+            	"name" = ca_name,
+	            "code" = ca_code,
+				"description" = ca_description,
+	            "updatedBy" = ca_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = ca_status
+                WHERE
+                "id" = ca_id;
+             END IF;
+               IF exCode > 0 THEN
+                UPDATE "cargo_type"
+                SET
+            	"name" = ca_name,
+	            "code" = ca_code,
+				"description" = ca_description,
+	            "updatedBy" = ca_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = ca_status
+                WHERE
+                "code" = ca_code;
+             END IF;
+              updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "cargo_type", perform an insert
+                INSERT INTO "cargo_type" ("name","code","description","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (ca_name,ca_code,ca_description,ca_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,
+	    	    	ca_status);
+                SELECT current_identity_value() into ca_id from dummy;
+                insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+        IF bulk_post = 'true' THEN
+            SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",* FROM "cargo_type" WHERE "code" = :ca_code;
+		ELSE
+            SELECT 0 "recordCount", 0 "inserted", 0 "updated",* FROM "cargo_type" WHERE "id" = :ca_id;
+        END IF;
+END

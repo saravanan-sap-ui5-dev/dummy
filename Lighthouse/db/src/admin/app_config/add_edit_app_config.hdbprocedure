@@ -1,0 +1,31 @@
+PROCEDURE "ADD_EDIT_APP_CONFIG" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+    DECLARE ID BIGINT := 1;
+    DECLARE TOTALRECORDS BIGINT := 0;
+    DECLARE ATTACHMENT_FOLDER_PATH NVARCHAR(256);
+    DECLARE ARCHIVE_FOLDER_PATH NVARCHAR(256);
+    DECLARE ARCHIVE_PERIOD BIGINT;
+
+    IF IN_PARAM != '' THEN
+        SELECT JSON_VALUE(:IN_PARAM, '$.attachment_folder_path') INTO "ATTACHMENT_FOLDER_PATH" FROM DUMMY;
+        SELECT JSON_VALUE(:IN_PARAM, '$.archive_folder_path') INTO "ARCHIVE_FOLDER_PATH" FROM DUMMY;
+        SELECT JSON_VALUE(:IN_PARAM, '$.archive_period') INTO "ARCHIVE_PERIOD" FROM DUMMY;
+
+        SELECT count(*) INTO TOTALRECORDS FROM "application_configuration";
+
+        IF(:TOTALRECORDS>0) THEN
+            UPDATE "application_configuration" SET 
+                "attachment_folder_path" = :ATTACHMENT_FOLDER_PATH,
+                "archive_folder_path" = :ARCHIVE_FOLDER_PATH,
+                "archive_period" = :ARCHIVE_PERIOD
+             WHERE "id" = :ID;
+        ELSE
+            INSERT INTO "application_configuration" ("id", "attachment_folder_path", "archive_folder_path", "archive_period") VALUES(:ID, :ATTACHMENT_FOLDER_PATH, :ARCHIVE_FOLDER_PATH, :ARCHIVE_PERIOD);
+        END IF;
+    END IF;
+
+    SELECT * FROM "application_configuration" WHERE "id" = :ID;
+
+END;

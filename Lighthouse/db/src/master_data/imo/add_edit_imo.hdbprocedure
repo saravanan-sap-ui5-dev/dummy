@@ -1,0 +1,134 @@
+PROCEDURE "ADD_EDIT_IMO" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE  ID BIGINT := 0;
+	DECLARE imo_id BIGINT := 0;
+    DECLARE imo_name NVARCHAR(256);
+    DECLARE imo_imcoClassNumber BIGINT;
+    DECLARE imo_imcoPageNumber BIGINT;
+    DECLARE imo_imcoPoint NVARCHAR(256);
+    DECLARE imo_unNumber BIGINT;
+    DECLARE imo_cargoDescription NVARCHAR(256);
+    DECLARE imo_createdBy NVARCHAR(256);
+    DECLARE imo_createdOn DATE;
+    DECLARE imo_updatedBy NVARCHAR(256);
+    DECLARE imo_updatedOn DATE;
+    DECLARE imo_status INTEGER;
+	DECLARE i INTEGER;
+
+  -- Other variable declarations...
+    DECLARE exUnNumber INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+     -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'UN Number already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+
+    	temp_imo = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+				"imcoClassNumber" NVARCHAR(256) PATH '$.imcoClassNumber',
+                "imcoPageNumber" BIGINT PATH '$.imcoPageNumber',
+                "imcoPoint" NVARCHAR(256) PATH '$.imcoPoint',
+                "unNumber" NVARCHAR(256) PATH '$.unNumber',
+				"cargoDescription" NVARCHAR(256) PATH '$.cargoDescription',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_imo) do
+            imo_id = :temp_imo."id"[:i];
+            imo_name = :temp_imo."name"[:i];
+            imo_imcoClassNumber = :temp_imo."imcoClassNumber"[:i];
+			imo_imcoPageNumber = :temp_imo."imcoPageNumber"[:i];
+            imo_imcoPoint = :temp_imo."imcoPoint"[:i];
+            imo_unNumber= :temp_imo."unNumber"[:i];
+            imo_cargoDescription = :temp_imo."cargoDescription"[:i];
+            imo_createdBy = :temp_imo."createdBy"[:i];
+            imo_createdOn = CURRENT_DATE;
+            imo_updatedBy = null;
+            imo_updatedOn = null;
+            imo_status = :temp_imo."status"[:i];
+
+            bulk_post = :temp_imo."bulkPost"[:i];
+
+             IF imo_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "imo" WHERE "unNumber" = ?' INTO exUnNumber USING :imo_unNumber;
+                IF exUnNumber > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "imo" WHERE "unNumber" = ?' INTO exId USING :imo_unNumber;
+                END IF;
+                IF bulk_post = 'false' AND exUnNumber > 0 AND exId != imo_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "imo" WHERE "unNumber" = ?' INTO exUnNumber USING :imo_unNumber;
+                IF bulk_post = 'false' AND exUnNumber > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+            
+            IF imo_id > 0 OR exUnNumber> 0 THEN
+                -- Record exists in "imo", perform an update
+             IF imo_id > 0 THEN
+                UPDATE "imo"
+                SET
+            	"name" = imo_name,
+	            "imcoClassNumber" = imo_imcoClassNumber,
+				"imcoPageNumber" = imo_imcoPageNumber,
+                "imcoPoint" = imo_imcoPoint,
+	            "unNumber" = imo_unNumber,
+				"cargoDescription" = imo_cargoDescription,
+	            "updatedBy" = imo_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = imo_status
+                WHERE
+                "id" = imo_id;
+               END IF;  
+                    IF exUnNumber > 0 THEN
+                    UPDATE "imo"
+                    SET
+                    "name" = imo_name,
+                    "imcoClassNumber" = imo_imcoClassNumber,
+                    "imcoPageNumber" = imo_imcoPageNumber,
+                    "imcoPoint" = imo_imcoPoint,
+                    "unNumber" = imo_unNumber,
+                    "cargoDescription" = imo_cargoDescription,
+                    "updatedBy" = imo_updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = imo_status
+                    WHERE
+                    "unNumber" = imo_unNumber;
+                END IF;  
+                  updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "imo", perform an insert
+                INSERT INTO "imo" ("name","imcoClassNumber","imcoPageNumber","imcoPoint","unNumber","cargoDescription","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (imo_name,imo_imcoClassNumber,imo_imcoPageNumber,imo_imcoPoint,imo_unNumber,imo_cargoDescription,imo_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,
+	    	    	imo_status);
+                SELECT current_identity_value() into imo_id from dummy;
+                insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+        IF bulk_post = 'true' THEN
+            SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",* FROM "imo" WHERE "unNumber" = :imo_unNumber;
+        ELSE
+            SELECT 0 "recordCount", 0 "inserted", 0 "updated",* FROM "imo" WHERE "id" = :imo_id;
+        END IF;
+END

@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="Vessel" contentWidth="70%" contentHeight="60%"   verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.master_data.vessel.V_FilterBar" type="XML" binding="{/advancedFilter}"/>
+        <ScrollContainer vertical="true" height="60%">
+            <core:Fragment  fragmentName="com.lighthouse.master_data.vessel.V_Table" type="XML" binding="{/masterScreenTable}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Select" press="onPressVesselEdit"/>
+                <Button type="Ghost" text="Cancel" press="onCloseVesselDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

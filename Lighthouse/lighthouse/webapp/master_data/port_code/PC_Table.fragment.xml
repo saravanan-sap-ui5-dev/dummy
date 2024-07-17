@@ -1,0 +1,91 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="tablePortTable" inset="false" items="{path:'items', length:9999999999}" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar" class="sapUiSmallMarginTop">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({items/0/recordCount})" visible="{= ${items}.length>0}" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" visible="true" type="Transparent" press="onPressPortCodeCreate" />
+                    <ToolbarSeparator />
+                    <OverflowToolbarButton type="Transparent" visible="false" icon="sap-icon://excel-attachment" tooltip="{i18n>cnExportTooltip}" press="onPressExport" enabled="false"/>
+                    <!-- <ToolbarSeparator /> -->
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" visible = "{visible/excelUploadDownload}" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="handlePersoButtonPressed" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <noData>
+            <Text id="txt_noData" text="To start, set the relevant filters and choose &quot;Go&quot;."/>
+        </noData>
+        <columns>
+            <Column width="5em">
+                <Text text="{i18n>pcId}" />
+            </Column>
+            <Column width="6em">
+                <Text text="{i18n>pcPortCode}" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcPortName}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>pcCustomsCode}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcZoneCode}" />
+            </Column>
+            <Column width="10em" hAlign="Center" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcZoneName}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>pcPostalCode}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedOn}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedOn}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>pcStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="{type}" press=".onPressPortCodeEdit">
+                <cells>
+                    <ObjectIdentifier title="{cardCode}" />
+                    <Text text="{code}" />
+                    <Text text="{cardName}" />
+                    <Text text="{customsCode}" />
+                    <Text text="{zoneCode}" />
+                    <Text text="{zoneName}" />
+                    <Text text="{postalCode}" />
+                    <Text text="{createdBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'createDate'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{updatedBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'updateDate'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{valid}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+
+</core:FragmentDefinition>

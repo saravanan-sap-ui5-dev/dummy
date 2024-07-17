@@ -1,0 +1,77 @@
+PROCEDURE "ADD_EDIT_SHIPPING_LINE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+	DECLARE  ID BIGINT := 0;
+	DECLARE tsl_id BIGINT := 0;
+    DECLARE tsl_name NVARCHAR(256);
+    DECLARE tsl_code BIGINT;
+    DECLARE tsl_accountCode BIGINT;
+    DECLARE tsl_debitNotePrefix NVARCHAR(256);
+    DECLARE tsl_cardCode NVARCHAR(256);
+    DECLARE tsl_createdBy NVARCHAR(256);
+    DECLARE tsl_updatedBy NVARCHAR(256);
+    DECLARE tsl_status INTEGER;
+    DECLARE i INTEGER;
+
+    DECLARE exCustomer BIGINT := 0;
+
+     -- Set up an exception handler for the custom exception
+    DECLARE success_msg CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR success_msg
+    BEGIN
+        EX_MESSAGE := 'Record Updated Successfully' || ::SQL_ERROR_MESSAGE;
+    END;
+
+    temp_shipping_line = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "code" BIGINT PATH '$.code',
+                "accountCode" BIGINT PATH '$.accountCode',
+                "debitNotePrefix" NVARCHAR(256) PATH '$.debitNotePrefix',
+                "cardCode" NVARCHAR(256) PATH '$.cardCode',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+        FOR i in 1..RECORD_COUNT(:temp_shipping_line) do
+            tsl_id = :temp_shipping_line."id"[:i];
+            tsl_name = :temp_shipping_line."name"[:i];
+            tsl_code = :temp_shipping_line."code"[:i];
+            tsl_accountCode = :temp_shipping_line."accountCode"[:i];
+            tsl_debitNotePrefix = :temp_shipping_line."debitNotePrefix"[:i];
+            tsl_cardCode = :temp_shipping_line."cardCode"[:i];
+            tsl_createdBy = :temp_shipping_line."createdBy"[:i];
+            tsl_updatedBy = :temp_shipping_line."updatedBy"[:i];
+            tsl_status = :temp_shipping_line."status"[:i];
+            
+            SELECT COUNT(*) INTO exCustomer FROM "shipping_line" WHERE "cardCode" = :tsl_cardCode;
+
+            IF :tsl_cardCode IS NOT NULL THEN
+                IF tsl_id > 0 AND exCustomer>0 THEN
+                    -- Record exists in "shipping_line", perform an update
+                    UPDATE "shipping_line"
+                    SET
+                    "name" = tsl_name,
+                    "code" = tsl_code,
+                    "accountCode" = tsl_accountCode,
+                    "debitNotePrefix" = tsl_debitNotePrefix,
+                    "cardCode" = tsl_cardCode,
+                    "createdBy" = tsl_createdBy,
+                    "updatedBy" = tsl_updatedBy,
+                    "status" = tsl_status
+                    WHERE
+                    "cardCode" = tsl_cardCode;
+                ELSE
+                    -- Record doesn't exist in "shipping_line", perform an insert
+                    INSERT INTO "shipping_line" ("name","code","accountCode", "debitNotePrefix", "cardCode", "createdBy", "updatedBy","status")VALUES (tsl_name,tsl_code,tsl_accountCode, tsl_debitNotePrefix, tsl_cardCode,tsl_createdBy, tsl_updatedBy, tsl_status);
+                    SELECT current_identity_value() into tsl_id from dummy;
+                END IF;
+            END IF;
+        END FOR;
+
+		SELECT "id","name","code","accountCode","debitNotePrefix", "cardCode","createdBy", "updatedBy","status",0 "recordCount" FROM "shipping_line" WHERE "id" = :tsl_id;
+END

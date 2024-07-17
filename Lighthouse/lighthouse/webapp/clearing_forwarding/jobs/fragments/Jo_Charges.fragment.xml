@@ -1,0 +1,67 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="sap.m.ListType.Detail"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" text="{i18n>cnBtnAdd}" width="70px" press="onAddCharge" />
+                    <Button type="Transparent" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="10em">
+                <Text text="{i18n>joChargeCode}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>joName}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>joSzTy}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>joUnitPrice}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>joUnit}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>joAmount}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>joCost}" />
+            </Column>
+            <Column width="10em">
+                <Text text="{i18n>johcStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{chargeCode}" />
+                    <Text text="{name}" />
+                    <Text text="{sizeAndType}" />
+                    <Text text="{unitPrice}" />
+                    <Text text="{unit}" />
+                    <Text text="{amount}" />
+                    <Text text="{cost}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

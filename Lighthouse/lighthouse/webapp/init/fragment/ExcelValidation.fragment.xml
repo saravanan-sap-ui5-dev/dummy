@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core">
+    <Dialog id="idExcelValidationDialog" title="Invalid Records" contentWidth="70%">
+        <content>
+
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button text="OK" type="Emphasized" width="70px" press="onCloseDialog"/>
+                <!-- <Button text="Close" type="Transparent" press="onCloseDialog" ariaHasPopup="Dialog" /> -->
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

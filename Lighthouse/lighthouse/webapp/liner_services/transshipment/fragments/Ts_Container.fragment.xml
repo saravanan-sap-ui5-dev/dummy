@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Table inset="false" items="{items}" visible="{containerView}" mode="None" sticky="ColumnHeaders,HeaderToolbar">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({= ${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" visible="{create}" text="{i18n>cnBtnCreate}" width="70px" press="onNavContainerCreate" />
+                    <Button type="Transparent" visible="{add}" text="{i18n>cnBtnAdd}" width="70px" press="onAddContainer" />
+                    <Button type="Transparent" visible="{remove}" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsContainerNo}" />
+            </Column>
+            <Column width="10rem">
+                <Text text="{i18n>tsBLNo}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsSize}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>tsType}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>tsOperator}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsOnHold}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsSoc}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsMovement}" />
+            </Column>
+            <Column minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press="onContainerDetails" visible="true">
+                <cells>
+                    <ObjectIdentifier title="{containerNo}" />
+                    <Text text="{blno}" />
+                    <Text text="{size}" />
+                    <Text text="{type}" />
+                    <Text text="{operator}" />
+                    <Text text="{onHold}" />
+                    <Text text="{soc}" />
+                    <Text text="{movement}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

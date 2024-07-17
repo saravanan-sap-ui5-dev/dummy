@@ -1,0 +1,35 @@
+FUNCTION "FUNC_SPLIT_STRING_VALUES_TO_TABLE" (
+    IN "str_values" NVARCHAR(1000)
+)  
+RETURNS TABLE (
+    "out_value" NVARCHAR(100)
+)
+LANGUAGE SQLSCRIPT AS
+BEGIN
+    declare splitted NVARCHAR(100);
+    declare string_concat  NVARCHAR(100);
+    declare removeEmpty char(1) := 'X';
+    declare delimeter NVARCHAR(1) := ',';
+    declare str NVARCHAR(1000) := :"str_values";
+     DECLARE output  TABLE (
+        "out_value" nvarchar(100)
+    );
+    str := REPLACE(:str, '[', '');
+    str := REPLACE(:str, ']', '');
+   str := REPLACE(:str, '"', '');
+    IF RIGHT(:str, 1) <> :delimeter THEN
+        str := :str || :delimeter;
+    END IF;
+
+    WHILE :str <> SUBSTR_AFTER(:str, :delimeter) DO
+        splitted := SUBSTR_BEFORE(:str, :delimeter);
+        string_concat := CONCAT('''',CONCAT(splitted,''''));
+        str := SUBSTR_AFTER(:str, :delimeter);
+
+        IF NOT (removeEmpty = 'X' AND string_concat = '') THEN
+            INSERT INTO :output ("out_value") VALUES (string_concat);
+        END IF;
+    END WHILE;
+
+    RETURN SELECT * FROM :output;
+END

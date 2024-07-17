@@ -1,0 +1,106 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" height="100%">
+    <fb:FilterBar id="filterBar" filterBarExpanded="true" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true" showFilterConfiguration="true">
+        <fb:filterGroupItems>
+            <fb:FilterGroupItem name="A" label="{i18n>imoId}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input type="Number" value="{id}"/>
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="B" label="{i18n>imoName}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input value="{name}"/>
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="C" label="{i18n>imoIMCOClassNumber}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input type="Number" value="{imcoClassNumber}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="D" label="{i18n>imoUNNumber}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input type="Number" value="{unNumber}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="E" label="{i18n>imoIMCOPageNumber}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input type="Number" value="{imcoPageNumber}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="F" label="{i18n>imoIMCOPoint}" groupName="main" visibleInFilterBar="true">
+                <fb:control>
+                    <Input value="{imcoPoint}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="G" visibleInFilterBar="false" label="{i18n>shCreatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{createdBy}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="H" visibleInFilterBar="false" label="{i18n>shCreatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_end'
+                            }
+                        ]
+                    }" field:date="createdOnStart,createdOnEnd"/>
+
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="I" visibleInFilterBar="false" label="{i18n>shUpdatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{updatedBy}" />
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="J" visibleInFilterBar="false" label="{i18n>shUpdatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_end'
+                            }
+                        ]
+                    }" field:date="updatedOnStart,updatedOnEnd"/>
+
+                </fb:control>
+            </fb:FilterGroupItem>
+            <fb:FilterGroupItem name="K" visibleInFilterBar="false" label="{i18n>shStatus}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/status}" selectedKeys="{statusColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterGroupItem>
+        </fb:filterGroupItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

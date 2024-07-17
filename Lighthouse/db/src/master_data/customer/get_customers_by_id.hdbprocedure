@@ -1,0 +1,34 @@
+PROCEDURE "GET_CUSTOMERS_BY_ID"(IN CardCode NVARCHAR(256)) AS 
+BEGIN 
+    IF :CardCode IS NOT NULL THEN
+        SELECT 
+            cu."id",
+            cu."cardCode",
+            cu."creditorAccount",
+            cu."poBox",
+            cu."bayanCode",
+            cu."shortName",
+            cu."addressLine1",
+            cu."addressLine2",
+            cu."addressLine3",
+            cu."createdBy",
+            cu."updatedBy",
+            cu."remarks",
+            cu."status",
+            co."id" as "contactId",
+            co."cardCode" as "contactCardCode",
+            co."internalCode",
+            co."poBox" as "contactPoBox",
+            co."pinCode",
+            co."contactType",
+            co."addressLine1" as "contactAddressLine1",
+            co."addressLine2" as "contactAddressLine2",
+            co."addressLine3" as "contactAddressLine3",
+            co."remarks" as "contactRemarks",
+            co."status" as "contactStatus"
+        FROM "customers" cu
+        LEFT JOIN "contacts" co ON co."cardCode"= cu."cardCode"
+        WHERE 
+            cu."cardCode"= :CardCode;
+    END IF;
+END

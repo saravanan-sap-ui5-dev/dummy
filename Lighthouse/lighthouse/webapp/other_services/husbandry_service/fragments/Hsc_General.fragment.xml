@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Quotation No" />
+                <Input editable="{visible>/edit}" value="{quotationNo}" />
+                <Label text="Status" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{status}">
+                    <core:Item key="1" text="Draft" />
+                    <core:Item key="2" text="Active" />
+                    <core:Item key="3" text="Inactive" />
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Vessel Code" />
+                <Input editable="{visible>/edit}" value="{vesselCode}" showValueHelp="true" valueHelpRequest="onVesselValueHelp"/>
+                <Label text="Vessel Name" />
+                <Input editable="false" value="{vesselName}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Shipping Line Code" />
+                <Input editable="{visible>/edit}" value="{shippingLineCode}" showValueHelp="true" valueHelpRequest="onShippingLineValueHelp"/>
+                <Label text="Shipping Line Name" />
+                <Input value="{shippingLineName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Port Code" />
+                <Input editable="{visible>/edit}" value="{portCodeInput}" showValueHelp="true" valueHelpRequest="onPortValueHelp"/>
+                <Label text="Port Name" />
+                <Input value="{portName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Remarks" />
+                <TextArea value="{remarks}" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

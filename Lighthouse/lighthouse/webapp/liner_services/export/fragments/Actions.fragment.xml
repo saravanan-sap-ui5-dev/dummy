@@ -1,0 +1,5 @@
+<ActionSheet id="exportActionSheet"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core" showCancelButton="true" placement="Bottom">
+    <Button text="{i18n>exABtnSplitBL}" press="onSplitBL"/>
+</ActionSheet>

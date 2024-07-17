@@ -1,0 +1,69 @@
+<mvc:View controllerName="com.lighthouse.clearing_forwarding.jobs.CreateJob"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_CreateJobs" showFooter="true" useIconTabBar="true" showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{i18n>joCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{i18n>joCreatePageTitle}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>joGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>joGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_General" type="XML" binding="{/}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joChargesSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_Charges" type="XML" binding="{/charges}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joPaymentsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.clearing_forwarding.jobs.fragments.Jo_Payments" type="XML" binding="{/payments}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>joCargoAndContainersSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>joCargoSubSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Cargo" type="XML" binding="{/charges}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>joContainersSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_Container" type="XML" binding="{/charges}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Im_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnCImportError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

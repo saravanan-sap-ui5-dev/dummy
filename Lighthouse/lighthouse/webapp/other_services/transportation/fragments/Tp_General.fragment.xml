@@ -1,0 +1,54 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Type" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{type}">
+                    <core:Item key="1" text="Import" />
+                    <core:Item key="2" text="Export" />
+                </ComboBox>
+                <Label text="Quotation Number" />
+                <Input editable="{visible>/edit}" value="{quotationNo}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Booking Number" />
+                <Input editable="{visible>/edit}" value="{bookingNo}" />
+                <Label text="B/L Number" />
+                <Input editable="{visible>/edit}" value="{blNo}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Consignee Code" />
+                <Input editable="{visible>/edit}" value="{consigneeCode}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                <Label text="Consignee Name" />
+                <Input value="{consigneeName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Cargo Type" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{cargoType}">
+                    <core:Item key="1" text="Container" />
+                    <core:Item key="2" text="Unit" />
+                    <core:Item key="3" text="General cargo"/>
+                    <core:Item key="4" text="LCL"/>
+                    <core:Item key="5" text="Unit / Low bed"/>
+
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Remarks" />
+                <TextArea value="{remarks}" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

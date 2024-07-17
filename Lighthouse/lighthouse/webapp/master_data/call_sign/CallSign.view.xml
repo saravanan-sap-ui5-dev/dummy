@@ -1,0 +1,113 @@
+<mvc:View controllerName="com.lighthouse.master_data.CallSign"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <f:DynamicPage headerExpanded="true" preserveHeaderStateOnScroll="true" id ="page_mngCallSign">
+        <!-- DynamicPage Title -->
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Call Sign" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                <f:content>
+                    <fb:FilterBar filterBarExpanded="true" clear="onReset" search="onSearch"  showFilterConfiguration = "false" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+                        <fb:filterItems>
+
+                            <fb:FilterItem name="C" label="Shipping Line">
+                                <fb:control>
+                                    <MultiComboBox id="select_ShippingFilter" items="{path: 'MngCallSignMdl>/Products', sorter: { path: 'accountCode' }}" selectedKey="{}" field:type="Select" field:validate="required">
+                                        <core:Item text="{MngCallSignMdl>accountCode}"/>
+                                    </MultiComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="D" label="Vessel Code">
+                                <fb:control>
+                                    <Input />
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="A" label="Vessel Name">
+                                <fb:control>
+                                    <Input />
+                                </fb:control>
+                            </fb:FilterItem>
+
+                            <fb:FilterItem name="B" label="Call Sign">
+                                <fb:control>
+                                    <Input />
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <!-- DynamicPage Content -->
+        <f:content>
+
+            <!--   <ScrollContainer height="600px" width="100%" horizontal="false" vertical="true" focusable="true"> -->
+            <Table id="callsign_details" items= "{MngCallSignMdl>/Products}" mode="None" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Label design="Bold" text="Items({= ${MngCallSignMdl>/Products}.length})" visible="{= ${MngCallSignMdl>/Products}.length>=0}" />
+                            <ToolbarSpacer />
+                            <Button text="Create" type="Transparent" press="onPressNavCreate"/>
+                            <ToolbarSeparator />
+                            <OverflowToolbarButton type="Transparent" tooltip="Bulk Upload" icon="sap-icon://upload" press="handleBulkUpload"/>
+                            <OverflowToolbarButton type="Transparent" icon="sap-icon://excel-attachment" tooltip="Export To Excel" press="onPressExport" />
+                            <ToolbarSeparator />
+                            <OverflowToolbarButton type="Transparent" tooltip="Sort" icon="sap-icon://sort" press="handleSortButtonPressed"/>
+                            <OverflowToolbarButton type="Transparent" tooltip="Group" icon="sap-icon://group-2" press="handleGroupButtonPressed"/>
+                            <OverflowToolbarButton type="Transparent" icon="sap-icon://settings" tooltip="Settings" press="onPressAFSettings" />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+
+                    <Column>
+                        <Text text="Shipping Line" />
+                    </Column>
+                    <Column hAlign="Center">
+                        <Text text="Vessel Code" />
+                    </Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                        <Text text="Vessel Name" />
+                    </Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Begin">
+                        <Text text="Call Sign" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" type="Navigation" navigated ="{
+						parts: [
+							'settings>/navigatedItem',
+							'MngCallSignMdl>lineCode'
+						],
+						formatter: '.formatter.isNavigated'
+					}" press=".onListItemPress">
+                        <cells>
+                            <ObjectIdentifier title="{MngCallSignMdl>ShippingLine}"/>
+                            <Text text="{MngCallSignMdl>VesselCode}" />
+                            <Text text="{MngCallSignMdl>VesselName}" />
+                            <Text text="{MngCallSignMdl>CallSign}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

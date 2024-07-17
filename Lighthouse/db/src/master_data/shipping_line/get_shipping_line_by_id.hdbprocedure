@@ -1,0 +1,20 @@
+PROCEDURE "GET_SHIPPING_LINE_BY_ID"(IN CardCode NVARCHAR(256)) AS 
+BEGIN 
+  IF :CardCode IS NOT NULL THEN
+    SELECT 
+      "id",
+      "name",
+      "code",
+      "accountCode",
+      "debitNotePrefix",
+      "cardCode",
+      "createdBy",
+      "updatedBy",
+      "status",
+      0 AS "recordCount"
+    FROM 
+      "shipping_line"
+    WHERE 
+      "cardCode" = :CardCode;
+  END IF;
+END

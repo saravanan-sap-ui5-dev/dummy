@@ -1,0 +1,121 @@
+<mvc:View controllerName="com.lighthouse.master_data.shipping_line.AddEditShippingLine"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <uxap:ObjectPageLayout  id = "page_addEditShippingLine" showHeaderContent="{= !${visible>/create}}" useIconTabBar="false" showTitleInHeaderContent="true" showEditHeaderButton="true" editHeaderButtonPress="handleEditBtnPress" upperCaseAnchorBar="false" showFooter="{= (!${visible>/view} || ${errors>/}.length!== 0)}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+
+                <uxap:expandedHeading>
+                    <Title text="{= ${/item} ? ${/shippingLine/title}:${i18n>shCreatePageTitle}}" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="{= ${/item}? ${/shippingLine/title}:${i18n>shCreatePageTitle}}" />
+                </uxap:snappedHeading>
+
+                <uxap:snappedTitleOnMobile>
+                    <Title text="{= ${/item}? ${/shippingLine/title}:${i18n>shCreatePageTitle}}" />
+                </uxap:snappedTitleOnMobile>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>shId}" text="{/item}" visible="{= !${visible>/create}}"/>
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>shId}" text="{/item}" visible="{= !${visible>/create}}"/>
+                </uxap:snappedContent>
+
+                <uxap:actions>
+                    <Button id="btnEdit" visible="{= !${visible>/create}}" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" width="70px"/>
+                    <!-- <Button id="btnEdit" visible="false" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" width="70px"/> -->
+
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>shCreatedBy}" text="{/shippingLine/createdBy}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>shCreatedOn}" text="{/shippingLine/createDateString}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>shUpdatedBy}" text="{/shippingLine/updatedBy}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>shUpdatedOn}" text="{/shippingLine/updateDateString}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout>
+                    <ObjectAttribute title="{i18n>shStatus}" text="{/shippingLine/statusText}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection title="{i18n>cnGeneral}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>cnGeneral}" titleUppercase="false">
+                        <core:Fragment fragmentName="com.lighthouse.master_data.shipping_line.SL_Form" type="XML" binding="{/shippingLine}" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection visible="false" title="{i18n>cnAttachmentsSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <core:Fragment fragmentName="com.lighthouse.master_data.shipping_line.SL_UploadSet" type="XML"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <!-- <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false" visible="{=!${visible>/create}}"> -->
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false" visible="false">
+
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{ShippingLineMdl>sectionName}" />
+                                        <Text text="{ShippingLineMdl>slNo}" />
+                                        <Text text="{ShippingLineMdl>modifiedOn}" />
+                                        <Text text="{ShippingLineMdl>modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnShippingLineErr" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" width="70px" press="onPressSave" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" width="70px" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,148 @@
+PROCEDURE "ADD_EDIT_ATTACHMENT" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+    DECLARE ID BIGINT := 0;
+    DECLARE REF_TYPE BIGINT;
+    DECLARE REF_ID BIGINT;
+    DECLARE NAME NVARCHAR(256);
+    DECLARE "DUP_RESULT" NVARCHAR(200);
+    DECLARE EX_NAME_COUNT BIGINT := 0;
+    DECLARE EX_ID BIGINT := 0;
+    DECLARE "TOTAL_RECORDS" BIGINT := 0;
+    DECLARE SORTING_KEY NVARCHAR(200);
+    DECLARE QUERY NVARCHAR(2000) :='';
+
+    DECLARE at_id BIGINT;
+    DECLARE at_name NVARCHAR(256);
+    DECLARE at_description NVARCHAR(256);
+    DECLARE at_url NVARCHAR(256);
+    DECLARE at_type NVARCHAR(256);
+    DECLARE at_path NVARCHAR(256);
+    DECLARE at_mime_type NVARCHAR(256);
+    DECLARE at_ref_object_type BIGINT;
+    DECLARE at_ref_object_id BIGINT;
+    DECLARE at_updated_by NVARCHAR(256);
+    DECLARE at_created_by NVARCHAR(256);
+    DECLARE at_status BIGINT;
+
+    --looping objects
+	DECLARE i INTEGER; 
+  
+    -- Declare a custom exception condition for SQL error code 10001
+    --DECLARE invalid_input CONDITION FOR SQL_ERROR_CODE 10001;
+    --DECLARE duplicate_record CONDITION FOR SQL_ERROR_CODE 10002;
+    
+    -- Set up an exception handler for the custom exception
+    /* DECLARE EXIT HANDLER FOR invalid_input
+        BEGIN
+            EX_MESSAGE := 'Invalid input arguments';
+        END;
+
+    DECLARE EXIT HANDLER FOR duplicate_record
+        BEGIN
+            EX_MESSAGE := 'Record with the same name already exists';
+        END; */
+
+    temp_attachments = SELECT JT.*
+        FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$[*]' COLUMNS(
+                "id" bigint PATH '$.id',
+                "name" varchar(256) PATH '$.name',
+                "description" varchar(256) PATH '$.description',
+                "url" varchar(256) PATH '$.url',
+                "type" varchar(256) PATH '$.type',
+                "path" varchar(256)  PATH '$.path',
+                "mimeType" varchar(256) PATH '$.mimeType',
+                "refObjectType" bigint PATH '$.refObjectType',
+                "refObjectId" bigint PATH '$.refObjectId',
+                "updatedBy" varchar(256) PATH '$.updatedBy',
+                "createdBy" varchar(256) PATH '$.createdBy',
+                "status" integer PATH '$.status'
+            )
+        ) AS JT;
+    FOR i in 1..RECORD_COUNT(:temp_attachments) DO
+            at_id = :temp_attachments."id"[:i] ;
+            at_name = :temp_attachments."name"[:i] ;
+            at_description = :temp_attachments."description"[:i] ;
+            at_url = :temp_attachments."url"[:i] ;
+            at_type = :temp_attachments."type"[:i] ;
+            at_path = :temp_attachments."path"[:i] ;
+            at_mime_type = :temp_attachments."mimeType"[:i] ;
+            at_ref_object_type = :temp_attachments."refObjectType"[:i];
+            at_ref_object_id = :temp_attachments."refObjectId"[:i] ;
+            at_updated_by = :temp_attachments."updatedBy"[:i] ;
+            at_created_by = :temp_attachments."createdBy"[:i] ;
+            at_status = :temp_attachments."status"[:i] ;
+             -- Extract values from JSON
+            /* SELECT JSON_VALUE(:IN_PARAM, '$.refObjectType') INTO REF_TYPE FROM DUMMY;
+            SELECT JSON_VALUE(:IN_PARAM, '$.refObjectId') INTO REF_ID FROM DUMMY;
+            SELECT JSON_VALUE(:IN_PARAM, '$.name') INTO NAME FROM DUMMY; */
+
+            --Check id is null or not
+            /* SELECT  IFNULL(JSON_VALUE(:IN_PARAM, '$.id'),0) INTO "ID" FROM DUMMY; */
+
+            -- Check conditions for exception
+           /*  IF (NOT(:at_ref_object_type IS NOT NULL AND :at_ref_object_type > 0 AND :at_ref_object_id IS NOT NULL AND :at_ref_object_id > 0)) THEN
+                SIGNAL invalid_input;
+            END IF; */
+
+            --Checking matching name
+            SELECT count("name") INTO EX_NAME_COUNT FROM "attachments" WHERE "name" = :at_name AND "refObjectType"= :at_ref_object_type AND "refObjectId"= :at_ref_object_id AND "status" = 2;
+            temp_ex_id = SELECT "id","name" FROM "attachments" WHERE "name" = :at_name AND "refObjectType"= :at_ref_object_type AND "refObjectId"= :at_ref_object_id AND "status" = 2;
+            
+            IF is_empty(:temp_ex_id) THEN 
+                EX_ID = 0; 
+            ELSE 
+                SELECT "id" INTO EX_ID FROM "attachments" WHERE "name" = :at_name AND "refObjectType"= :at_ref_object_type AND "refObjectId"= :at_ref_object_id AND "status" = 2;
+            END IF;
+
+          /*   IF (NOT(:at_id>0)) THEN
+                IF (:EX_NAME_COUNT>0) THEN
+                    SIGNAL duplicate_record;
+                END IF;
+            END IF; */
+            /* ELSE
+                IF (:EX_NAME_COUNT>0 AND :EX_ID>0 AND :EX_ID != :at_id) THEN
+                    SIGNAL duplicate_record;
+                END IF;
+            END IF; */
+        IF (NOT(:EX_NAME_COUNT>0 AND :EX_ID>0 AND :EX_ID != :at_id)) THEN
+            IF(:at_id>0) THEN
+                UPDATE "attachments" SET 
+                    "name" = at_name,
+                    "description" = at_description,
+                    "url" = at_url,
+                    "type" = at_type,
+                    "path" = at_path,
+                    "mimeType" = at_mime_type,
+                    "refObjectType" = at_ref_object_type,
+                    "refObjectId" = at_ref_object_id,
+                    "updatedBy" = at_updated_by,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = at_status
+                 WHERE "id" = :at_id;
+                 SORTING_KEY := 'updatedOn';
+            ELSE
+                INSERT INTO "attachments" ("name", "description", "url", "type", "path", "mimeType", "refObjectType", "refObjectId", "createdBy", "createdOn", "status")
+                VALUES(at_name, at_description, at_url, at_type, at_path, at_mime_type, at_ref_object_type, at_ref_object_id, at_created_by, CURRENT_DATE, at_status);
+                
+                select current_identity_value() into ID from dummy;
+                
+                SORTING_KEY := 'id';
+            END IF;
+        END IF;
+            --Return attachment collection
+            temp = SELECT * FROM "attachments" WHERE "refObjectType" = :at_ref_object_type AND "refObjectId" = :at_ref_object_id;
+    END FOR;
+    
+    SELECT count(*) INTO "TOTAL_RECORDS" FROM :temp;
+
+    IF(:SORTING_KEY = 'updatedOn') THEN
+        SELECT :TOTAL_RECORDS "recordCount","id","name","description","url","type","path","mimeType","refObjectType","refObjectId","createdBy","updatedBy","createdOn","updatedOn","status" FROM :temp ORDER BY "id" DESC;
+    ELSE 
+        SELECT :TOTAL_RECORDS "recordCount","id","name","description","url","type","path","mimeType","refObjectType","refObjectId","createdBy","updatedBy","createdOn","updatedOn","status" FROM :temp ORDER BY "id" DESC;
+    END IF;
+
+END;

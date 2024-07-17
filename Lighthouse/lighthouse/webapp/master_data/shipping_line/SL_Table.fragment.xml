@@ -1,0 +1,79 @@
+<core:FragmentDefinition controllerName="com.lighthouse.master_data.shipping_line.ShippingLine"
+    xmlns:uxap="sap.uxap"
+    xmlns:u="sap.ui.unified"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table id="tableShippingLine" items="{path:'items', length:9999999999}" fixedLayout="true" visible="true" mode="{mode}" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({items/0/count})" visible="{= ${items}.length>0}" />
+                    <ToolbarSpacer />
+                    <Button text="{i18n>cnBtnCreate}" type="Transparent" visible="true" press="onPressShippingLineCreate" />
+                    <!-- <ToolbarSeparator /> -->
+                    <u:FileUploader id="fileUploader" sameFilenameAllowed="true" tooltip="Bulk Upload" icon="sap-icon://upload" visible="false" iconOnly="true" buttonOnly="true" change="onPressBulkUpload" uploadComplete="handleUploadComplete"/>
+                    <OverflowToolbarButton type="Transparent" icon="sap-icon://download" tooltip="{i18n>cnTemplate}" visible="false" press="onPressTemplate" enabled="true"/>
+                    <!-- <ToolbarSeparator /> -->
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnSortTooltip}" icon="sap-icon://sort" press="handleSortButtonPressed" />
+                    <OverflowToolbarButton type="Transparent" tooltip="{i18n>cnGroupTooltip}" icon="sap-icon://group-2" press="handleGroupButtonPressed" />
+                    <OverflowToolbarButton visible = "{visible/excelUploadDownload}" type="Transparent" icon="sap-icon://settings" tooltip="{i18n>cnSettingsTooltip}" press="handlePersoButtonPressed" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <noData>
+            <Text id="txt_noData" text="To start, set the relevant filters and choose &quot;Go&quot;."/>
+        </noData>
+        <columns>
+            <Column width="5em">
+                <Text text="{i18n>shId}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>shName}" />
+            </Column>
+            <Column  width="10rem" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>shCode}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnCreatedOn}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedBy}" />
+            </Column>
+            <Column width="7rem" hAlign="Center">
+                <Text text="{i18n>cnUpdatedOn}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>shStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem type="{type}" press=".onPressShippingLineEdit">
+                <cells>
+                    <ObjectIdentifier title="{cardCode}" />
+                    <Text text="{cardName}" />
+                    <Text text="{code}" />
+                    <Text text="{createdBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'createDate'}], formatter:'.getDateFormats'}"/>
+                    <Text text="{updatedBy}"/>
+                    <Text text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'updateDate'}], formatter:'.getDateFormats'}"/>
+                    <ObjectStatus text="{valid}"/>
+                    <!-- <ObjectStatus text="{status}" state = "{=${status} === 'Active' ? 'Success': 'Error'}" /> -->
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+
+</core:FragmentDefinition>

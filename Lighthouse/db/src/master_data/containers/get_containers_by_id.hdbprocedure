@@ -1,0 +1,8 @@
+PROCEDURE "GET_CONTAINERS_BY_ID"(IN "ID" BIGINT) AS 
+BEGIN 
+  IF(:ID > 0) THEN
+  SELECT 
+    0 "inserted",0 "updated",0 AS "recordCount",CT."name" AS "containerTypeName",CON.* FROM "containers" CON LEFT JOIN "container_type" CT ON CT."id" = CON."type" 
+    WHERE CON."id" = :ID;
+END IF;
+END

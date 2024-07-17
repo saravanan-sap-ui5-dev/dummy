@@ -1,0 +1,231 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput">
+    <Dialog title="{i18n>exsblDialogTitle}" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <uxap:ObjectPageLayout showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+            <uxap:sections>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>exsblGeneralSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                                <form:content>
+                                    <Label text="{i18n>exBLNo}" />
+                                    <Input  />
+                                    <Label text="{i18n>exsblCopyFreightDetails}" />
+                                    <ComboBox >
+                                        <core:Item key="1" text="Yes" />
+                                        <core:Item key="2" text="No" />
+                                    </ComboBox>
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>exsblContainersSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <core:Fragment id="frgmtSplitBLContainer" fragmentName="com.lighthouse.liner_services.export.fragments.Ex_Container" type="XML" binding="{/containerDetails}"/>
+                            <!--   <table:Table ariaLabelledBy="title" selectionMode="MultiToggle" selectionBehavior="Row" enableSelectAll="false" rowActionCount="1" rows="{ExportsMdl>/containerDetails}">
+                                <table:extension>
+                                    <OverflowToolbar style="Clear">
+                                        <Label design="Bold" text="Items({=${ExportsMdl>/containerDetails}.length})" />
+                                        <ToolbarSpacer />
+                                    </OverflowToolbar>
+                                </table:extension>
+                                <table:columns>
+                                    <table:Column hAlign="Center" width="6rem">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="Cont No" textAlign="Center" width="100%" design="Bold" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>containerNo}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="Sz/Ty" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>sizeAndType}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center" width="6rem">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="Cargo Wt" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>cargoWeight}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="Tare Wt" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>tareWeight}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="CBM" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>cbm}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="Pkgs" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>packages}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="VGM" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>vgm}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="tempFromDialog" headerSpan="2" hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label text="Temp" textAlign="Center" width="100%" />
+                                            <Label text="From" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>fromTemp}" wrapping="false" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="tempToDialog" headerSpan="2" hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label text="Temp" textAlign="Center" width="100%" />
+                                            <Label text="To" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>toTemp}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="imcoClassDialog" hAlign="Center" headerSpan="5">
+                                        <table:multiLabels>
+                                            <Label text="Imco Details" textAlign="Center" width="100%" />
+                                            <Label text="Cl" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>imcoClass}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="imcoNoDialog" hAlign="Center" headerSpan="5">
+                                        <table:multiLabels>
+                                            <Label text="Imco Details" textAlign="Center" width="100%" />
+                                            <Label text="No" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>imcoUnno}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="imcoPageDialog" hAlign="Center" headerSpan="5">
+                                        <table:multiLabels>
+                                            <Label text="Imco Details" textAlign="Center" width="100%" />
+                                            <Label text="Page" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>page}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="imcoPtDialog" hAlign="Center" headerSpan="5">
+                                        <table:multiLabels>
+                                            <Label text="Imco Details" textAlign="Center" width="100%" />
+                                            <Label text="Pt" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>pt}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column id="imcoDescDialog" hAlign="Center" headerSpan="5">
+                                        <table:multiLabels>
+                                            <Label text="Imco Details" textAlign="Center" width="100%" />
+                                            <Label text="Desc" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>description}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="OH" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>oh}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="OLF" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>olf}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="OLA" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>ola}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="OWL" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>owl}" />
+                                        </table:template>
+                                    </table:Column>
+                                    <table:Column hAlign="Center">
+                                        <table:multiLabels>
+                                            <Label visible="false" />
+                                            <Label text="OWR" textAlign="Center" width="100%" />
+                                        </table:multiLabels>
+                                        <table:template>
+                                            <Text text="{ExportsMdl>owr}" />
+                                        </table:template>
+                                    </table:Column>
+                                </table:columns>
+                            </table:Table> -->
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="{i18n>exsblBtnSplit}" press="" width="70px"/>
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseSplitDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

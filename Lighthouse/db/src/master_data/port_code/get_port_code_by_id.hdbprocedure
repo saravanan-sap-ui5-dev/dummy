@@ -1,0 +1,33 @@
+PROCEDURE "GET_PORT_CODE_BY_ID"(IN CardCode NVARCHAR(256)) AS 
+BEGIN
+    IF :CardCode IS NOT NULL THEN
+        SELECT
+            pc."id",
+            pc."code",
+            pc."name",
+            pc."countryCode",
+            pc."customsCode",
+            pc."zoneCode",
+            pc."zoneName",
+            pc."postalCode",
+            pc."cardCode",
+            pc."etaDays",
+            pc."createdBy",
+            pc."updatedBy",
+            pc."status",
+            slp."id" as slpId,
+            slp."shippingLineId",
+            slp."portCode",
+            slp."portCodeId",
+            slp."zoneCode" as slpZoneCode,
+            slp."zoneName" as slpZoneName,
+            slp."status" as slpStatus,
+            0 as "recordCount"
+        FROM
+            "port_code" pc
+        LEFT JOIN 
+            "shipping_line_port" slp ON slp."portCodeId" = pc."id"
+        WHERE 
+            "cardCode" = :CardCode;
+    END IF;
+END

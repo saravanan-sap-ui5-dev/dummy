@@ -1,0 +1,29 @@
+enum_id;enum_name;value;description
+1;status;1;Draft
+2;status;2;Active
+3;status;3;Inactive
+4;yes_or_no;1;Yes
+5;yes_or_no;2;No
+6;container_size;1;20
+7;container_size;2;40
+8;voyage_type;1;Container
+9;voyage_type;2;RoRo
+10;bl_type;1;Import
+11;bl_type;2;Export
+12;bl_type;3;Trans-shipment
+13;gender;1;gt_Female
+14;gender;2;gt_Male
+15;gender;3;gt_Undefined
+16;contactType;1;Import
+17;contactType;2;Export
+18;movement;1;Empty-In
+19;movement;2;Empty-Out
+20;movement;3;Full-In
+21;movement;4;Full-Out
+22;lcl_status;1;Ready for Pick-up
+23;lcl_status;2;Picked up
+24;lcl_status;3;In transit
+25;lcl_status;4;Cleared customs
+26;lcl_status;5;Arrived at destination
+27;fcl_lcl;1;FCL
+28;fcl_lcl;2;LCL

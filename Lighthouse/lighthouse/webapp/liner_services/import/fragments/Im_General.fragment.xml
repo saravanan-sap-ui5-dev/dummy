@@ -1,0 +1,99 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imBLNo}" />
+                <Input editable="{visible>/edit}" value="{blno}" />
+                <Label text="{i18n>imShipmentNo}" />
+                <Input editable="{visible>/edit}" value="{shipmentNo}" />
+                <Label text="{i18n>imSeawayBill}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{seawayBill}">
+                    <core:Item key="1" text="Yes" />
+                    <core:Item key="2" text="No" />
+                </ComboBox>
+                <Label text="{i18n>imBLType}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{blType}">
+                    <core:Item key="1" text="Import" />
+                    <core:Item key="2" text="Export" />
+                    <core:Item key="3" text="Trans-shipment" />
+                </ComboBox>
+                <Label text="{i18n>imShippingType}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{shippingType}">
+                    <core:Item key="1" text="Container" />
+                    <core:Item key="2" text="RoRo" />
+                    <core:Item key="3" text="Break-bulk" />
+                </ComboBox>
+                <Label text="{i18n>imShippingLine}" />
+                <Input editable="{visible>/edit}" value="{shippingLineName}" showValueHelp="true" valueHelpRequest="onPressShippingLine"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>imVoyageId}" />
+                <Input editable="{visible>/edit}" value="{ExportsMdl>/voyageId}" showValueHelp="true" valueHelpRequest="onPressVoyage"/>
+                <Label text="{i18n>imDeliveryType}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{deliveryType}">
+                    <core:Item key="1" text="Port to Port (PP)" />
+                    <core:Item key="2" text="House to House (HH)" />
+                    <core:Item key="3" text="Port to House (PH)" />
+                    <core:Item key="4" text=" House to Port (HP)" />
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imFeederVesselId}" />
+                <Input editable="{visible>/edit}" value="{feederVesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                <Label text="{i18n>imFeederVesselName}" />
+                <Input value="{feederVesselName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imExVesselId}" />
+                <Input editable="{visible>/edit}" value="{exVesselId}" showValueHelp="true" valueHelpRequest="onPressVessel"/>
+                <Label text="{i18n>imExVesselName}" />
+                <Input value="{exVesselName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imPortOfLoading}" />
+                <Input editable="{visible>/edit}" value="{portOfLoading}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>imPortOfDischarge}" />
+                <Input editable="{visible>/edit}" value="{portOfDischarge}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>imFclAndLcl}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{fclAndLcl}">
+                    <core:Item key="1" text="FCL" />
+                    <core:Item key="2" text="LCL" />
+                </ComboBox>
+                <Label text="Master B/L" />
+                <Input editable="{visible>/edit}" value="{masterBl}"/>
+                <Label text="{i18n>imStatus}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{status}">
+                    <core:Item key="1" text="Draft" />
+                    <core:Item key="2" text="Active" />
+                    <core:Item key="3" text="Inactive" />
+                </ComboBox>
+                <Label text="{i18n>imTransshipmentPort}" />
+                <Input editable="{visible>/edit}" value="{transhipmentPort}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>imPlaceOfReceipt}" />
+                <Input editable="{visible>/edit}" value="{placeOfReceipt}" showValueHelp="true" valueHelpRequest="onPressPortCode"/>
+                <Label text="{i18n>imTHDPrepaid}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{thdPrepaid}">
+                    <core:Item key="1" text="Yes" />
+                    <core:Item key="2" text="No" />
+                </ComboBox>
+                <Label text="{i18n>exSlot}" />
+                <Input editable="{visible>/edit}" value="{slot}" showValueHelp="true" valueHelpRequest="onPressShippingLine" />
+                <Label text="{i18n>imRemarks}" />
+                <TextArea editable="{visible>/edit}" value="{ExportsMdl>/finalOnCarriage/remarks}" />
+
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

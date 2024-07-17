@@ -1,0 +1,84 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form" height="100%">
+
+    <!-- <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false" delete="onDeleteSelectedModule">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle} ({=${items}.length})" />
+                    
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column >
+                <Text text="Module Name" />
+            </Column>
+            <Column>
+                <Text text="Create" />
+            </Column>
+            <Column >
+                <Text text="Modify" />
+            </Column>
+            <Column >
+                <Text text="View" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle">
+                <cells>
+                    <ComboBox selectedKey="{module}" editable="{visible>/edit}" items="{/filteredModuleList}" selectionChange="onSelectModule">
+                        <core:Item key="{key}" text="{name}"/>
+                    </ComboBox>
+                    <CheckBox selected="{create}" editable="{visible>/edit}"/>
+                    <CheckBox selected="{modify}" editable="{visible>/edit}"/>
+                    <CheckBox selected="{view}" editable="{= !${view}}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table> -->
+
+    <table:TreeTable id="moduleTable" rows="{path:'items', parameters: {arrayNames:['children']}}" selectionMode="None" visibleRowCount="16">
+        <table:extension>
+            <OverflowToolbar style="Clear">
+                <Label design="Bold" text="{i18n>cnTableTitle} ({=${items}.length})" />
+                <ToolbarSpacer/>
+                <Button text="Collapse all" press="onCollapseAll"/>
+                <Button text="Expand All" press="onExpandSelection"/>
+            </OverflowToolbar>
+        </table:extension>
+        <table:columns>
+            <table:Column hAlign="Center">
+                <Label text="Module Name / Screen Name"/>
+                <table:template>
+                    <ObjectStatus text="{name}"/>
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <Label text="Create"/>
+                <table:template>
+                    <CheckBox selected="{create}"/>
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <Label text="Modify"/>
+                <table:template>
+                    <CheckBox selected="{modify}"/>
+                </table:template>
+            </table:Column>
+            <table:Column hAlign="Center">
+                <Label text="View"/>
+                <table:template>
+                    <CheckBox selected="{view}"/>
+                </table:template>
+            </table:Column>
+        </table:columns>
+    </table:TreeTable>
+</core:FragmentDefinition>

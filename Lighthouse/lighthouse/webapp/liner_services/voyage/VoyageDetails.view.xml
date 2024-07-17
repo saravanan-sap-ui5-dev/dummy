@@ -1,0 +1,316 @@
+<mvc:View controllerName="com.lighthouse.liner_services.voyage.VoyageDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_editVoyages" useIconTabBar="true" showTitleInHeaderContent="true" showFooter="{= !${visible>/view} || !!${errors>/}.length}" showHeaderContent="{=${/item}!==null}" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{=${/general/title}==='null/null' ? '':${/general/title}}" wrapping="true" class="sapUiSmallMarginEnd" />
+
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="{=${/general/title}==='null/null' ? '':${/general/title}}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>voId}" text="{/general/id}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>voId}" text="{/general/id}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <Button visible="{= ${/item} ? true : false}" type="Ghost" text="Upload Manifest" press="onUploadManifest" />
+                    <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>vohcVessel}" text="{/general/vesselName}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>voStatus}" text="{/general/statusText}" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>voVoyageIn}" text="{/general/voyageIn}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>voVoyageOut}" text="{/general/voyageOut}" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>voVesselEta}" text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'/general/vesselETA'}], formatter:'.getDateTimeFormats'}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>voVesselEts}" text="{parts:[{path:'/userSettings/dateFormatKey'},{path:'/general/vesselETA'}], formatter:'.getDateTimeFormats'}" />
+                </layout:VerticalLayout>
+                <!-- <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>cnhcCreatedBy}" text="Samuel" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcCreatedOn}" text="01/08/2022" />
+                </layout:VerticalLayout> -->
+                <layout:VerticalLayout>
+                    <ObjectAttribute title="{i18n>cnhcLastUpdatedBy}" text="{/general/updatedBy}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>cnhcLastUpdatedOn}" text="{/general/updatedOn}" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voGeneralSection}">
+                <uxap:subSections>
+                    <!-- <uxap:ObjectPageSubSection titleUppercase="false" title="General">
+                        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+                            <form:SimpleForm id="sfGeneral" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Voyage Type" required="true" />
+                                    <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                        <core:Item key="1" text="Container" />
+                                        <core:Item key="2" text="RoRo" />
+                                    </ComboBox>
+                                    <Label text="Status" required="true" />
+                                    <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                        <core:Item key="1" text="Draft" />
+                                        <core:Item key="2" text="Active" />
+                                        <core:Item key="3" text="In-active" />
+                                    </ComboBox>
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm id="sfGeneral1" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Call Port" />
+                                    <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                        <core:Item key="1" text="Buraimi" />
+                                        <core:Item key="2" text="Suwaiq" />
+                                        <core:Item key="3" text="Sur" />
+                                        <core:Item key="4" text="Port Sultan Qaboos" />
+                                        <core:Item key="5" text="Port Sohar" />
+                                        <core:Item key="6" text="Port Salalah" />
+                                        <core:Item key="7" text="Port Duqm" />
+                                        <core:Item key="8" text="Muscat" />
+                                    </ComboBox>
+                                    <Label text="Account No." />
+                                    <Input editable="{visible>/edit}" value="6436524352" />
+
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm id="sfGeneral2" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Vessel ID" />
+                                    <Input editable="{visible>/edit}" value="235423" showValueHelp="true" valueHelpRequest="onPressVessel">
+                                    </Input>
+                                    <Label text="Vessel Name" />
+                                    <Input editable="false" value="Northern Dexterity" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm id="sfGeneral3" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Voyage In" />
+                                    <Input editable="{visible>/edit}" value="431423" />
+                                    <Label text="Voyage Out" />
+                                    <Input editable="{visible>/edit}" value="431423" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm id="sfGeneral4" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Vessel ETA" />
+                                    <DateTimePicker editable="{visible>/edit}" value="06-12-2023" placeholder=" " change="handleChange" />
+                                    <Label text="Vessel ETS" />
+                                    <DateTimePicker editable="{visible>/edit}" value="08-12-2023" placeholder=" " change="handleChange" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="Operational Details">
+                        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Last Port" />
+                                    <Input editable="{visible>/edit}" value="Damietta (DME)" showValueHelp="true" valueHelpRequest="onPressPortCode" />
+                                    <Label text="Next Port" />
+                                    <Input editable="{visible>/edit}" value="Jebel Ali (JEA)" showValueHelp="true" valueHelpRequest="onPressPortCode" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Vessel Rotation No" />
+                                    <Input editable="{visible>/edit}" value="73564" />
+                                    <Label text="MRN No" />
+                                    <Input editable="{visible>/edit}" value="2345234532" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Service" />
+                                    <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                        <core:Item text="G1" key="1" />
+                                    </ComboBox>
+                                    <Label text="Operator" />
+                                    <Input editable="{visible>/edit}" value="Hapag Lloyd (HL)" showValueHelp="true" valueHelpRequest="onPressShippingLine" />
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="DP IN" />
+                                    <Input editable="{visible>/edit}" value="431423 " />
+                                    <Label text="DP OUT" />
+                                    <Input editable="{visible>/edit}" value="431423" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="Bayan Details">
+                        <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+                            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="Master Name" />
+                                    <Input editable="{visible>/edit}" />
+                                    <Label text="Nationality" />
+                                    <ComboBox editable="{visible>/edit}" selectedKey="1">
+                                        <core:Item key="1" text="IND" />
+                                        <core:Item key="2" text="UAE" />
+                                        <core:Item key="3" text="US" />
+                                        <core:Item key="4" text="UK" />
+                                    </ComboBox>
+                                </form:content>
+                            </form:SimpleForm>
+                            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label text="CAR No." />
+                                    <Input editable="{visible>/edit}" />
+                                    <Label text="Manifest No." />
+                                    <Input editable="{visible>/edit}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </uxap:ObjectPageSubSection> -->
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_General" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voOperationalDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_OperationalDetails" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection titleUppercase="false" title="{i18n>voBayanDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_BayanDetails" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voImportBLsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="End" width="100%">
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Import" type="XML" binding="{/imports}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voExportBLsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="End" width="100%">
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Export" type="XML" binding="{/exports}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voTransshipmentSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>voDischargeDetailsSection}">
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton id="sbtnDischarge" selectedKey="{visible>/dischargeKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>voBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>voContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <Panel>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Import" type="XML" binding="{/transshipmentImport}"/>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Container" type="XML" binding="{/dischargeContainers}"/>
+                            </Panel>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>voLoadDetailsSection}">
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton id="sbtnLoad" selectedKey="{visible>/loadKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>voBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>voContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <Panel>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Export" type="XML" binding="{/transshipmentExport}"/>
+                                <core:Fragment fragmentName="com.lighthouse.liner_services.voyage.fragments.Vo_Container" type="XML" binding="{/loadContainers}"/>
+                            </Panel>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>voAttachmentSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.init.fragment.attachment.Attachment" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnVoyageError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="Error" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" press="postVoyages" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

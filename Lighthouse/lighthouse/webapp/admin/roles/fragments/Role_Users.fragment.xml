@@ -1,0 +1,59 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form" height="100%">
+
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" text="{i18n>cnBtnAdd}" width="70px" press="onAddUser" />
+                    <Button type="Transparent" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column >
+                <Text text="ID" />
+            </Column>
+            <Column>
+                <Text text="First Name" />
+            </Column>
+            <Column >
+                <Text text="Last Name" />
+            </Column>
+            <Column >
+                <Text text="Job Title" />
+            </Column>
+            <Column >
+                <Text text="Department" />
+            </Column>
+            <Column >
+                <Text text="Cost Center" />
+            </Column>
+            <Column >
+                <Text text="Status" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onPressEducation">
+                <cells>
+                    <ObjectIdentifier title="{id}" />
+                    <Text text="{firstName}"/>
+                    <Text text="{lastName}"/>
+                    <Text text="{jobTitle}" />
+                    <Text text="{department}"/>
+                    <Text text="{costCenter}"/>
+                    <Text text="{status}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

@@ -1,0 +1,123 @@
+PROCEDURE "ADD_EDIT_CONTAINER_TYPE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE  ID BIGINT := 0;
+	DECLARE ct_id BIGINT := 0;
+    DECLARE ct_name NVARCHAR(256);
+    DECLARE ct_code NVARCHAR(256);
+    DECLARE ct_description NVARCHAR(256);
+    DECLARE ct_createdBy NVARCHAR(256);
+    DECLARE ct_createdOn DATE;
+    DECLARE ct_updatedBy NVARCHAR(256);
+    DECLARE ct_updatedOn DATE;
+    DECLARE ct_status INTEGER;
+	DECLARE i INTEGER;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+    DECLARE exCode INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'Code already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+
+  	temp_container_type = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "code" NVARCHAR(256) PATH '$.code',
+				"description" NVARCHAR(256) PATH '$.description',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_container_type) do
+            ct_id = :temp_container_type."id"[:i];
+            ct_name = :temp_container_type."name"[:i];
+            ct_code = :temp_container_type."code"[:i];
+			ct_description = :temp_container_type."description"[:i];
+            ct_createdBy = :temp_container_type."createdBy"[:i];
+            ct_createdOn = CURRENT_DATE;
+            ct_updatedBy = null;
+            ct_updatedOn = null;
+            ct_status = :temp_container_type."status"[:i];
+            bulk_post = :temp_container_type."bulkPost"[:i];
+
+
+            IF ct_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "container_type" WHERE "code" = ?' INTO exCode USING :ct_code;
+                IF exCode > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "container_type" WHERE "code" = ?' INTO exId USING :ct_code;
+                END IF;
+                IF bulk_post = 'false' AND exCode > 0 AND exId != ct_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "container_type" WHERE "code" = ?' INTO exCode USING :ct_code;
+                --exId := null;
+                IF bulk_post = 'false' AND exCode > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+            
+            IF ct_id > 0  OR exCode > 0 THEN
+                -- Record exists in "container_type", perform an update
+                IF ct_id > 0 THEN -- id based update
+                    UPDATE "container_type"
+                    SET
+                    "name" = ct_name,
+                    "code" = ct_code,
+                    "description" = ct_description,
+                    "updatedBy" = ct_updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = ct_status
+                    WHERE
+                    "id" = ct_id;
+                END IF;
+                    
+                IF exCode > 0 THEN -- id based update
+                    UPDATE "container_type"
+                    SET
+                    "name" = ct_name,
+                    "code" = ct_code,
+                    "description" = ct_description,
+                    "updatedBy" = ct_updatedBy,
+                    "updatedOn" = CURRENT_DATE,
+                    "status" = ct_status
+                    WHERE
+                    "code" = ct_code;
+                END IF;
+
+                updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "container_type", perform an insert
+                INSERT INTO "container_type" ("name","code","description","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (ct_name,ct_code,ct_description,ct_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,
+	    	    	ct_status);
+                SELECT current_identity_value() into ct_id from dummy;
+
+                insertedCount = insertedCount + 1;
+            END IF;
+        END FOR;
+
+        IF bulk_post = 'true' THEN
+            SELECT :insertedCount "inserted", :updatedCount "updated",0 "recordCount","id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status" FROM "container_type" WHERE "code" = :ct_code;
+        ELSE
+            SELECT 0 "inserted", 0 "updated",0 "recordCount","id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status" FROM "container_type" WHERE "id" = :ct_id;
+        END IF;
+		--SELECT "id","name","code","description","createdBy","updatedBy","createdOn","updatedOn","status",0 "recordCount" FROM "container_type" WHERE "id" = :ct_id;
+END

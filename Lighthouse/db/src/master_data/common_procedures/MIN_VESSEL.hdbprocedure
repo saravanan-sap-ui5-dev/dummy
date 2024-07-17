@@ -1,0 +1,4 @@
+PROCEDURE "MIN_VESSEL" AS
+BEGIN
+	SELECT "id","name" FROM "vessel" WHERE "status" = 2;
+END

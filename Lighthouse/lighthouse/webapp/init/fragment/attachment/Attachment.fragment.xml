@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:custom="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:upload="sap.m.upload">
+    <upload:UploadSet id="uploadSet" instantUpload="true" items="{AttachmentMdl>/items}" uploadButtonInvisible="true" terminationEnabled="true" maxFileNameLength="30" maxFileSize="200" uploadUrl="../../../../upload" mode="None" selectionChanged="onSelectionChange" fileRenamed="onFileNameChange" afterItemRemoved="handleAfterItemRemoved">
+        <upload:toolbar>
+            <OverflowToolbar>
+                <Label design="Bold" text="{= ${i18n>cnTableTitle}+' ('+${AttachmentMdl>/items}.length+')'}" visible="{= ${AttachmentMdl>/items}.length>0}" />
+                <ToolbarSpacer />
+                <Button visible="{visible>/edit}" custom:key="1" text="Add Link" icon="sap-icon://chain-link" press="onPressUpload" />
+                <Button visible="{visible>/edit}" custom:key="2" text="Upload" icon="sap-icon://document" press="onPressUpload" />
+                <upload:UploadSetToolbarPlaceholder />
+            </OverflowToolbar>
+        </upload:toolbar>
+        <upload:items>
+            <upload:UploadSetItem openPressed="onPressAttachment" fileName="{AttachmentMdl>fileName}" mediaType="{AttachmentMdl>mediaType}" url="{AttachmentMdl>url}" thumbnailUrl="{AttachmentMdl>thumbnailUrl}" markers="{path: 'markers', templateShareable: false}" statuses="{path: 'AttachmentMdl>statuses', templateShareable: false}" visibleRemove="{visible>/edit}" visibleEdit="{visible>/edit}" uploadState="{uploadState}">
+                <upload:markers>
+                    <ObjectMarker visibility="{AttachmentMdl>visibility}"/>
+                </upload:markers>
+                <upload:statuses>
+                    <ObjectStatus title="{AttachmentMdl>title}" text="{AttachmentMdl>text}" active="{AttachmentMdl>active}"/>
+                </upload:statuses>
+            </upload:UploadSetItem>
+        </upload:items>
+    </upload:UploadSet>
+</core:FragmentDefinition>

@@ -1,0 +1,77 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnAdd}" width="70px" press="onAddCharge" />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="7em">
+                <Text text="{i18n>exChargeCode}" />
+            </Column>
+            <Column width="15em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exName}" />
+            </Column>
+            <Column width="4rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exSizeAndType}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exUnitPrice}" />
+            </Column>
+            <Column width="4em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exUnit}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exCurrency}" />
+            </Column>
+            <Column width="7rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exContainerNo}" />
+            </Column>
+            <Column width="7rem">
+                <Text text="{i18n>exAmount}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exVAT}" />
+            </Column>
+            <Column width="7rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exPrepaid}" />
+            </Column>
+            <Column width="7rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exFreightCharge}" />
+            </Column>
+            <Column width="7rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exPartyAccNo}" />
+            </Column>
+            <Column width="6rem" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>exPartyName}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onListItemPress">
+                <cells>
+                    <ObjectIdentifier title="{chargeCode}" />
+                    <Text text="{description}" />
+                    <Text text="{receivedOn}" />
+                    <Text text="{creditNo}" />
+                    <Text text="{creditDate}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                    <Text text="{amount}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

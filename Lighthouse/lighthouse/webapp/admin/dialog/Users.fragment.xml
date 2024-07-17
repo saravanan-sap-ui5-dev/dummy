@@ -1,0 +1,17 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    <Dialog title="Users" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_FilterBar" type="XML"/>
+        <ScrollContainer vertical="true" height="80%">
+            <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Table" type="XML" binding="{/users}"/>
+        </ScrollContainer>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="Select" press="onSelectUser"/>
+                <Button type="Ghost" text="Cancel" press="onCloseDialog"/>
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

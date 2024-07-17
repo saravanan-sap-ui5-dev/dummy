@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <!-- <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding" width="100%"> -->
+    <Table id="veShippingLineCodeId" inset="false" items="{path:'items', length:9999999999}" sticky="ColumnHeaders,HeaderToolbar" mode="{=${visible>/edit}===true?${mode}:'None'}" delete="onDeleteShippingLineCode">
+        <headerToolbar>
+            <Toolbar>
+                <Label text="{i18n>cnTableTitle} ({= ${items}.length})" visible="{= ${items}.length>0}"/>
+                <ToolbarSpacer/>
+                <Button id="btnAddShippingLine" text="{i18n>cnBtnAdd}" type="Transparent" width="70px" press="onAddShippingLineCode" enabled="{visible>/add}"/>
+            </Toolbar>
+        </headerToolbar>
+        <columns>
+            <Column>
+                <Text text="{i18n>veShippingLine}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>veVesselCode}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <ComboBox items="{/shippingLineCollection}" selectedKey = "{shippingLineId}" change="onChangeShippingLine" valueState = "{shippingLineValueState}" valueStateText = "{shippingLineValueStateText}" width="100%" editable="{visible>/edit}">
+                        <core:Item key="{cardCode}" text="{cardName}"/>
+                    </ComboBox>
+                    <Input id="vesselCode" value="{vesselCode}" liveChange="onChangeShippingLine" valueState = "{vesselCodeValueState}" valueStateText = "{vesselCodeValueStateText}" editable="{visible>/edit}"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+    <!-- </Panel> -->
+
+</core:FragmentDefinition>

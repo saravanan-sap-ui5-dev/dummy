@@ -1,0 +1,159 @@
+PROCEDURE "GET_SHIPMENT" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER, IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+	DECLARE SID BIGINT;
+	DECLARE BLNUMBER NVARCHAR(256); 
+	DECLARE SHIPMENTNUMBER BIGINT;
+	DECLARE SHIPPINGLINE BIGINT;
+	DECLARE VOYAGEID BIGINT;
+	DECLARE VESSELID BIGINT;
+  DECLARE VESSELETA_START DATETIME;
+  DECLARE VESSELETA_END DATETIME;
+  DECLARE VESSELETS_START DATETIME;
+  DECLARE VESSELETS_END DATETIME;
+  DECLARE CALLPORT BIGINT;
+  DECLARE PORTOFLOADING BIGINT;
+  DECLARE PORTOFDESTINATION BIGINT;
+	DECLARE CREATED_BY NVARCHAR(256);
+	DECLARE UPDATED_BY NVARCHAR(256);
+	DECLARE CREATED_ON_START DATE;
+	DECLARE CREATED_ON_END DATE;
+	DECLARE UPDATED_ON_START DATE;
+	DECLARE UPDATED_ON_END DATE;
+	DECLARE STATUSES NVARCHAR(256);
+	
+	DECLARE QUERY NVARCHAR(2000) :='';
+	DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+	DECLARE "TOTAL_RECORDS" INTEGER :=0;
+	DECLARE temp_sort NVARCHAR(1000);
+  DECLARE temp_voyage NVARCHAR(5000);
+
+  --SELECT count(*) INTO "TOTAL_RECORDS" FROM "shipment";
+
+  temp_voyage := 'SELECT * FROM "voyage"';
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_voyage || ')' INTO "TOTAL_RECORDS";
+  PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+
+  IF STRING_TYPE = TRUE THEN
+    temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+  ELSE
+    temp_sort :=' "id" '||:ORDER_BY;
+  END IF;
+    
+  IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+    QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",* FROM "shipment" ORDER BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+    EXECUTE IMMEDIATE :QUERY;
+  ELSE
+    IF (ID > 0) THEN --for id "filter"
+      SELECT  0 "recordCount",0 "inserted",0"updated","id","blNumber","blType","shipmentNumber","shippingLine","voyageID","vesselID","vesselName","portOfLoading","portOfDestination","fclOrLcl","callPort","vesselETA","vesselETS","createdBy","createdOn","updatedBy","updatedOn","status" FROM "shipment"  WHERE "id" = ID ORDER BY "id" DESC;
+    ELSE
+    	IF FILTER_PARAMS != '' THEN
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO SID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.blNumber') INTO BLNUMBER FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.shipmentNumber') INTO SHIPMENTNUMBER FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.shippingLine') INTO SHIPPINGLINE FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.voyageID') INTO VOYAGEID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselID') INTO VESSELID FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselEtaStart') INTO VESSELETA_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselEtaEnd') INTO VESSELETA_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselEtsStart') INTO VESSELETS_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.vesselEtsEnd') INTO VESSELETS_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.callPort') INTO CALLPORT FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.portOfLoading') INTO PORTOFLOADING FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.portOfDestination') INTO PORTOFDESTINATION FROM DUMMY;
+    	  SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO CREATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO UPDATED_BY FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnStart') INTO CREATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdOnEnd') INTO CREATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnStart') INTO UPDATED_ON_START FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedOnEnd') INTO UPDATED_ON_END FROM DUMMY;
+        SELECT JSON_VALUE(:FILTER_PARAMS, '$.statuses') INTO "STATUSES" FROM DUMMY;
+    
+        IF :SID > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  "id"=' ||  :SID  ELSE ' AND "id"=' ||  :SID END;
+        END IF;
+
+        IF :BLNUMBER > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  "blNumber"=' ||  :BLNUMBER  ELSE ' AND "blNumber"=' ||  :BLNUMBER END;
+        END IF;
+
+        IF :SHIPMENTNUMBER > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  "shipmentNumber"=' ||  :SHIPMENTNUMBER  ELSE ' AND "shipmentNumber"=' ||  :SHIPMENTNUMBER END;
+        END IF;
+
+        IF :SHIPPINGLINE > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  "shippingLine"=' ||  :SHIPPINGLINE  ELSE ' AND "shippingLine"=' ||  :SHIPPINGLINE END;
+        END IF;
+
+        IF :VOYAGEID > 0  THEN 
+          QUERY := CASE WHEN QUERY = '' THEN '  "voyageID"=' ||  :VOYAGEID  ELSE ' AND "voyageID"=' ||  :VOYAGEID END;
+        END IF;
+
+        IF :VESSELID > 0  THEN 
+          QUERY := CASE WHEN QUERY = '' THEN '  "vesselID"=' ||  :VESSELID  ELSE ' AND "vesselID"=' ||  :VESSELID END;
+        END IF;
+
+        IF :PORTOFLOADING > 0  THEN 
+          QUERY := CASE WHEN QUERY = '' THEN '  "portOfLoading"=' ||  :PORTOFLOADING  ELSE ' AND "portOfLoading"=' ||  :PORTOFLOADING END;
+        END IF;
+
+        IF :PORTOFDESTINATION > 0  THEN 
+          QUERY := CASE WHEN QUERY = '' THEN '  "portOfDestination"=' ||  :PORTOFDESTINATION  ELSE ' AND "portOfDestination"=' ||  :PORTOFDESTINATION END;
+        END IF;
+         
+        IF :VESSELETA_START IS NOT NULL AND :VESSELETA_END IS NOT NULL AND :VESSELETA_START !='' AND :VESSELETA_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"vesselETA" BETWEEN :VESSELETA_START AND :VESSELETA_END' ELSE ' AND "vesselETA" BETWEEN :VESSELETA_START AND :VESSELETA_END' END;
+        END IF;
+      
+        IF :VESSELETS_START IS NOT NULL AND :VESSELETS_END IS NOT NULL AND :VESSELETS_START !='' AND :VESSELETS_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"vesselETS" BETWEEN :VESSELETS_START AND :VESSELETS_END'  ELSE ' AND "vesselETS" BETWEEN :VESSELETS_START AND :VESSELETS_END' END;
+        END IF;
+
+        IF :CALLPORT > 0  THEN  
+          QUERY := CASE WHEN QUERY = '' THEN '  "callPort"=' ||  :CALLPORT  ELSE ' AND "callPort"=' ||  :CALLPORT END;
+        END IF;
+
+        IF STATUSES != '()' AND STATUSES != '' THEN
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN ' "status" IN ' || STATUSES ELSE ' AND "status" IN ' || STATUSES END;
+        END IF;
+    
+        IF :CREATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%'''  ELSE ' AND   LOWER("createdBy") like ''%' ||  LOWER(:CREATED_BY) || '%''' END;
+        END IF;
+
+        IF :UPDATED_BY != ''  THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '  LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%'''  ELSE ' AND   LOWER("updatedBy") like ''%' ||  LOWER(:UPDATED_BY) || '%''' END;
+        END IF;
+        
+        IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !='' AND :CREATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' ELSE ' AND "createdOn" BETWEEN :CREATED_ON_START AND :CREATED_ON_END' END;
+        END IF;
+        
+        IF :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL AND :UPDATED_ON_START !='' AND :UPDATED_ON_END != '' THEN  -- for criterials
+          QUERY := QUERY || CASE WHEN QUERY = '' THEN '"updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END'  ELSE ' AND "updatedOn" BETWEEN :UPDATED_ON_START AND :UPDATED_ON_END' END;
+        END IF;
+        
+        IF(QUERY = '') THEN
+
+          QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated",* FROM "shipment" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+          EXECUTE IMMEDIATE :QUERY;
+
+        ELSE
+          IF :CREATED_ON_START IS NOT NULL AND :CREATED_ON_END IS NOT NULL AND :CREATED_ON_START !=''AND :CREATED_ON_END !=''OR :UPDATED_ON_START IS NOT NULL AND :UPDATED_ON_END IS NOT NULL  AND :UPDATED_ON_START !=''AND :UPDATED_ON_END !='' THEN
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "shipment" WHERE '|| QUERY INTO "TOTAL_RECORDS" USING :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated","id","blNumber","blType","shipmentNumber","shippingLine","voyageID","vesselID","vesselName","portOfLoading","portOfDestination","fclOrLcl","callPort","vesselETA","vesselETS","createdBy","createdOn","updatedBy","updatedOn","status" FROM "shipment"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX, :CREATED_ON_START, :CREATED_ON_END, :UPDATED_ON_START, :UPDATED_ON_END;
+          ELSE 
+            EXECUTE IMMEDIATE 'SELECT count(*)  FROM "shipment" WHERE '|| QUERY INTO "TOTAL_RECORDS";
+            
+            QUERY := ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",0 "inserted",0"updated","id","blNumber","blType","shipmentNumber","shippingLine","voyageID","vesselID","vesselName","portOfLoading","portOfDestination","fclOrLcl","callPort","vesselETA","vesselETS","createdBy","createdOn","updatedBy","updatedOn","status" FROM "shipment"  WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+            EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+          END IF;
+        END IF;
+      ELSE
+        SELECT  :TOTAL_RECORDS "recordCount",0 "inserted",0"updated","id","blNumber","blType","shipmentNumber","shippingLine","voyageID","vesselID","vesselName","portOfLoading","portOfDestination","fclOrLcl","callPort","vesselETA","vesselETS","createdBy","createdOn","updatedBy","updatedOn","status" FROM "shipment" ORDER BY "id" DESC;
+      END IF;
+    END IF;
+  END IF;
+END

@@ -1,0 +1,137 @@
+<mvc:View controllerName="com.lighthouse.admin.users.UserDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="pageUserDetails" showFooter="{= !${visible>/view} || !!${errors>/}.length}" useIconTabBar="true" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{/general/firstName} {/general/lastName}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="{/general/firstName} {/general/lastName}" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>usrId}" text="{/item}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>usrId}" text="{/item}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <!--  <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" /> -->
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>usrFirstName}" text="{/general/firstName}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>usrLastName}" text="{/general/lastName}" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>usrJobTitle}" text="{/general/jobTitle}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>usrDepartment}" text="{/general/department}" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>usrStatus}" text="{/general/statusText}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>usrStartDate}" text="{/general/startDate}" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>usrGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>usrGeneralSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_General" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrOrganizationSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Organization" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrPersonalSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Personal" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrElectronicAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_ElectronicAddress" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrBankDetailsSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_BankDetails" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>usrAddressandEducationSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="{i18n>usrPrimaryAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_PrimaryAddress" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrSecondaryAddressSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_SecondaryAddress" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                    <uxap:ObjectPageSubSection title="{i18n>usrEducationSection}">
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_Education" type="XML" binding="{/education}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection visible="false" titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.admin.users.fragments.User_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection visible="false" title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnUserError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,148 @@
+<mvc:View controllerName="com.lighthouse.liner_services.transshipment.TransshipmentDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <uxap:ObjectPageLayout id="page_AddEditImports" showFooter="{= !${visible>/view} || !!${errors>/}.length}" useIconTabBar="true" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="Hapag Lloyd" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:expandedHeading>
+
+                <uxap:snappedHeading>
+                    <Title text="Hapag Lloyd" wrapping="true" class="sapUiSmallMarginEnd" />
+                </uxap:snappedHeading>
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>tsId}" text="{/item}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>tsId}" text="{/item}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                    <Button id="btnEdit" width="70px" visible="true" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" />
+                    <Button text="{i18n>cnBtnActions}" type="Ghost" press="onHandleActions" ariaHasPopup="Menu">
+                        <dependents>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.import.fragments.Actions" type="XML" />
+                        </dependents>
+                    </Button>
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>tshcVessel}" text="Northern Dexterity" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>tshcStatus}" text="Active" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>tshcVesselETA}" text="01/01/2023" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>tshcVesselETS}" text=" 05/01/2023" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>tshcCntrsLoaded2040}" text="16/62" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>tsDischargeDetailsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton selectedKey="{visible>/dischargeKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>tsBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>tsContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.transshipment.fragments.Ts_Import" type="XML" binding="{/imports}"/>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.transshipment.fragments.Ts_Container" type="XML" binding="{/dischargeContainers}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>tsLoadDetailsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <VBox>
+                            <HBox justifyContent="SpaceBetween">
+                                <SegmentedButton selectedKey="{visible>/loadKey}" width="250px" selectionChange="onChangeView">
+                                    <items>
+                                        <SegmentedButtonItem text="{i18n>tsBLView}" key="1" />
+                                        <SegmentedButtonItem text="{i18n>tsContainerView}" key="2" />
+                                    </items>
+                                </SegmentedButton>
+                                <SearchField />
+                            </HBox>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.transshipment.fragments.Ts_Export" type="XML" binding="{/exports}"/>
+                            <core:Fragment fragmentName="com.lighthouse.liner_services.transshipment.fragments.Ts_Container" type="XML" binding="{/loadContainers}"/>
+                        </VBox>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>cnAttachmentsSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.liner_services.transshipment.fragments.Ts_UploadSet" type="XML" />
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="{i18n>cnChangeLogSection}" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded">
+                        <Table inset="false" items="{/changeLog}" mode="None">
+                            <columns>
+                                <Column width="10em">
+                                    <Text text="{i18n>cnclSlNo}" />
+                                </Column>
+                                <Column>
+                                    <Text text="{i18n>cnclSectionName}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedBy}" />
+                                </Column>
+                                <Column width="15em" minScreenWidth="Tablet" demandPopin="true">
+                                    <Text text="{i18n>cnclModifiedOn}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{slNo}" />
+                                        <Text text="{sectionName}" />
+                                        <Text text="{modifiedOn}" />
+                                        <Text text="{modifiedBy}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnImportError" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnSave}" />
+                <Button type="Transparent" text="{i18n>cnBtnCancel}" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

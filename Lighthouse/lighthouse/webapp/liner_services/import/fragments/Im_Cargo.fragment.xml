@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imCargoWeight}" />
+                <Input value="{cargoWeight}" editable="{visible>/edit}" />
+                <Label text="{i18n>imCubicMeter}" />
+                <Input value="{cbm}" editable="{visible>/edit}" />
+                <Label text="{i18n>imType}" />
+                <ComboBox selectedKey="{type}" editable="{visible>/edit}">
+                    <core:Item text="Box" key="1"/>
+                    <core:Item text="PKG" key="2"/>
+                </ComboBox>
+                <Label text="{i18n>imTareWeight}" />
+                <Input value="{tareWeight}" editable="{visible>/edit}" />
+                <Label text="{i18n>imCargoDescription}" />
+                <TextArea value="{cargoDescription}" editable="{visible>/edit}" />
+                <Label text="{i18n>imTotalPackages}" />
+                <Input value="{totalPackages}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>imHSCode}" />
+                <Input value="{hsCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressHSCode"/>
+                <Label text="{i18n>imCargoTypeCode}" />
+                <Input value="{cargoTypeCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressCargoType"/>
+                <Label text="{i18n>imHSCodeDescription}" />
+                <Input editable="false" value="{hsCodeDescription}" />
+                <Label text="{i18n>imCargoTypeName}" />
+                <Input value="{cargoTypeName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

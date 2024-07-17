@@ -1,0 +1,49 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Dialog title="Education Details">
+        <content>
+            <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+                <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+                    <form:content>
+                        <Label text="Education Type" />
+                        <Input value="{/educationDetails/educationType}" editable="{visible>/edit}" />
+                        <Label text="Date From " />
+                        <DatePicker displayFormat="yyyy-MM-dd" placeholder=" " value="{/educationDetails/fromDate}" editable="{visible>/edit}" />
+                        <Label text="Major" />
+                        <ComboBox selectedKey="{/educationDetails/major}" editable="{visible>/edit}">
+                            <core:Item key="Computer Science" text="Computer Science"/>
+                            <core:Item key="2" text="No"/>
+                        </ComboBox>
+                        <Label text="Institute" />
+                        <Input value="{/educationDetails/institute}" editable="{visible>/edit}" />
+                        <Label text="Date To" />
+                        <DatePicker displayFormat="yyyy-MM-dd" placeholder=" " value="{/educationDetails/toDate}" editable="{visible>/edit}" />
+                        <Label text="Diploma" />
+                        <ComboBox selectedKey="{/educationDetails/diploma}" editable="{visible>/edit}">
+                            <core:Item key="DCEE" text="DCEE"/>
+                            <core:Item key="2" text="No"/>
+                        </ComboBox>
+                    </form:content>
+                </form:SimpleForm>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button visible="false" type="Emphasized" text="{i18n>cnBtnAdd}" width="75px"></Button>
+                <Button text="{i18n>cnBtnClose}" press="onCloseDialog" type="Ghost" width="75px"></Button>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

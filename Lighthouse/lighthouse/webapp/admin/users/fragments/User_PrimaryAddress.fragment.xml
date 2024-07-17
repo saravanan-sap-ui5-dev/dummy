@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Building No" />
+                <Input value="{homeBlock}" editable="{visible>/edit}" />
+                <Label text="P.O. Box No" />
+                <Input value="" editable="{visible>/edit}" />
+                <Label text="City" />
+                <Input value="{homeCity}" editable="{visible>/edit}" />
+                <Label text="Street" />
+                <Input value="{homeStreet}" editable="{visible>/edit}" />
+                <Label text="Postal Code" />
+                <Input value="{homeZipCode}" editable="{visible>/edit}" />
+                <Label text="Country" />
+                <Input value="{homeCountry}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

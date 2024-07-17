@@ -1,0 +1,119 @@
+PROCEDURE "ADD_EDIT_HS_CODE" (IN "IN_PARAM" NCLOB, OUT EX_MESSAGE nvarchar(200)) 
+AS
+BEGIN
+
+	DECLARE  ID BIGINT := 0;
+	DECLARE hs_id BIGINT := 0;
+    DECLARE hs_name NVARCHAR(256);
+    DECLARE hs_code DOUBLE;
+    DECLARE hs_description NVARCHAR(256);
+    DECLARE hs_createdBy NVARCHAR(256);
+    DECLARE hs_createdOn DATE;
+    DECLARE hs_updatedBy NVARCHAR(256);
+    DECLARE hs_updatedOn DATE;
+    DECLARE hs_status INTEGER;
+    DECLARE bulk_post NVARCHAR(5) := 'true';
+	DECLARE i INTEGER;
+
+
+     -- Other variable declarations...
+    DECLARE exCode INTEGER :=0;
+    DECLARE exId INTEGER :=0;
+    DECLARE updatedCount INTEGER :=0;
+    DECLARE insertedCount INTEGER :=0;
+    -- Set up an exception handler for the custom exception
+    DECLARE duplicate CONDITION FOR SQL_ERROR_CODE 10001;
+    DECLARE EXIT HANDLER FOR duplicate
+    BEGIN
+        EX_MESSAGE := 'HS code already exists.' || ::SQL_ERROR_MESSAGE;
+    END;
+
+	temp_hs_code = SELECT JT.*
+     FROM JSON_TABLE(
+            to_clob(:IN_PARAM),
+            '$' COLUMNS(
+                "id" BIGINT PATH '$.id',
+                "name" NVARCHAR(256) PATH '$.name',
+                "code" DOUBLE PATH '$.code',
+				"description" NVARCHAR(256) PATH '$.description',
+                "bulkPost" NVARCHAR(5) PATH '$.bulkPost',
+                "createdBy" NVARCHAR(256) PATH '$.createdBy',
+                "createdOn" DATE PATH '$.createdOn',
+                "updatedBy" NVARCHAR(256) PATH '$.updatedBy',
+                "updatedOn" DATE PATH '$.updatedOn',
+                "status" INTEGER PATH '$.status'
+            )
+        ) AS JT;
+          FOR i in 1..RECORD_COUNT(:temp_hs_code) do
+            hs_id = :temp_hs_code."id"[:i];
+            hs_name = :temp_hs_code."name"[:i];
+            hs_code = :temp_hs_code."code"[:i];
+			hs_description = :temp_hs_code."description"[:i];
+            hs_createdBy = :temp_hs_code."createdBy"[:i];
+            hs_createdOn = CURRENT_DATE;
+            hs_updatedBy = null;
+            hs_updatedOn = null;
+            hs_status = :temp_hs_code."status"[:i];
+
+            bulk_post = :temp_hs_code."bulkPost"[:i];
+
+            IF hs_id IS NOT NULL THEN
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "hs_code" WHERE "code" = ?' INTO exCode USING :hs_code;
+                IF exCode > 0 THEN
+                    EXECUTE IMMEDIATE 'SELECT "id" FROM "hs_code" WHERE "code" = ?' INTO exId USING :hs_code;
+                END IF;
+                IF bulk_post = 'false' AND exCode > 0 AND exId != hs_id THEN 
+                    SIGNAL duplicate;
+                END IF;
+            ELSE
+                EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "hs_code" WHERE "code" = ?' INTO exCode USING :hs_code;
+                IF bulk_post = 'false' AND exCode > 0 THEN 
+                    SIGNAL duplicate;
+                END IF;
+            END IF;
+            
+            IF hs_id > 0 OR exCode > 0 THEN
+                -- Record exists in "hs_code", perform an update
+              IF hs_id > 0 THEN -- id based update
+                UPDATE "hs_code"
+                SET
+            	"name" = hs_name,
+	            "code" = hs_code,
+				"description" = hs_description,
+	            "updatedBy" = hs_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = hs_status
+                WHERE
+                "id" = hs_id;
+              END IF;
+
+              IF exCode > 0 THEN -- id based update
+                UPDATE "hs_code"
+                SET
+            	"name" = hs_name,
+	            "code" = hs_code,
+				"description" = hs_description,
+	            "updatedBy" = hs_updatedBy,
+	            "updatedOn" = CURRENT_DATE,
+	            "status" = hs_status
+                WHERE
+                "code" = hs_code;
+              END IF;
+               updatedCount = updatedCount + 1;
+            ELSE
+                -- Record doesn't exist in "hs_code", perform an insert
+                INSERT INTO "hs_code" ("name","code","description","createdBy","createdOn","updatedBy","updatedOn","status")VALUES (hs_name,hs_code,hs_description,hs_createdBy,
+	    	    		CURRENT_DATE,
+	    	    		NULL,
+	    	    		NULL,
+	    	    	hs_status);
+                SELECT current_identity_value() into hs_id from dummy;
+                 insertedCount = insertedCount + 1;   
+            END IF;
+        END FOR;
+        IF bulk_post = 'true' THEN
+		    SELECT 0 "recordCount",:insertedCount "inserted", :updatedCount "updated",* FROM "hs_code" WHERE "code" = :hs_code;
+        ELSE
+            SELECT 0 "recordCount",0 "inserted", 0 "updated",* FROM "hs_code" WHERE "id" = :hs_id;
+        END IF;
+END

@@ -1,0 +1,67 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Table items="{items}" visible="{blView}" mode="None" sticky="ColumnHeaders,HeaderToolbar" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" text="{i18n>cnBtnAdd}" width="70px" press="onAddBLView" />
+                    <Button type="Transparent" text="{i18n>cnBtnRemove}" press="" />
+
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="7em" hAlign="Center">
+                <Text text="{i18n>tsId}" />
+            </Column>
+            <Column width="15em" hAlign="Center">
+                <Text text="{i18n>tsBLNumber}" />
+            </Column>
+            <Column hAlign="Begin" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>tsShipper}" />
+            </Column>
+            <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Begin">
+                <Text text="{i18n>tsConsignee}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Center">
+                <Text text="{i18n>tsFclAndLcl}" />
+            </Column>
+            <Column width="10em" hAlign="Center">
+                <Text text="{i18n>tsPortOfLoading}" />
+            </Column>
+            <Column width="10em" hAlign="Center">
+                <Text text="{i18n>tsPortOfDestination}" />
+            </Column>
+            <Column width="10em" hAlign="Center">
+                <Text text="{i18n>tsStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press=".onExportItemPress">
+                <cells>
+                    <Text text="{id}" />
+                    <Text text="{blNumber}" />
+                    <Text text="{shipper}" />
+                    <Text text="{consignee}" />
+                    <Text text="{fclAndLcl}" />
+                    <Text text="{pol}" />
+                    <Text text="{pod}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

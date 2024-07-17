@@ -1,0 +1,84 @@
+PROCEDURE "GET_CUSTOMERS" (IN "SHOW_ALL" BOOLEAN,IN ID BIGINT, IN "FILTER_PARAMS" NCLOB,IN "PAGE_NUMBER" INTEGER,
+IN "PAGE_SIZE" INTEGER, IN "SORTING_KEY" NVARCHAR(100), IN "ORDER_BY" NVARCHAR(100), IN "STRING_TYPE" BOOLEAN) AS 
+BEGIN
+    DECLARE CID BIGINT := 0;
+    DECLARE CARDCODE_COLLECTION NVARCHAR(5000);
+    DECLARE creditorAccount NVARCHAR(256);
+    DECLARE poBox BIGINT;
+    DECLARE bayanCode NVARCHAR(256);
+    DECLARE shortName NVARCHAR(256);
+    DECLARE remarks NVARCHAR(256);
+    DECLARE createdBy NVARCHAR(256);
+    DECLARE updatedBy NVARCHAR(256);
+    DECLARE status INTEGER;
+    DECLARE TOTAL_RECORDS INTEGER := 0;
+    DECLARE temp_customers NVARCHAR(5000);
+    DECLARE QUERY NVARCHAR(2000) :='';
+    DECLARE START_INDEX INTEGER := (:PAGE_NUMBER - 1) * :PAGE_SIZE;
+    DECLARE temp_sort NVARCHAR(1000);
+
+    temp_customers := 'SELECT * FROM "customers"';
+
+    EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM (' || :temp_customers || ')' INTO "TOTAL_RECORDS";
+    
+    PAGE_SIZE = CASE WHEN PAGE_SIZE =0 THEN :TOTAL_RECORDS ELSE  PAGE_SIZE END;
+
+    IF STRING_TYPE = TRUE THEN
+        temp_sort := ' LOWER("'||:SORTING_KEY||'") '||:ORDER_BY;
+    ELSE
+        temp_sort :=' "id" '||:ORDER_BY;
+    END IF;
+
+    IF SHOW_ALL = TRUE THEN -- to show all the records without filter
+        QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "customers" ORDER  BY'||:temp_sort||' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;
+        EXECUTE IMMEDIATE :QUERY;
+    ELSE
+        IF (ID > 0) THEN --for id filter
+            SELECT  0 "recordCount",* FROM "customers" WHERE "id" = ID ORDER BY "id" DESC;
+        ELSE -- for criteria based filter
+            IF FILTER_PARAMS != '' THEN
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.id') INTO CID FROM DUMMY;
+               -- SELECT JSON_VALUE(:FILTER_PARAMS, '$.cardCode') INTO cardCode FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.cardCodeCollection') INTO CARDCODE_COLLECTION FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.creditorAccount') INTO creditorAccount FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.poBox') INTO poBox FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.bayanCode') INTO bayanCode FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.shortName') INTO shortName FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.createdBy') INTO createdBy FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.updatedBy') INTO updatedBy FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.remarks') INTO remarks FROM DUMMY;
+                SELECT JSON_VALUE(:FILTER_PARAMS, '$.status') INTO status FROM DUMMY;
+
+                temp_cardcode_collection =   SELECT * FROM FUNC_SPLIT_STRING_VALUES_TO_TABLE(:CARDCODE_COLLECTION); 
+
+
+                IF :shortName != ''  THEN  -- for criterials
+                    QUERY =  QUERY || CASE WHEN QUERY = '' THEN '  LOWER("shortName") like ''%' ||  LOWER(:shortName) || '%'''  ELSE ' AND   LOWER("shortName") like ''%' ||  LOWER(:shortName) || '%''' END;
+                END IF;
+
+                IF :createdBy != ''  THEN  -- for criterials
+                    QUERY =  QUERY || CASE WHEN QUERY = '' THEN '  LOWER("createdBy") like ''%' ||  LOWER(:createdBy) || '%'''  ELSE ' AND   LOWER("createdBy") like ''%' ||  LOWER(:createdBy) || '%''' END;
+                END IF;
+                
+                IF :updatedBy != ''  THEN  -- for criterials
+                    QUERY =  QUERY || CASE WHEN QUERY = '' THEN '  LOWER("updatedBy") like ''%' ||  LOWER(:updatedBy) || '%'''  ELSE ' AND   LOWER("updatedBy") like ''%' ||  LOWER(:updatedBy) || '%''' END;
+                END IF;
+
+                IF EXISTS (SELECT * FROM :temp_cardcode_collection) THEN
+                    QUERY = QUERY || CASE WHEN QUERY = '' THEN ' "cardCode"  IN ('|| (SELECT  LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_cardcode_collection) || ')'  ELSE ' AND  "cardCode"  IN (' || (SELECT LEFT(STRING_AGG(CONCAT("out_value", ','), ''), LENGTH(STRING_AGG(CONCAT("out_value", ','), '')) - 1) FROM :temp_cardcode_collection) || ')' END;
+                END IF;
+
+                IF QUERY = '' THEN
+                    QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "customers" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;	  
+                    EXECUTE IMMEDIATE :QUERY;
+                ELSE
+                    QUERY = ' SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "customers" WHERE ' || QUERY || ' ORDER BY ' ||:temp_sort;
+                    EXECUTE IMMEDIATE :QUERY || ' LIMIT :PAGE_SIZE OFFSET :START_INDEX' USING :PAGE_SIZE, :START_INDEX;   
+                END IF;
+            ELSE
+                QUERY := 'SELECT '|| :TOTAL_RECORDS ||' "recordCount",* FROM "customers" ORDER BY '||:temp_sort|| ' LIMIT '||:PAGE_SIZE||' OFFSET '||:START_INDEX;	  
+                EXECUTE IMMEDIATE :QUERY;
+            END IF;
+        END IF;
+    END IF;
+END

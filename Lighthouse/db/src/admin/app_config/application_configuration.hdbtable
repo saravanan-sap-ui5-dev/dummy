@@ -1,0 +1,6 @@
+COLUMN TABLE "application_configuration" (
+  "id" INTEGER PRIMARY KEY,
+  "attachment_folder_path" NVARCHAR(256) NOT NULL,
+  "archive_folder_path" NVARCHAR(256),
+  "archive_period" INTEGER
+) 

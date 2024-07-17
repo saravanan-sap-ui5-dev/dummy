@@ -1,0 +1,134 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <fb:FilterBar id="coFilterBar" filterBarExpanded="true" reset="onReset" clear="onReset" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+        <fb:filterItems>
+            <fb:FilterItem name="B" visibleInFilterBar="true" label="{i18n>coContainerNo}" groupName="optional">
+                <fb:control>
+                    <Input value="{containerNumber}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="A" visibleInFilterBar="true" label="{i18n>coBLNo}" groupName="optional">
+                <fb:control>
+                    <Input value="{blno}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="C" visibleInFilterBar="true" label="{i18n>coSize}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/container_size}" selectedKeys="{sizeColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="E" visibleInFilterBar="true" label="{i18n>coType}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox id = "mngContainerContainerTypeId" items = "{/containerTypeCollection}" selectedKeys="{typeIdColl}">
+                        <core:Item key="{id}" text="{name}"/>
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="D" visibleInFilterBar="true" label="{i18n>coOperator}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox selectedKeys="{operator}">
+                        <core:Item key="1" text="Hapag Lloyd" />
+                        <core:Item key="2" text="UASC" />
+                        <core:Item key="3" text="PIL" />
+                        <core:Item key="4" text="K-Line" />
+                        <core:Item key="5" text="SCI" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="F" visibleInFilterBar="true" label="{i18n>coOnHold}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/yes_or_no}" selectedKeys="{onHoldColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="G" visibleInFilterBar="true" label="{i18n>coSoc}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/yes_or_no}" selectedKeys="{socColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="H" visibleInFilterBar="true" label="{i18n>coMovement}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/movement}" selectedKeys="{movementColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="I" visibleInFilterBar="false" label="{i18n>coCreatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{createdBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="J" visibleInFilterBar="false" label="{i18n>coCreatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'c_end'
+                            }
+                        ]
+                    }" field:date="createdOnStart,createdOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="K" visibleInFilterBar="false" label="{i18n>coUpdatedBy}" groupName="optional">
+                <fb:control>
+                    <Input value="{updatedBy}" />
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="L" visibleInFilterBar="false" label="{i18n>coUpdatedOn}" groupName="optional">
+                <fb:control>
+                    <DateRangeSelection placeholder="DD-MM-YYYY" change="handleChangeDateRange" value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                        'pattern': 'dd-MM-yyyy'
+                        },
+                        'parts': [
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_start'
+                            },
+                            {
+                                'type': 'sap.ui.model.type.Date',
+                                'path': 'u_end'
+                            }
+                        ]
+                    }" field:date="updatedOnStart,updatedOnEnd"/>
+
+                </fb:control>
+            </fb:FilterItem>
+            <fb:FilterItem name="M" visibleInFilterBar="true" label="{i18n>coStatus}" groupName="optional">
+                <fb:control>
+                    <MultiComboBox items="{masterDataMdl>/status}" selectedKeys="{statusColl}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </MultiComboBox>
+                </fb:control>
+            </fb:FilterItem>
+        </fb:filterItems>
+    </fb:FilterBar>
+</core:FragmentDefinition>

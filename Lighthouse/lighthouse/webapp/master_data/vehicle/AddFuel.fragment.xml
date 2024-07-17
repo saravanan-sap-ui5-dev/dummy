@@ -1,0 +1,79 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+    <Dialog title="Fuel Details" contentWidth="50%">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Fuel Type" />
+                    <ComboBox selectedKey="{fuelType}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Diesel"/>
+                        <core:Item key="2" text="Petrol"/>
+                    </ComboBox>
+                    <Label text="Quantity (Ltrs)" />
+                    <Input value="{quatity}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Vendor Code" />
+                    <Input value="{vendorCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                    <Label text="Vendor Name" />
+                    <Input value="{vendorName}" editable="false" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Requester Code" />
+                    <Input value="{requesterCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                    <Label text="Requester Name" />
+                    <Input value="{requesterName}" editable="false" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Receipt ID" />
+                    <Input value="{receiptId}" editable="{visible>/edit}" />
+                    <Label text="Receipt Date" />
+                    <DatePicker value="{receiptDate}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Odometer Reading" />
+                    <Input value="{odometerReading}" editable="{visible>/edit}" />
+                    <Label text="Fill Date" />
+                    <DatePicker value="{fillDate}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="Cost (OMR)" />
+                    <Input value="{cost}" editable="{visible>/edit}" />
+                    <Label text="Payment status" />
+                    <ComboBox value="{paymentStatus}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Pending"/>
+                        <core:Item key="2" text="Paid"/>
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="Add" />
+                <Button type="Ghost" text="Cancel" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+
+</core:FragmentDefinition>

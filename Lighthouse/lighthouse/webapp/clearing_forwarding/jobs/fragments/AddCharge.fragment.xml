@@ -1,0 +1,112 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput">
+    <Dialog title="{i18n>jocDialogTitle}" contentWidth="70%" contentHeight="60%" verticalScrolling="false">
+        <uxap:ObjectPageLayout showTitleInHeaderContent="true" showHeaderContent="false" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+            <uxap:sections>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>jocGeneralSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>jocChargeCode}" />
+                                    <Input value="{ExportsMdl>/chargeCode}" showValueHelp="true" />
+                                    <Label text="{i18n>jocContainerSize}" />
+                                    <Input value="{ExportsMdl>/containerSize}" />
+                                    <Label text="{i18n>jocUnitPrice}" />
+                                    <Input value="{ExportsMdl>/unitPrice}" />
+                                    <Label text="{i18n>jocAmount}" />
+                                    <Input value="{ExportsMdl>/amount}" editable="true" />
+                                    <Label text="{i18n>jocChargerName}" />
+                                    <Input value="{ExportsMdl>/chargerName}" editable="false" />
+                                    <Label text="{i18n>jocContainerType}" />
+                                    <Input value="{ExportsMdl>/containerType}" />
+                                    <Label text="{i18n>jocNoOfUnits}" />
+                                    <Input value="{ExportsMdl>/noOfUnits}" />
+                                    <Label text="{i18n>jocCost}" />
+                                    <Input value="{ExportsMdl>/amount}" editable="true" />
+
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>jocVATSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>jocVATCode}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}" />
+                                    <Label text="{i18n>jocVATAmount}" />
+                                    <Input value="{ExportsMdl>/vatAmount}" />
+                                    <Label text="{i18n>jocVATRate}" />
+                                    <Input value="{ExportsMdl>/vatRate}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>jocOtherDetailsSection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>jocChargerType}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Local" key="1" />
+                                        <core:Item text="Carrier" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>jocPrepaid}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Yes" key="1" />
+                                        <core:Item text="No" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>jocInvoiceTo}" />
+                                    <Input value="{ExportsMdl>/amount}" showValueHelp="true" />
+                                    <Label text="{i18n>jocLinerFreightCharge}" />
+                                    <ComboBox selectedKey="{ExportsMdl>/vatCode}">
+                                        <core:Item text="Yes" key="1" />
+                                        <core:Item text="No" key="2" />
+                                    </ComboBox>
+                                    <Label text="{i18n>jocPartyAccNo}" />
+                                    <Input value="{ExportsMdl>/partyAccNo}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+                <uxap:ObjectPageSection titleUppercase="false" title="{i18n>jocUSDCurrencySection}">
+                    <uxap:subSections>
+                        <uxap:ObjectPageSubSection>
+                            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                                <form:content>
+                                    <Label text="{i18n>jocUSDConversionRate}" />
+                                    <Input value="{ExportsMdl>/chargeCode}" showValueHelp="true" />
+                                    <Label text="{i18n>jocAmountInUSD}" />
+                                    <Input value="{ExportsMdl>/amount}" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:ObjectPageSubSection>
+                    </uxap:subSections>
+                </uxap:ObjectPageSection>
+            </uxap:sections>
+        </uxap:ObjectPageLayout>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="{i18n>cnBtnAdd}" press="onSaveCharge" width="70px" />
+                <Button type="Ghost" text="{i18n>cnBtnCancel}" press="onCloseDialog" />
+            </OverflowToolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

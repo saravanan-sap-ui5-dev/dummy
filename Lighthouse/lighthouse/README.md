@@ -1,25 +1,25 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Wed Jul 17 2024 16:11:23 GMT+0000 (Coordinated Universal Time)|
+|**Generation Date and Time**<br>Thu Dec 21 2023 04:55:58 GMT+0000 (Coordinated Universal Time)|
 |**App Generator**<br>@sap/generator-fiori-freestyle|
-|**App Generator Version**<br>1.14.1|
+|**App Generator Version**<br>1.12.1|
 |**Generation Platform**<br>SAP Business Application Studio|
 |**Template Used**<br>simple|
 |**Service Type**<br>None|
 |**Service URL**<br>N/A
 |**Module Name**<br>lighthouse|
-|**Application Title**<br>Lighthouse|
+|**Application Title**<br>App Title|
 |**Namespace**<br>com|
 |**UI5 Theme**<br>sap_horizon|
-|**UI5 Version**<br>1.126.0|
+|**UI5 Version**<br>1.120.3|
 |**Enable Code Assist Libraries**<br>False|
 |**Enable TypeScript**<br>False|
 |**Add Eslint configuration**<br>False|
 
 ## lighthouse
 
-An SAP Fiori application.
+A Fiori application.
 
 ### Starting the generated app
 

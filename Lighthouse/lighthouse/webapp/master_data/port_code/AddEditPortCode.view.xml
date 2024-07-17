@@ -1,0 +1,78 @@
+<mvc:View controllerName="com.lighthouse.master_data.port_code.AddEditPortCode"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <uxap:ObjectPageLayout id="page_AddEditPortCode" showHeaderContent="{= !${visible>/create}}" showFooter="{= (!${visible>/view} || ${errors>/}.length!== 0)}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{= ${/item}? ${/general/title}:${i18n>pcCreatePageTitle}}" />
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{= ${/item}? ${/general/title}:${i18n>pcCreatePageTitle}}" />
+                </uxap:snappedHeading>
+                <uxap:expandedContent>
+                    <ObjectAttribute title="{i18n>pcId}" text="{/item}" visible="{= ${/item}?true:false}" />
+                </uxap:expandedContent>
+
+                <uxap:snappedContent>
+                    <ObjectAttribute title="{i18n>pcId}" text="{/item}" visible="{= ${/item}?true:false}" />
+                </uxap:snappedContent>
+                <uxap:actions>
+                     <Button id="btnEdit" visible="{= !${visible>/create}}" type="Emphasized" text="{i18n>cnBtnEdit}" press="onPressEdit" width="70px" /> 
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout allowWrapping="true">
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>pcCreatedBy}" text="{/general/createdBy}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>shCreatedOn}" text="{/general/createDateString}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                    <ObjectAttribute title="{i18n>pcUpdatedBy}" text="{/general/updatedBy}" class="sapUiSmallMarginBottom" />
+                    <ObjectAttribute title="{i18n>pcUpdatedOn}" text="{/general/updateDateString}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout>
+                    <ObjectAttribute title="{i18n>pcStatus}" text="{/general/statusText}" class="sapUiSmallMarginBottom" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>pcGeneralSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.master_data.port_code.PC_Form" type="XML" binding="{/general}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection titleUppercase="false" title="{i18n>pcShippingLineSection}">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <core:Fragment fragmentName="com.lighthouse.master_data.port_code.PC_ShippingLineTable" type="XML" binding="{/shippingLinePort}"/>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar>
+                <Button id="btnPortCodeErr" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="{i18n>cnBtnError}" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" />
+                <ToolbarSpacer />
+                <Button type="Emphasized" visible="{= !${visible>/view} }" text="{i18n>cnBtnSave}" width="70px" press="postPortCode" />
+                <Button type="Ghost" visible="{= !${visible>/view} }" text="{i18n>cnBtnCancel}" width="70px" press="onPressCancel" />
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>

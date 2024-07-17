@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coDischargeDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'dischargeDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                    <Label text="{i18n>coLoadDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'loadDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coFullOutDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'fullOutDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                    <Label text="{i18n>coEmptyInDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'emptyInDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coEmptyOutDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'emptyOutDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                    <Label text="{i18n>coFullInDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'fullInDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <form:SimpleForm class="formPadding" editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true">
+                <form:content>
+                    <Label text="{i18n>coLCLStatus}" />
+                    <ComboBox items="{masterDataMdl>/lcl_status}" selectedKey="{lclStatus}" editable="{visible>/edit}">
+                        <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                    </ComboBox>
+                    <Label text="{i18n>coDueDate}" />
+                    <DateTimePicker placeholder=" " value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'dueDate'}], formatter:'.getDateTimeFormats'}" change="handleChangeDateTimeRange" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,45 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox class="sapUiSmallMargin">
+            <form:SimpleForm editable="true" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2" singleContainerFullSize="true" class="sapUiNoContentPadding formPadding">
+                <form:content>
+                    <Label text="{i18n>coDetentionStartDate}" />
+                    <DatePicker placeholder=" " value="{detentionStartDate}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coWaiveOffAmount}" />
+                    <Input value="{waiveOffAmount}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDebitNoteNo}" />
+                    <Input value="{debitNoteNo}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDetentionInvoiceNo}" />
+                    <Input value="{detentionInvoiceNo}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDemurrageAmount}" />
+                    <Input value="{demurrageAmount}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coExtraFreeDays}" />
+                    <Input value="{extraFreeDays}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coWaiveOffDate}" />
+                    <DatePicker placeholder=" " value="{waiveOffDate}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDebitNoteDate}" />
+                    <DatePicker placeholder=" " value="{debitNoteDate}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coDetentionInvoiceDate}" />
+                    <DatePicker placeholder=" " value="{detentionInvoiceDate}" editable="{visible>/edit}" />
+                    <Label text="{i18n>coTHDPrepaid}" />
+                    <ComboBox selectedKey="{thdPrepaid}" editable="{visible>/edit}">
+                        <core:Item key="1" text="Yes" />
+                        <core:Item key="2" text="No" />
+                    </ComboBox>
+                </form:content>
+            </form:SimpleForm>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

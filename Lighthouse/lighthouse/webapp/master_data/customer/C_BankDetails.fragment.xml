@@ -1,0 +1,60 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%">
+
+    <Panel backgroundDesign="Transparent" class="sapUiNoContentPadding">
+        <VBox backgroundDesign="Transparent">
+            <form:SimpleForm editable="true" class="sapUiNoContentPadding sapUiSmallMarginBottom formPadding" layout="ColumnLayout" labelSpanXL="3" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="3" columnsM="2" singleContainerFullSize="false">
+                <form:content>
+                    <Label text="{i18n>cuBankName}" />
+                    <Input value="{bankName}" editable="{visible>/edit}" />
+                    <Label text="{i18n>cuAccountNo}" />
+                    <Input value="{bankAccNo}" editable="{visible>/edit}" />
+                </form:content>
+            </form:SimpleForm>
+            <HBox justifyContent="Start" class="sapUiSmallMarginBeginEnd sapUiSmallMarginBottom">
+                <Button visible="{visible>/edit}" text="{i18n>cnBtnAdd}" type="Emphasized" press="onPressAddRowBank" width="70px" class="sapUiTinyMarginEnd" />
+                <Button visible="{visible>/edit}" text="{i18n>cnBtnReset}" type="Ghost" press="" width="70px" />
+            </HBox>
+            <Table id="table_BankDetails" items="{bankDetails}" inset="false" growing="true" mode="Delete" alternateRowColors="true" delete="onPressDeleteItem">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Label design="Bold" text="{i18n>cnTableTitle}({= ${bankDetails}.length})" />
+                            <ToolbarSpacer />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="4rem" hAlign="Begin">
+                        <Text text="{i18n>cnclSlNo}" />
+                    </Column>
+                    <Column hAlign="Begin">
+                        <Text text="{i18n>cuBankName}" />
+                    </Column>
+                    <Column hAlign="Begin">
+                        <Text text="{i18n>cuAccountNumber}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle" press="onItemPress">
+                        <cells>
+                            <Text text="{slno}" />
+                            <Text text="{bankName}" />
+                            <Text text="{accNo}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Panel>
+</core:FragmentDefinition>

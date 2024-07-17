@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <VBox>
+        <form:SimpleForm id="imoForm" editable="true" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="true">
+            <form:content>
+                <Label text="{i18n>imoName}" required="true"/>
+                <Input value="{name}" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                <Label text="{i18n>imoIMCOClassNumber}" />
+                <Input value="{imcoClassNumber}" type="Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>imoUNNumber}" required="true" />
+                <Input value="{unNumber}" type="Number" editable="{visible>/edit}" field:type="Input" field:validate="required"/>
+                <Label text="{i18n>imoIMCOPageNumber}" />
+                <Input value="{imcoPageNumber}" type="Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>imoIMCOPoint}" />
+                <Input value="{imcoPoint}" editable="{visible>/edit}"/>
+                <Label text="{i18n>imoStatus}" />
+                <Select items="{masterDataMdl>/status}" editable="{visible>/edit}" selectedKey="{status}">
+                    <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                </Select>
+                <Label text="{i18n>imoCargoDescription}" />
+                <TextArea value="{cargoDescription}" editable="{visible>/edit}" rows="2"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

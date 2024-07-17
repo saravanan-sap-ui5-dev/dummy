@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput" height="100%"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm id = "voyageFormId" class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voVoyageType}" required="true" />
+                <ComboBox items="{masterDataMdl>/voyage_type}" selectedKey="{voyageType}" field:type="ComboBox" field:validate="required" editable="{visible>/edit}">
+                    <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                </ComboBox>
+                <Label text="{i18n>voStatus}" required="true" />
+                <Select items="{masterDataMdl>/status}" editable="{visible>/edit}" selectedKey="{status}">
+                    <core:Item key="{masterDataMdl>value}" text="{masterDataMdl>description}" />
+                </Select>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voCallPort}" />
+                <ComboBox selectedKey="{callPort}" editable="{visible>/edit}">
+                    <core:Item key="1" text="Buraimi" />
+                    <core:Item key="2" text="Suwaiq" />
+                    <core:Item key="3" text="Sur" />
+                    <core:Item key="4" text="Port Sultan Qaboos" />
+                    <core:Item key="5" text="Port Sohar" />
+                    <core:Item key="6" text="Port Salalah" />
+                    <core:Item key="7" text="Port Duqm" />
+                    <core:Item key="8" text="Muscat" />
+                </ComboBox>
+                <Label text="{i18n>voAccountNo}" />
+                <Input editable="{visible>/edit}" value="{accountNumber}"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voVesselId}" />
+                <Input value="{vesselID}" showValueHelp="true" liveChange="onClearVessel" valueHelpRequest="onPressVessel" editable="{visible>/edit}">
+                </Input>
+                <Label text="{i18n>voVesselName}" />
+                <Input value="{vesselName}"  editable="false"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voVoyageIn}" />
+                <Input value="{voyageIn}" type = "Number" editable="{visible>/edit}"/>
+                <Label text="{i18n>voVoyageOut}" />
+                <Input value="{voyageOut}" type = "Number" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2" singleContainerFullSize="false">
+            <form:content>
+                <Label text="{i18n>voVesselEta}" />
+                <DateTimePicker value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'vesselETA'}], formatter:'.getDateTimeFormats'}" placeholder=" " change="handleChangeDateTimeRange" editable="{visible>/edit}"/>
+                <Label text="{i18n>voVesselEts}" />
+                <DateTimePicker value="{parts:[{path:'/userSettings/dateFormatKey'},{path:'vesselETS'}], formatter:'.getDateTimeFormats'}" placeholder=" "  change="handleChangeDateTimeRange" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

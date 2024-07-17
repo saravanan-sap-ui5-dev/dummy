@@ -1,0 +1,70 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Table items="{items}" mode="{mode}" sticky="HeaderToolbar,ColumnHeaders" inset="false">
+        <headerToolbar>
+            <OverflowToolbar>
+                <content>
+                    <Label design="Bold" text="{i18n>cnTableTitle}({=${items}.length})" />
+                    <ToolbarSpacer />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnAdd}" width="70px" press="onAddParty" />
+                    <Button type="Transparent" enabled="{visible>/edit}" text="{i18n>cnBtnRemove}" />
+                </content>
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column width="7em">
+                <Text text="{i18n>imParty}" />
+            </Column>
+            <Column width="5em">
+                <Text text="{i18n>imId}" />
+            </Column>
+            <Column>
+                <Text text="{i18n>imName}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline" hAlign="Center">
+                <Text text="{i18n>imCountry}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" popinDisplay="Inline" demandPopin="true">
+                <Text text="{i18n>imCity}" />
+            </Column>
+            <Column width="7em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>imPhone}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>imEmail}" />
+            </Column>
+            <Column width="7em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>imFax}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>imAccountNumber}" />
+            </Column>
+            <Column width="10em" minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                <Text text="{i18n>imLocalAndForeign}" />
+            </Column>
+            <Column width="5em">
+                <Text text="{i18n>imStatus}" />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem vAlign="Middle" type="Navigation" press="onPressCustomer">
+                <cells>
+                    <ObjectIdentifier title="{party}" />
+                    <Text text="{id}" />
+                    <Text text="{name}" />
+                    <Text text="{city}" />
+                    <Text text="{country}" />
+                    <Text text="{phone}" />
+                    <Text text="{email}" />
+                    <Text text="{fax}" />
+                    <Text text="{accountNo}" />
+                    <Text text="{local}" />
+                    <Text text="{status}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+</core:FragmentDefinition>

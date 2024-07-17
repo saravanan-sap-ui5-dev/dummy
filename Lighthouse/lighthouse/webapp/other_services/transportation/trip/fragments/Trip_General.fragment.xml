@@ -1,0 +1,50 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Delivery Note No" />
+                <Input editable="{visible>/edit}" value="{deliveryNoteNo}" />
+                <Label text="CCRO No" />
+                <Input editable="{visible>/edit}" value="{ccroNo}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Site From" />
+                <Input editable="{visible>/edit}" value="{siteFrom}" />
+                <Label text="Site To" />
+                <Input editable="{visible>/edit}" value="{siteTo}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Transporter Code" />
+                <Input editable="{visible>/edit}" value="{transporterCode}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                <Label text="Transporter Name" />
+                <Input value="{transporterName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Transportation Date" />
+                <DatePicker editable="{visible>/edit}" value="{transportationDate}"/>
+                <Label text="Status" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{status}">
+                    <core:Item key="1" text="Draft" />
+                    <core:Item key="2" text="Active" />
+                    <core:Item key="3" text="Inactive" />
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Cargo Description" />
+                <TextArea value="{cargoDescription}" editable="{visible>/edit}"/>
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

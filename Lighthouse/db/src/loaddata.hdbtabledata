@@ -1,0 +1,29 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "enumerators",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "enumerators.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ";"
+                }
+            }
+        },
+        {
+            "target_table": "modules",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "modules.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ";"
+                }
+            }
+        }
+    ]
+}

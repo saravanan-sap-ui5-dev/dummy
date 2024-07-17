@@ -1,0 +1,44 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Service Type" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{serviceType}">
+                    <core:Item key="1" text="Vessel Cleaning" />
+                    <core:Item key="2" text="Vessel Maintenance" />
+                </ComboBox>
+                <Label text="Quotation Number" />
+                <Input editable="{visible>/edit}" value="{quotationNo}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Vendor Code" />
+                <Input editable="{visible>/edit}" value="{vendorCode}" showValueHelp="true" valueHelpRequest="onCustomerValueHelp"/>
+                <Label text="Vendor Name" />
+                <Input editable="false" value="{vendorName}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Start Date" />
+                <DatePicker editable="{visible>/edit}" value="{startDate}"/>
+                <Label text="Completed Date" />
+                <DatePicker value="{completedDate}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="Service Description" />
+                <TextArea value="{serviceDescription}" editable="{visible>/edit}"/>
+                <Label text="Remarks" />
+                <TextArea value="{remarks}" editable="{visible>/edit}"/>
+
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>

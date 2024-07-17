@@ -1,0 +1,73 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <VBox class="sapUiSmallMargin" backgroundDesign="Transparent">
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exCargoWeight}" />
+                <Input value="{cargoWeight}" editable="{visible>/edit}" />
+                <Label text="{i18n>exTareWeight}" />
+                <Input value="{tareWeight}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exCubicMeter}" />
+                <Input value="{cbm}" editable="{visible>/edit}" />
+                <Label text="{i18n>exCargoDescription}" />
+                <Input value="{cargoDescription}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exType}" />
+                <ComboBox selectedKey="{type}" editable="{visible>/edit}">
+                    <core:Item text="Box" key="1"/>
+                    <core:Item text="PKG" key="2"/>
+                </ComboBox>
+                <Label text="{i18n>exTotalPackages}" />
+                <Input value="{totalPackages}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exHSCode}" />
+                <Input value="{hsCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressHSCode"/>
+                <Label text="{i18n>exHSCodeDescription}" />
+                <Input value="{hsCodeDescription}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exCargoTypeCode}" />
+                <Input value="{cargoTypeCode}" editable="{visible>/edit}" showValueHelp="true" valueHelpRequest="onPressCargoType"/>
+                <Label text="{i18n>exCargoTypeName}" />
+                <Input value="{cargoTypeName}" editable="false" />
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exPersonalEffect}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{personalEffect}">
+                    <core:Item key="1" text="Yes" />
+                    <core:Item key="2" text="No" />
+                </ComboBox>
+                <Label text="{i18n>exPartIndicator}" />
+                <ComboBox editable="{visible>/edit}" selectedKey="{partIndicator}">
+                    <core:Item key="1" text="Yes" />
+                    <core:Item key="2" text="No" />
+                </ComboBox>
+            </form:content>
+        </form:SimpleForm>
+        <form:SimpleForm class="sapUiNoContentPadding formPadding" editable="true" layout="ColumnLayout" columnsXL="2" columnsL="2" columnsM="2">
+            <form:content>
+                <Label text="{i18n>exAvgWt20Cntr}" />
+                <Input value="{avgWt20Cntr}" editable="{visible>/edit}" />
+                <Label text="{i18n>exAvgWt40Cntr}" />
+                <Input value="{avgWt40Cntr}" editable="{visible>/edit}" />
+            </form:content>
+        </form:SimpleForm>
+    </VBox>
+</core:FragmentDefinition>
