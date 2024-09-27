@@ -1,0 +1,180 @@
+<mvc:View controllerName="com.timetracker.monthlyreport.MonthlyReport"
+   xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  
+  
+    
+        <f:DynamicPage id="page_MonthlyData" headerExpanded="true" headerPinned="true" showFooter="true" >
+            <f:title>
+				<f:DynamicPageTitle>
+					<f:heading>
+						<Title text="Montly Report"/>
+					</f:heading>
+                    
+                </f:DynamicPageTitle>
+                </f:title>
+            <f:header>
+                <f:DynamicPageHeader pinnable="false">
+                   
+                                        
+                </f:DynamicPageHeader>
+            </f:header>
+    
+            <f:content>
+            <IconTabBar id="iconTabBar" select="onTabSelect" backgroundDesign="Transparent" headerBackgroundDesign="Transparent">
+                <items>
+                    <IconTabFilter text="Support" key="support">
+              <fb:FilterBar id="filterbar"   showFilterConfiguration="true" filterBarExpanded="true" filterChange="handleFilterChange" showRestoreOnFB="false" reset="onResetAdaptFilter" clear="clearSearchFilter" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+                        <fb:filterItems>
+
+                           
+                            <fb:FilterItem name="A" label="Month">
+                                <fb:control>
+                                   <DynamicDateRange id="drs_createdOn" standardOptions="SPECIFICMONTH,SPECIFICMONTHINYEAR"  placeholder="Month" required="true" change="handleChangeDateRange"  field:date="createdOnStart,createdOnEnd"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                <Table id= "timesheetTable" items="{combinedTimeSheetMdl>/}" mode="None" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Label  text="Items({= ${combinedTimeSheetMdl>/}.length})"  />
+                                    <ToolbarSpacer />
+
+                              <Button type="Transparent" press="handleExport" icon="sap-icon://excel-attachment" tooltip="Export To Excel" enabled="true" />
+                                
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+    
+                    <columns>
+                        <Column>
+                            <Text text="Customer"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Total Hours Worked"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week1"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week2"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week3"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week4"  />
+                        </Column>
+                         <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week5"  />
+                        </Column>
+    
+                    </columns>
+                    <items>
+                        <ColumnListItem  press=".onListItemPress">
+                            <cells>
+                                <ObjectIdentifier title="{combinedTimeSheetMdl>soldToName}" />
+                                <Text text="{combinedTimeSheetMdl>totalDuration}" wrapping="false"/>
+                                
+                                 <Text text="{combinedTimeSheetMdl>week1}" wrapping="false"/>
+                                  <Text text="{combinedTimeSheetMdl>week2}" wrapping="false"/>
+                                   <Text text="{combinedTimeSheetMdl>week3}" wrapping="false"/>
+                                    <Text text="{combinedTimeSheetMdl>week4}" wrapping="false"/>
+                                     <Text text="{combinedTimeSheetMdl>week5}" wrapping="false"/>
+                                
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                </IconTabFilter>
+                <IconTabFilter text="ALM Implementation" key="alm">
+                 <fb:FilterBar id="filterbar1"   showFilterConfiguration="true" filterBarExpanded="true" filterChange="handleFilterChange" showRestoreOnFB="false" reset="onResetAdaptFilter" clear="clearSearchFilteralm" search="onSearchalm" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+                        <fb:filterItems>
+
+                           
+                            <fb:FilterItem name="A" label="Month">
+                                <fb:control>
+                                   <DynamicDateRange id="drs_createdOnalm" standardOptions="SPECIFICMONTH,SPECIFICMONTHINYEAR"  placeholder="Month" required="true" change="handleChangeDateRange"  field:date="createdOnStart,createdOnEnd"/>
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                <Table id= "almtimesheetTable" items="{almMdl>/}" mode="None" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Label  text="Items({= ${almMdl>/}.length})"  />
+                                    <ToolbarSpacer />
+
+                              <Button type="Transparent" press="almhandleExport" icon="sap-icon://excel-attachment" tooltip="Export To Excel" enabled="true" />
+                                
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+    
+                    <columns>
+                        <Column>
+                            <Text text="Projects"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Total Hours Worked"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week1"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week2"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week3"  />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week4"  />
+                        </Column>
+                         <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Week5"  />
+                        </Column>
+    
+                    </columns>
+                    <items>
+                        <ColumnListItem  press=".onListItemPress">
+                            <cells>
+                                <ObjectIdentifier title="{almMdl>projectName}" />
+                                <Text text="{almMdl>totalDuration}" wrapping="false"/>
+                                
+                                 <Text text="{almMdl>week1}" wrapping="false"/>
+                                  <Text text="{almMdl>week2}" wrapping="false"/>
+                                   <Text text="{almMdl>week3}" wrapping="false"/>
+                                    <Text text="{almMdl>week4}" wrapping="false"/>
+                                     <Text text="{almMdl>week5}" wrapping="false"/>
+                                
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                </IconTabFilter>
+</items>
+ </IconTabBar>
+            </f:content>
+      
+        </f:DynamicPage>
+
+      
+     
+</mvc:View>
+
+
+

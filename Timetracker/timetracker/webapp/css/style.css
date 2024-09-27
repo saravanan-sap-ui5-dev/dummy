@@ -1,0 +1,40 @@
+/* Enter your custom styles here */
+.formWithGap {
+    margin-left: 10px;
+    margin-right: -8px;
+    margin-top: 6px;
+    margin-bottom: 10px; /* Adjust the value as per your requirement */
+}
+.line {
+    border-top: 1px solid #000; /* Adjust the color and style as needed */
+    margin-top: 4px; /* Adjust the margin as needed */
+    padding-top: 1px; /* Adjust the padding as needed */
+    width: 100%;
+}
+.customNumericContent .sapMNCDIcon {
+    height: 40px; /* Adjust the height as needed */
+    width: 40px; /* Adjust the width as needed, or set it to 'auto' for proportional scaling */
+}
+.redText {
+    color: red;
+}
+
+.yellowText {
+    color: yellow;
+}
+
+.lastRow {
+    font-weight: bold;
+}
+.sapMIconTabBar {
+    pointer-events: auto; /* Ensure tab clicks are detected */
+}
+
+
+
+
+
+
+
+
+

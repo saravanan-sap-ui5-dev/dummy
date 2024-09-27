@@ -1,0 +1,287 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "com.timetracker",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.13.5",
+      "toolsId": "952a3007-63f2-4ea1-be35-c576abd6ee8d"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.124.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.suite.ui.generic.template": {},
+        "sap.ui.comp": {},
+        "sap.ui.generic.app": {},
+        "sap.ui.table": {},
+        "sap.ushell": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.timetracker.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "com.timetracker",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "dashboard",
+          "pattern": "",
+          "target": [
+            "TargetView"
+          ]
+        },
+        {
+          "name": "create-entry",
+          "pattern":"create-entry",
+          "target":[
+            "createEntry"
+          ]
+        },
+        {
+          "name": "manage-entry",
+          "pattern":"manage-entry",
+          "target":[
+            "manageEntry"
+          ]
+        },
+        {
+          "name": "time-sheet",
+          "pattern":"time-sheet",
+          "target":[
+            "timeSheet"
+          ]
+        },
+        {
+          "name": "time-sheet-details",
+          "pattern": "time-sheet-details/{id}",
+          "target":[
+            "timeSheetDetails"
+          ]
+        },
+        {
+          "name": "miscellaneous-details",
+          "pattern": "miscellaneous-details/{id}",
+          "target":[
+            "miscellaneousDetails"
+          ]
+        },
+        {
+          "name": "alm-details",
+          "pattern": "alm-details/{id}",
+          "target":[
+            "almDetails"
+          ]
+        },
+        {
+          "name": "monthly-report",
+          "pattern":"monthly-report",
+          "target":[
+            "monthlyReport"
+          ]
+        },
+        {
+          "name": "my-task",
+          "pattern":"my-task",
+          "target":[
+            "myTask"
+          ]
+        },
+        {
+          "name": "clock-time",
+          "pattern":"clock-time",
+          "target":[
+            "clockTime"
+          ]
+        },
+        {
+          "name": "modifyScreen",
+          "pattern":"modifyScreen",
+          "target":[
+            "modifyScreen"
+          ]
+        },
+        {
+          "name": "weekly-report",
+          "pattern":"weekly-report",
+          "target":[
+            "weeklyReport"
+          ]
+        }
+
+
+      ],
+      "targets": {
+        "AppUnified": {
+          "viewName": "view.AppUnified"
+      },
+        "TargetView": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewName": "view.Dashboard"
+         
+        },
+        "createEntry":{
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "viewId": "CreateEntry",
+                    "viewName": "dashboard.CreateEntry",
+                    "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified" 
+
+        },
+        "manageEntry":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "ManageEntry",
+          "viewName": "manage.Manage",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "timeSheet":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "timesheetModify",
+          "viewName": "timesheetModify.TimeSheetModify",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "timeSheetDetails":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "timeSheetDetails",
+          "viewName": "timesheetModify.TimeSheetDetails",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "miscellaneousDetails":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "miscellaneousDetails",
+          "viewName": "timesheetModify.MiscellaneousDetails",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "almDetails":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "almDetails",
+          "viewName": "timesheetModify.AlmDetails",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "monthlyReport":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "monthlyReport",
+          "viewName": "monthlyreport.MonthlyReport",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "myTask":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "myTask",
+          "viewName": "mytask.MyTask",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "clockTime":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "clockTime",
+          "viewName": "clocktime.ClockTime",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "modifyScreen":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "modifyScreen",
+          "viewName": "timesheetModify.Modify",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        },
+        "weeklyReport":{
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "weeklyReport",
+          "viewName": "weeklyreport.weekly",
+          "controlAggregation": "pages",
+          "controlId": "pageContainer",
+          "parent": "AppUnified"           
+        }
+
+      }
+    },
+    "rootView": {
+      "viewName": "com.timetracker.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

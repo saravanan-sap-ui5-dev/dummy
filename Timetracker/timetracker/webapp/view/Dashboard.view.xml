@@ -1,0 +1,86 @@
+<mvc:View controllerName="com.timetracker.controller.Dashboard"
+xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:l="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:w="sap.ui.integration.widgets"
+    xmlns:cssgrid="sap.ui.layout.cssgrid"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:u="sap.uxap"
+    xmlns:tnt="sap.tnt"
+    xmlns:grid="sap.ui.layout.cssgrid"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+ 
+    <Page showHeader="true" enableScrolling="false" titleAlignment="Center" showFooter="false">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+                    <Image src="./images/image.png" height="35px" />
+                    <Title titleStyle="H5" text="Timetrack" textAlign="Center"
+                    visible="{device>/system/desktop}" />
+                <ToolbarSpacer />
+                </contentLeft>
+                <contentRight>
+                    <Button icon="sap-icon://hint" type="Transparent" />
+                    <Button icon="sap-icon://bell" type="Transparent" />
+                    <Avatar initials="S" displaySize="XS" press=".menuPopoverOpen" />
+                </contentRight>
+            </Bar>
+        </customHeader>
+        <content>
+          <VBox>
+                <IconTabHeader mode="Inline" selectedKey="{iconTabNavigation>/selectedKey}" items="{path: 'iconTabNavigation>/navigation'}" select="onTabSelect">
+                    <items>
+                        <IconTabFilter key="{iconTabNavigation>key}" text="{iconTabNavigation>title}" />
+                    </items>
+                </IconTabHeader>
+            </VBox>
+            <NavContainer id="pageContainer" initialPage="my_home">
+                <pages>
+                    <Page id="timesheet" showHeader="false" class="sapUiResponsiveContentPadding">
+                        <f:GridContainer items="{dashboardData>/timesheet}" class="sapUiSmallMargin" columnsChange=".onGridColumnsChange">
+                            <f:layout>
+                                <f:GridContainerSettings rowSize="84px" columnSize="84px" gap="12px" />
+                            </f:layout>
+                            <f:layoutXS>
+                                <f:GridContainerSettings rowSize="70px" columnSize="70px" gap="12px" />
+                            </f:layoutXS>
+                            <GenericTile press="onPressTile" header="{dashboardData>title}" subheader="{dashboardData>sub_title}" sizeBehavior="Responsive">
+                                <layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                </layoutData>
+                                <TileContent footer="{dashboardData>footer}">
+                                    <NumericContent withMargin="false" value="{dashboardData>number}" icon="{dashboardData>icon}"/>
+                                </TileContent>
+                            </GenericTile>
+                        </f:GridContainer>
+                    </Page>
+                    <Page id="report" showHeader="false" class="sapUiResponsiveContentPadding">
+                        <f:GridContainer items="{dashboardData>/report}" class="sapUiSmallMargin" columnsChange=".onGridColumnsChange">
+                            <f:layout>
+                                <f:GridContainerSettings rowSize="84px" columnSize="84px" gap="12px" />
+                            </f:layout>
+                            <f:layoutXS>
+                                <f:GridContainerSettings rowSize="70px" columnSize="70px" gap="12px" />
+                            </f:layoutXS>
+                            <GenericTile press="onPressTile" header="{dashboardData>title}" subheader="{dashboardData>sub_title}" sizeBehavior="Responsive">
+                                <layoutData>
+                                    <f:GridContainerItemLayoutData minRows="2" columns="2" />
+                                </layoutData>
+                                <TileContent footer="{dashboardData>footer}">
+                                    <NumericContent withMargin="false" value="{dashboardData>number}" icon="{dashboardData>icon}"/>
+                                </TileContent>
+                            </GenericTile>
+                        </f:GridContainer>
+                    </Page>
+                </pages>
+            </NavContainer>
+        </content>
+    </Page>
+ 
+</mvc:View>

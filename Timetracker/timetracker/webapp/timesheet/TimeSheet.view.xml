@@ -1,0 +1,138 @@
+<mvc:View controllerName="com.timetracker.timesheet.TimeSheet"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:table="sap.ui.table"
+    xmlns:card="sap.f.cards"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:v="sap.ui.comp.variants"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:tnt="sap.tnt"
+    xmlns:uxap="sap.uxap"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    height="100%">
+    
+    <VBox class=".formWithGap">
+      
+        <f:DynamicPage id="page_MngCommunicationArrangement" fitContent="true" showFooter="true">
+            
+            <!-- DynamicPage Title -->
+            <f:title>
+                <f:DynamicPageTitle>
+                    <f:heading>
+                        <Title text="Timesheet" />
+                    </f:heading>
+                    <f:actions>
+                    </f:actions>
+                </f:DynamicPageTitle>
+            </f:title>
+            <!-- DynamicPage Header -->
+            <f:header>
+                <f:DynamicPageHeader pinnable="false">
+                    <fb:FilterBar id="filterbar" useToolbar="false" search="advancedFilter"
+                        filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+                        <fb:filterItems>
+
+                            <fb:FilterItem name="A" label="Customer">
+                                <fb:control>
+                                    <ComboBox id="emp_SystemFilter"
+                                        placeholder="customer" items="{appointmentsModel>/}"
+                                        selectedKey="{path:'appointmentsModel>customer'}"
+                                        showSecondaryValues="true" change="changeCompany">
+                                        <core:ListItem key="{appointmentsModel>/}"
+                                            text="{appointmentsModel>customer}"
+                                            additionalText="{companyModel>companyCode}" />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="B" label="Task">
+                                <fb:control>
+                                    <ComboBox id="select_StatusFilter"
+                                    items="{appointmentsModel>/}"
+                                        placeholder="task"
+                                        selectedKey="{appointmentsModel>/task}">
+                                        <core:ListItem key="{appointmentsModel>/}"
+                                            text="{appointmentsModel>task}"
+                                            />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterItem>
+                            <fb:FilterItem name="C" label="Date">
+                                <fb:control>
+                                    <DatePicker
+                                        value="{path: '/date', type: 'sap.ui.model.type.Date'}" />
+                                </fb:control>
+                            </fb:FilterItem>
+                        </fb:filterItems>
+                    </fb:FilterBar>
+                </f:DynamicPageHeader>
+            </f:header>
+            <f:content>
+                <!-- <Table id="tableId_commArrangement" items="{appointmentsModel>/}" mode="MultiSelect"
+                    sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Label design="Bold" text="Items({= ${appointmentsModel>/}.length})" />
+                                <ToolbarSpacer />
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="10rem" hAlign="Center">
+                            <Text text="Date" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Start" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="End time" />
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true" popinDisplay="Inline">
+                            <Text text="Customer" />
+                        </Column>
+                        <Column>
+                            <Text text="Task" />
+                        </Column>
+                        <Column>
+                            <Text text="Duration" />
+                        </Column>
+                        <Column>
+                            <Text text="Edit" />
+                        </Column>
+                        <Column>
+                            <Text text="Delete" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                              
+                                <Text text="{appointmentsModel>date}" width="10rem" wrapping="false" />
+                                <Text text="{appointmentsModel>startTime}" wrapping="false" />
+                                <Text text="{appointmentsModel>endTime}" wrapping="false" />
+                                <Text text="{appointmentsModel>customer}" wrapping="false" />
+                                <Text text="{appointmentsModel>task}" wrapping="false" />
+                                <Text text="{appointmentsModel>duration}" wrapping="false" />
+                                    <Button icon="sap-icon://edit" type="Transparent" press="onEditButtonPress"/>
+                                <Button icon="sap-icon://delete" type="Reject" press="onDeleteButtonPress"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table> -->
+            </f:content>
+            <f:footer>
+				<OverflowToolbar>
+                    <ToolbarSpacer></ToolbarSpacer>
+					<Button type="Default" text="Export"/>
+					<Button type="Default" text="Cancel"/>
+				</OverflowToolbar>
+			</f:footer>
+        </f:DynamicPage>
+    </VBox>
+
+</mvc:View>

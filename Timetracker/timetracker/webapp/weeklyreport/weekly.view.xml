@@ -1,0 +1,225 @@
+<mvc:View
+    controllerName="com.timetracker.weeklyreport.weekly"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <f:DynamicPage id="page_MngSyncErpData" headerExpanded="true" headerPinned="true" showFooter="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="Weekly Report"/>
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="false">
+                
+            </f:DynamicPageHeader>
+        </f:header>
+
+        <f:content>
+        <IconTabBar id="iconTabBar" select="onTabSelect" backgroundDesign="Transparent" headerBackgroundDesign="Transparent">
+                <items>
+                    <IconTabFilter text="Support" key="support">
+        <fb:FilterBar id="filterbar" showFilterConfiguration="true" filterBarExpanded="true"
+                              filterChange="handleFilterChange" showRestoreOnFB="false" reset="onResetAdaptFilter"
+                              clear="clearSearchFilter" search="onSearch" useToolbar="false" showGoOnFB="true"
+                              showClearOnFB="true">
+                    <fb:filterItems>
+                        <fb:FilterItem name="A" label="Week">
+                            <fb:control>
+                                <DateRangeSelection id="drs_createdOn" placeholder="Week" required="true"
+                                                    change="handleChangeDateRange"
+                                                    value="{
+                                        'type': 'sap.ui.model.type.DateInterval',
+                                        'formatOptions': {
+                                            'pattern': 'dd-MMM-yyyy'
+                                        },
+                                        'parts': [
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_start'
+                                            },
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_end'
+                                            }
+                                        ]
+                                    }" field:date="createdOnStart,createdOnEnd"/>
+                            </fb:control>
+                        </fb:FilterItem>
+                    </fb:filterItems>
+                </fb:FilterBar>
+            <!-- <VBox> -->
+                <!-- Table with Customer-wise Data -->
+   <Table id="timesheetTable" items="{timeSheetMdl>/}" mode="None" sticky="ColumnHeaders,HeaderToolbar"
+       inset="false" class="sapUiSmallMarginTop">
+    <headerToolbar>
+        <OverflowToolbar>
+            <content>
+                <Label text="Items({= ${timeSheetMdl>/}.length})"/>
+                <ToolbarSpacer/>
+                <Button type="Transparent" press="handleExport" icon="sap-icon://excel-attachment"
+                        tooltip="Export To Excel" enabled="true"/>
+            </content>
+        </OverflowToolbar>
+    </headerToolbar>
+    <columns>
+        <Column>
+            <Text text="Customer"/>
+        </Column>
+        <Column>
+            <Text text="Total Duration"/>
+        </Column>
+        <Column>
+            <Text text="Monday"/>
+        </Column>
+        <Column>
+            <Text text="Tuesday"/>
+        </Column>
+        <Column>
+            <Text text="Wednesday"/>
+        </Column>
+        <Column>
+            <Text text="Thursday"/>
+        </Column>
+        <Column>
+            <Text text="Friday"/>
+        </Column>
+        <Column>
+            <Text text="Saturday"/>
+        </Column>
+        <Column>
+            <Text text="Sunday"/>
+        </Column>
+    </columns>
+    <items>
+        <ColumnListItem>
+            <cells>
+                <ObjectIdentifier title="{timeSheetMdl>soldToName}"/>
+                <ObjectIdentifier title="{timeSheetMdl>totalDuration}" />
+                <ObjectStatus text="{timeSheetMdl>day1}" state="{timeSheetMdl>colorDay1}"/>
+                <ObjectStatus text="{timeSheetMdl>day2}"  state="{timeSheetMdl>colorDay2}"/>
+                <ObjectStatus text="{timeSheetMdl>day3}" state="{timeSheetMdl>colorDay3}"/>
+                <ObjectStatus text="{timeSheetMdl>day4}"  state="{timeSheetMdl>colorDay4}"/>
+                <ObjectStatus text="{timeSheetMdl>day5}" state="{timeSheetMdl>colorDay5}"/>
+                <ObjectStatus text="{timeSheetMdl>day6}"  state="{timeSheetMdl>colorDay6}"/>
+                <ObjectStatus text="{timeSheetMdl>day7}"  state="{timeSheetMdl>colorDay7}"/>
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
+</IconTabFilter>
+
+                    <IconTabFilter text="ALM Implementation" key="alm">
+        <fb:FilterBar id="filterbar1" showFilterConfiguration="true" filterBarExpanded="true"
+                              filterChange="handleFilterChange" showRestoreOnFB="false" reset="onResetAdaptFilter"
+                              clear="clearSearchFilteralm" search="onSearchalm" useToolbar="false" showGoOnFB="true"
+                              showClearOnFB="true">
+                    <fb:filterItems>
+                        <fb:FilterItem name="B" label="Week">
+                            <fb:control>
+                                <DateRangeSelection id="drs_createdOnalm" placeholder="Week" required="true"
+                                                    change="handleChangeDateRange"
+                                                    value="{
+                                        'type': 'sap.ui.model.type.DateInterval',
+                                        'formatOptions': {
+                                            'pattern': 'dd-MMM-yyyy'
+                                        },
+                                        'parts': [
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_start'
+                                            },
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_end'
+                                            }
+                                        ]
+                                    }" field:date="createdOnStart,createdOnEnd"/>
+                            </fb:control>
+                        </fb:FilterItem>
+                    </fb:filterItems>
+                </fb:FilterBar>
+            <!-- <VBox> -->
+                <!-- Table with Customer-wise Data -->
+   <Table id="almtimesheetTable" items="{almMdl>/}" mode="None" sticky="ColumnHeaders,HeaderToolbar"
+       inset="false" class="sapUiSmallMarginTop">
+    <headerToolbar>
+        <OverflowToolbar>
+            <content>
+                <Label text="Items({= ${almMdl>/}.length})"/>
+                <ToolbarSpacer/>
+                <Button type="Transparent" press="almhandleExport" icon="sap-icon://excel-attachment"
+                        tooltip="Export To Excel" enabled="true"/>
+            </content>
+        </OverflowToolbar>
+    </headerToolbar>
+    <columns>
+        <Column>
+            <Text text="Project"/>
+        </Column>
+        <Column>
+            <Text text="Total Duration"/>
+        </Column>
+        <Column>
+            <Text text="Monday"/>
+        </Column>
+        <Column>
+            <Text text="Tuesday"/>
+        </Column>
+        <Column>
+            <Text text="Wednesday"/>
+        </Column>
+        <Column>
+            <Text text="Thursday"/>
+        </Column>
+        <Column>
+            <Text text="Friday"/>
+        </Column>
+        <Column>
+            <Text text="Saturday"/>
+        </Column>
+        <Column>
+            <Text text="Sunday"/>
+        </Column>
+    </columns>
+    <items>
+        <ColumnListItem>
+            <cells>
+                <ObjectIdentifier title="{almMdl>projectName}"/>
+                <ObjectIdentifier title="{almMdl>totalDuration}" />
+                <ObjectStatus text="{almMdl>day1}" state="{almMdl>colorDay1}"/>
+                <ObjectStatus text="{almMdl>day2}"  state="{almMdl>colorDay2}"/>
+                <ObjectStatus text="{almMdl>day3}" state="{almMdl>colorDay3}"/>
+                <ObjectStatus text="{almMdl>day4}"  state="{almMdl>colorDay4}"/>
+                <ObjectStatus text="{almMdl>day5}" state="{almMdl>colorDay5}"/>
+                <ObjectStatus text="{almMdl>day6}"  state="{almMdl>colorDay6}"/>
+                <ObjectStatus text="{almMdl>day7}"  state="{almMdl>colorDay7}"/>
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
+</IconTabFilter>
+</items>
+ </IconTabBar>
+
+
+
+
+
+               
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

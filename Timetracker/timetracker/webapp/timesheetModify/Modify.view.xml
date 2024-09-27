@@ -1,0 +1,81 @@
+<mvc:View controllerName="com.timetracker.timesheetModify.Modify"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:layout="sap.ui.layout"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout"
+	xmlns:uxap="sap.uxap"
+	xmlns:tnt="sap.tnt"
+	xmlns:table="sap.ui.table"
+	xmlns:smartForm="sap.ui.comp.smartform"
+	xmlns:smartField="sap.ui.comp.smartfield"
+	xmlns:card="sap.f.cards"
+	xmlns:fb="sap.ui.comp.filterbar" height="100%">
+
+	<f:DynamicPage showFooter="true">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Modify"/>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:content>
+
+<Panel height="450px">
+
+			<form:SimpleForm id="mySimpleForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" width="100%">
+
+				<Label text="Start Time" design="Bold" width="100%" textAlign="Left"/>
+				<DatePicker value="{path: '/date', type: 'sap.ui.model.type.Date'}" width="100%"/>
+				<TimePicker value="{path: '/time', type: 'sap.ui.model.type.Time'} " width="100%"/>
+
+				<Label text="End Time" design="Bold"/>
+				<DatePicker value="{path: '/endDate', type: 'sap.ui.model.type.Date'}"/>
+				<TimePicker value="{path: '/endTime', type: 'sap.ui.model.type.Time'}"/>
+
+				<Label text="Duration" design="Bold"/>
+				<TimePicker id="timePicker" valueFormat="HH:mm" displayFormat="HH:mm" width="50%" name="Hrs" editable="false"/>
+
+				<Label text="Customer" design="Bold"/>
+				<ComboBox items="{path: '/', sorter: { path: 'text' }}" editable="false" >
+					<core:Item key="{key}" text="{customer}" />
+				</ComboBox>
+
+				<Label text="Task" design="Bold"/>
+				<ComboBox items="{path: '/', sorter: { path: 'text' }}" editable="false">
+					<core:Item key="{key}" text="{text}" />
+				</ComboBox>
+
+				<Label text="Activity" design="Bold"/>
+				<ComboBox items="{path: '/', sorter: { path: 'text' }}">
+					<core:Item key="{key}" text="{text}" />
+				</ComboBox>
+
+				<Label text="Remarks" labelFor="nameInput" design="Bold"/>
+				<Input id="nameInput" class="sapUiSmallMarginBottom" placeholder="Enter name" valueStateText="Name must not be empty. Maximum 10 characters." value="{
+						path : '/',
+						type : 'sap.ui.model.type.String',
+						constraints : {
+							minLength: 1,
+							maxLength: 10
+						}
+					}" change= ".onNameChange" />
+
+			</form:SimpleForm>
+</Panel>
+		</f:content>
+
+		<f:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer></ToolbarSpacer>
+				<Button type="Transparent" width="100px" text="Save" press= "onpresssave"></Button>
+				<Button type="Transparent" width="100px" text="Cancel" press="onpresscancel"></Button>
+			</OverflowToolbar>
+		</f:footer>
+	</f:DynamicPage>
+
+</mvc:View>

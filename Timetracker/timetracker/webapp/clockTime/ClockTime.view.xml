@@ -1,0 +1,342 @@
+<mvc:View controllerName="com.timetracker.clocktime.ClockTime"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <uxap:ObjectPageLayout id="page_PropertyDetails" showHeaderContent="{= !${visible>/create}}" useIconTabBar="true" showTitleInHeaderContent="true" showEditHeaderButton="true" editHeaderButtonPress="handleEditBtnPress" upperCaseAnchorBar="false" showFooter="{= !${visible>/view}}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+
+                <uxap:expandedHeading >
+                    <Title text="Clock Time"/>
+                </uxap:expandedHeading>
+                 </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+
+                     <uxap:sections>
+            <uxap:ObjectPageSection title="Support"  id="supportTabId" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection  title="Support" titleUppercase="false">
+                    <VBox>
+                    <VBox>
+                        <fb:FilterBar id="filterbar" showFilterConfiguration="true"  filterBarExpanded="true" filterChange="handleFilterChange" showRestoreOnFB="false" reset="onResetAdaptFilter" clear="clearSearchFilter" search="onSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+                            <fb:filterItems>
+                                <fb:FilterGroupItem name="L" label="Time Frame" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox id="timeFrame" placeholder="Time Frame" selectedKey="{advancedFilterMdl>/TimeFrameId}" required="true" change=".onTimeFrameChange">
+                                            <core:ListItem key="D 0" text="Today"/>
+                                            <core:ListItem key="DP-1" text="Yesterday"/>
+                                            <core:ListItem key="WP0" text="This Week"/>
+                                            <core:ListItem key="WP-1" text="Last Week"/>
+                                            <core:ListItem key="M A" text="This Month"/> 
+                                            <core:ListItem key="MP-1" text="Last Month"/>
+                                            <!-- <core:ListItem key="MP-2" text="Last Two Month"/> -->
+                                            <core:ListItem key="Y A" text="This Year"/>
+                                            <core:ListItem key="YP-1" text="Last Year"/>
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem name="G" label="Posting Date" groupName="optional" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="drs_createdOn" placeholder="Date " change="handleChangeDateRange" value= "{
+                                        'type': 'sap.ui.model.type.DateInterval',
+                                        'formatOptions': {
+                                            'pattern': 'dd-MMM-yyyy'
+                                        },
+                                        'parts': [
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_start'
+                                            },
+                                            {
+                                                'type': 'sap.ui.model.type.Date',
+                                                'path': '/c_end'
+                                            }
+                                        ]
+                                    }" field:date="createdOnStart,createdOnEnd" required="true"/>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem name="GR" label="Category" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox id="select_Category" placeholder="Category" selectedKey="{advancedFilterMdl>/CategoryTxt}" required="true">
+                                            <core:ListItem key="*B1*" text="Bussiness One"/>
+                                            <core:ListItem key="*BYD*" text="Bussiness By Design"/>
+                                            <core:ListItem key="*Success*" text="Success Factors"/>
+                                            <core:ListItem key="*S4*" text="S4 Hana"/>
+                                            <!-- <core:ListItem key="NEW" text="New"/> -->
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem name="F" label="Customer" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <MultiComboBox id="Customer" items="{customerMdl>/}" selectedKeys="{advancedFilterMdl>/SoldToParty}" placeholder="Customer">
+                                            <core:Item key="{customerMdl>id}" text="{customerMdl>name}"/>
+                                        </MultiComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem name="A" label="Incident ID" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input id="bp_Id" value="{advancedFilterMdl>/ObjectId}" placeholder="Incident ID" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem name="B" label="Priority" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <MultiComboBox id="select_StatusFilter" placeholder="Priority" selectedKeys="{advancedFilterMdl>/Priority}">
+                                            <core:ListItem key="1" text="Very High"/>
+                                            <core:ListItem key="2" text="High"/>
+                                            <core:ListItem key="3" text="Medium"/>
+                                            <core:ListItem key="4" text="Low"/>
+                                        </MultiComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem name="D" label="Status" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <MultiComboBox id="select_Status" placeholder="Status" selectedKeys="{advancedFilterMdl>/DescriptiveStatusCode}">
+                                            <core:ListItem key="IN_PROC" text="In Process"/>
+                                            <core:ListItem key="DISPATCHED" text="Dispatched"/>
+                                            <core:ListItem key="SENT_PROV" text="Sent to Ext. provider"/>
+                                            <core:ListItem key="SENT_SUPP" text="Sent To Support"/>
+                                            <core:ListItem key="NEW" text="New"/>
+                                        </MultiComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterItems>
+                        </fb:FilterBar>
+                        </VBox>
+                        <VBox>
+                        <Table id="supportTable" visible="true" alternateRowColors="true" items="{clockTimeMdl>/clockTimeData}" mode="" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <content>
+                                        <Label text="Items({= ${clockTimeMdl>/clockTimeData}.length})"/>
+                                        <ToolbarSpacer />
+
+                                        <Button type="Transparent" press="handlePersoButtonPressed" icon="sap-icon://action-settings" tooltip="Personalization" enabled="true" />
+
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column hAlign="Center" width="13em">
+                                    <Text text="Customer"/>
+                                </Column>
+                                <Column hAlign="Begin">
+                                    <Text text=" Incident ID"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" width="20em" hAlign="Center" demandPopin="true">
+                                    <Text text="Task"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Created Date"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Priority"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Status"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" width="10em" demandPopin="true">
+                                    <Text text="Assigned To"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Description"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Activity"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Duration"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" type="Emphasized" demandPopin="true">
+                                    <Text text="Start Stop"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{clockTimeMdl>SoldToName}"/>
+                                        <Text text="{clockTimeMdl>ObjectId}" wrapping="false"/>
+                                        <Text text="{clockTimeMdl>Description}" wrapping="false"/>
+                                        <Text text="{clockTimeMdl>CreatedAtDateFormatted}" wrapping="false"/>
+                                        <Text text="{clockTimeMdl>PriorityTxt}" wrapping="false"/>
+                                        <Text text="{clockTimeMdl>UserStatusDescription}" wrapping="false"/>
+
+                                        <Text text="{clockTimeMdl>PersonRespName}" wrapping="false"/>
+                                        <Input value="{clockTimeMdl>descriptionText}" liveChange = "checkSubmit" visible="{clockTimeMdl>activityVisible}"/>
+
+                                        <ComboBox id="cboActivity" items="{activityMdl>/}" selectedKey="{clockTimeMdl>activity}" visible="{clockTimeMdl>activityVisible}">
+                                            <core:Item key="{activityMdl>id}" text="{activityMdl>name}"/>
+                                        </ComboBox>
+                                        <Text text="{clockTimeMdl>duration}" id="durationText"/>
+                                        <Button id="playPauseButton1" icon="{clockTimeMdl>icon}" press="onPlayPausePress"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        </VBox>
+                        </VBox>
+                   </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+                  
+                    <uxap:ObjectPageSection title="Miscellaneous" id="formViewTabId" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection mode="Expanded" titleUppercase="false">
+                        <Table id="miscellaneous" visible="true" alternateRowColors="true" mode="None" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop" items="{miscelleanousMdl>/}">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column hAlign="Center" minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Customer"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Description"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Activity"/>
+                                </Column>
+
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Duration"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Start Stop"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ComboBox id="Customerr" items="{customerMdl>/}" selectedKey="{miscelleanousMdl>SoldToParty}" value="{miscelleanousMdl>soldToName}" placeholder="Customer" editable="{= ${miscelleanousMdl>/0/timeStatus} === 2}">
+                                            <core:Item key="{customerMdl>id}" text="{customerMdl>name}"/>
+                                        </ComboBox>
+                                        <Input value="{miscelleanousMdl>description}" editable="{= ${miscelleanousMdl>/0/timeStatus} === 2}"/>
+                                        <ComboBox id="cboActivit" items="{activityMdl>/}" selectedKey="{miscelleanousMdl>activity}" value="{miscelleanousMdl>activityVisible}" placeholder="Activity" editable="{= ${miscelleanousMdl>/0/timeStatus} === 1 }">
+                                            <core:Item key="{activityMdl>id}" text="{activityMdl>name}"/>
+                                        </ComboBox>
+                                        <Text text="{miscelleanousMdl>duration}" id="durationT" />
+
+
+
+
+                                        <Button id="playPauseButton" icon="{miscelleanousMdl>icon}" press="onPlayPress"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+                  
+                     <uxap:ObjectPageSection title=" SAP ALM Task " titleUppercase="false" id="almImplementationTabId">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection  title="SAP ALM Task" titleUppercase="false">
+                    <VBox>
+                    <VBox>
+                        <fb:FilterBar id="almFilterbar" showFilterConfiguration="true" filterBarExpanded="true" filterChange="handleALMFilterChange" showRestoreOnFB="false" reset="onALMResetAdaptFilter" clear="clearALMSearchFilter" search="onALMSearch" useToolbar="false" showGoOnFB="true" showClearOnFB="true">
+                            <fb:filterItems>
+                                <fb:FilterGroupItem name="F" label="Projects" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <ComboBox id="almCustomer" items="{projectsMdl>/}" selectedKeys="{almFilterMdl>/id}" placeholder="Projects" required="true">
+                                            <core:Item key="{projectsMdl>id}" text="{projectsMdl>name}"/>
+                                        </ComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+                                <fb:FilterGroupItem name="G" label="Start Date" groupName="optional" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <DateRangeSelection id="drs_createdOn1" placeholder="Date" change="handleChangeDateRangealm" value="{path: '/c_dateRange', type: 'sap.ui.model.type.DateInterval', formatOptions: {pattern: 'dd-MMM-yyyy'}}" required="true" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+
+
+
+                            </fb:filterItems>
+                        </fb:FilterBar>
+                        
+</VBox>
+                    <VBox>
+                        <Table id="almTable" visible="true" alternateRowColors="true" items="{almMdl>/}" mode="" sticky="ColumnHeaders,HeaderToolbar" inset="false" class="sapUiSmallMarginTop">
+                            <headerToolbar>
+                                <OverflowToolbar>
+                                    <content>
+                                        <Label text="Items({= ${almMdl>/}.length})"/>
+                                        <ToolbarSpacer/>
+                                        <Button type="Transparent" press="handlePersoButtonPressed" icon="sap-icon://action-settings" tooltip="Personalization" enabled="true"/>
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                               
+
+                                <Column minScreenWidth="Desktop" width="30em" hAlign="Center" demandPopin="true">
+                                    <Text text="Task"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Type"/>
+                                </Column>
+                               
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Start Date "/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Est. Completion Date "/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Status"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Description"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Activity"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" demandPopin="true">
+                                    <Text text="Duration"/>
+                                </Column>
+                                <Column minScreenWidth="Desktop" type="Emphasized" demandPopin="true">
+                                    <Text text="Start Stop"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier title="{almMdl>title}"/>
+                                      
+                                        <Text text="{path: 'almMdl>type', formatter: '.taskTypeFormatter'}" wrapping="false"/>
+
+                                        
+                                        <Text text="{almMdl>startDate}" wrapping="false"/>
+                                        <Text text="{almMdl>dueDate}" wrapping="false"/>
+                                        <Text text="{path: 'almMdl>status', formatter: '.statusTextFormatter'}" wrapping="false"/>
+                                        <Input value="{almMdl>description}" liveChange="checkSubmitALM" visible="{almMdl>activityVisible}"/>
+                                        <ComboBox id="almActivity" items="{activityMdl>/}" selectedKey="{almMdl>activity}" visible="{almMdl>activityVisible}">
+                                            <core:Item key="{activityMdl>id}" text="{activityMdl>name}"/>
+                                        </ComboBox>
+                                        <Text text="{almMdl>duration}" id="durationalm"/>
+                                        <Button id="playPauseAlm" icon="{almMdl>icon}" press="onPlayPressalm"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                        </VBox>
+                    </VBox>
+                     </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+             </uxap:sections>
+                </uxap:ObjectPageLayout>
+</mvc:View>

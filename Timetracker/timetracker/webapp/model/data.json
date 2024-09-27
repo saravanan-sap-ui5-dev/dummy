@@ -1,0 +1,49 @@
+{
+	"selectedKey": "page1",
+	"navigation": [
+        {
+			"title": "My timesheet",
+			"icon": "sap-icon://employee",
+			"expanded": true,
+			"key": "root1",
+			"items": [
+				{
+					"title": "Dashboard",
+					"key": "page1"
+				},
+				{
+					"title": "Clock Time",
+					"key": "page2"
+				},
+                {
+					"title": "Timesheet",
+					"key": "page3"
+				},
+                {
+					"title": "Clock miscellaneous Time",
+					"key": "page4"
+				}
+
+			]
+		},
+        {
+			"title": "Reports",
+			"icon": "sap-icon://action",
+			"expanded": false,
+			"items": [
+				{
+					"title": "Dashboard"
+				},
+				{
+					"title": "Weekly"
+				},
+				{
+					"title": "Monthly"
+				},
+                {
+					"title": "My Tasks"
+				}
+			]
+		}
+    ]
+}

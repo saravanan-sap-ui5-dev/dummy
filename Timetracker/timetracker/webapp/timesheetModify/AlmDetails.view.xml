@@ -1,0 +1,110 @@
+<mvc:View controllerName="com.timetracker.timesheetModify.AlmDetails"
+    xmlns:uxap="sap.uxap"
+    xmlns:table="sap.ui.table"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:vm="sap.ui.comp.variants"
+    xmlns:u="sap.ui.unified"
+    xmlns:upload="sap.m.upload"
+    xmlns:smartMultiInput="sap.ui.comp.smartmultiinput"
+    xmlns:codeeditor="sap.ui.codeeditor"
+    xmlns:field="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <uxap:ObjectPageLayout id="alm_page" useIconTabBar="false" showTitleInHeaderContent="true" showEditHeaderButton="true" editHeaderButtonPress="handleEditBtnPress" upperCaseAnchorBar="false" showFooter="{= !${visible>/view}}">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="Implementation Details"/>
+                </uxap:expandedHeading>
+
+                <!-- <uxap:snappedHeading>
+                      <Title text="{miscellaneousMdl>/soldToName}"/>
+                </uxap:snappedHeading> -->
+
+                <uxap:expandedContent>
+                    <ObjectAttribute title="ID" text="{almMdl>/id}" />
+                    <!-- <ObjectAttribute title="Customer" text="{miscellaneousMdl>/soldToName}" /> -->
+                </uxap:expandedContent>
+                <uxap:actions>
+                    <Button id="btn_Edit" text="Edit" visible="{= !${visible>/create}}" type="Emphasized" width="70px" press="onPressEdit"/>
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection title="Implementation" titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection>
+                        <uxap:blocks>
+                            <form:SimpleForm id="alm_form" editable="false" layout="ColumnLayout" columnsL="3" columnsM="2" columnsXL="3">
+                                <form:content>
+                                    <Label text="Projects" required="true"/>
+                                     <Input value="{almMdl>/projectName}" editable="false"/>
+                                    <!-- <ComboBox id="projects" items="{customerMdl>/}" selectedKey="{miscellaneousMdl>/soldToName}" placeholder="Customer" editable="{visible>/edit}">
+                                        <core:Item key="{customerMdl>name}" text="{customerMdl>name}"/>
+                                    </ComboBox> -->
+                                    <Label text="Task"/>
+                                    <TextArea value="{almMdl>/title}" editable="false"/>
+                                    <Label text="Start Time"/>
+                                    <TimePicker value="{almMdl>/startTime}" editable="{visible>/edit}" displayFormat="HH:mm:ss" valueFormat="HH:mm:ss"/>
+                                    <!-- <Input editable="false" value="{miscellaneousMdl>/startTime}" /> -->
+
+
+                                    
+                                    <Label text="End Time"/>
+                                    <!-- <Input editable="false" value="{miscellaneousMdl>/endTime}" /> -->
+                                    <TimePicker value="{almMdl>/endTime}" editable="{visible>/edit}" displayFormat="HH:mm:ss" valueFormat="HH:mm:ss"/>
+                                    <Label text="Date"/>
+                                    <Input value="{almMdl>/createdOn}" editable="false" />
+                                    <Label text="Description"/>
+                                    <Input value="{almMdl>/description}" editable="{visible>/edit}"/>
+                                                                        <Label text="Remarks"/>
+                                    <TextArea value="{almMdl>/remarks}" editable="{visible>/edit}" />
+                                    <Label text="Duration"/>
+                                    <Input editable="false" value="{almMdl>/duration}" />
+                                    <Label text="Activity"/>
+                                    <ComboBox id="cboActivity" items="{activityMdl>/}" selectedKey="{almMdl>/activity}" editable="{visible>/edit}">
+                                        <core:Item key="{activityMdl>id}" text="{activityMdl>name}"/>
+                                    </ComboBox>
+
+
+                                    <Label text="Status"/>
+                                    <ComboBox selectedKey="{almMdl>/userStatus}" editable="{visible>/edit}" value="{almMdl>/userStatus}">
+                                        <core:Item key="1" text="Active" />
+                                        <core:Item key="2" text="Inactive" />
+                                    </ComboBox>
+                                     <Label text="Location"/>
+                                     <ComboBox selectedKey="{almMdl>/location}" editable="{visible>/edit}" value="{almMdl>/location}">
+                                        <core:Item key="Work From Office" text="Work From Office" />
+                                        <core:Item key="Work From Home" text="Work From Home" />
+                                        <core:Item key="Customer Place" text="Customer Place" />
+
+                                    </ComboBox>
+
+
+                                </form:content>
+                            </form:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+        <uxap:footer>
+            <OverflowToolbar >
+                <!-- <Button id="btn_editErr" visible="{=!!${errors>/}.length}" icon="sap-icon://error" type="Negative" text="Error" press=".handleMessagePopoverPress" ariaHasPopup="Dialog" /> -->
+                <ToolbarSpacer />
+                <Button type="Emphasized" text="Save" width="70px" press="onPressSave"/>
+                <Button type="Ghost" text="Cancel" width="70px" press="onPressCancel"/>
+            </OverflowToolbar>
+        </uxap:footer>
+    </uxap:ObjectPageLayout>
+</mvc:View>
